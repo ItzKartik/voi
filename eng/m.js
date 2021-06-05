@@ -21,7 +21,7 @@ function initPayPalButton(ele) {
 
     onApprove: function(data, actions) {
         return actions.order.capture().then(function(details) {
-            amt = (amt/100)*5;
+            amt = amt - (amt/100)*5;
             console.log(amt);
             var dict_s = {
                 "ownerName": "stripedemo",
