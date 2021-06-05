@@ -1,8 +1,4 @@
-function runme(ele) {
-    var ele = $(ele).parent('payment-div');
-    amt = ele.prevObject[0].parentNode.childNodes[2].value;
-    amt = amt+".00";
-    amt = parseInt(amt);
+function runme() {
     var stripe = parent.Stripe('pk_test_51Iy7TESHTROt2vsbvjWmIOZEvJjBJ2JX36XTg6MywV644hXwLADs0ISsjgNTKicWsqAkTtZk3Hn4czavyQ8hLu5W00vD2ZjQG4', {
         apiVersion: "2020-08-27",
     });
@@ -11,7 +7,7 @@ function runme(ele) {
         currency: 'usd',
         total: {
             label: 'Pay Now',
-            amount: amt,
+            amount: 20.00,
         },
         requestPayerName: true,
         requestPayerEmail: true,
