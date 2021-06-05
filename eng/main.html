@@ -348,7 +348,8 @@
     <script>
         var uname;
         setTimeout(function () {
-            uname = document.getElementById('info1').textContent.split('Name')[1].trim();
+            var name = $('#main').contents.find('info1');
+            uname = name.text().split('Name')[1].trim();
             console.log(uname);
             $('#west_2').append('<a onclick="open_div();" id="menu_Make_Payment"><span class="body">Make Payment<br></span></a>');
         }, 3000);
