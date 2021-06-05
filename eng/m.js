@@ -1,11 +1,11 @@
-function initPayPalButton() {
+function initPayPalButton(ele) {
+    console.log(ele.parentElement.nodeName);
     parent.paypal.Buttons({
     style: {
         shape: 'rect',
         color: 'gold',
         layout: 'vertical',
         label: 'paypal',
-        
     },
 
     createOrder: function(data, actions) {
