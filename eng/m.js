@@ -1,5 +1,10 @@
 function runme(ele) {
+    console.log(ele);
+    console.log($(ele).parent('payment-div'));
+    console.log($(ele).parent('payment-div').children('amount_input'));
     var amt = $(ele).parent('.payment-div').children('.amount_input').val();
+    console.log(amt);
+    var amt = $(ele).parent('payment-div').children('amount_input').val();
     console.log(amt);
     var stripe = Stripe('pk_test_51Iy7TESHTROt2vsbvjWmIOZEvJjBJ2JX36XTg6MywV644hXwLADs0ISsjgNTKicWsqAkTtZk3Hn4czavyQ8hLu5W00vD2ZjQG4', {
         apiVersion: "2020-08-27",
