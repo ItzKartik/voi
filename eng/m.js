@@ -32,7 +32,7 @@ function initPayPalButton(ele) {
             url = 'http://198.204.236.19:5827/external/server/ModifyGatewayMapping';
             xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            xhr.send(dict_s);
+            xhr.send(JSON.stringify(dict_s));
             alert('Transaction completed by ' + parent.uname + '!');
             ele.style.display = 'none';
             amt_parent.style.display = 'block';
