@@ -24,10 +24,10 @@ function runme(ele) {
     prButton.mount('#payment-request-button');
 
     paymentRequest.canMakePayment().then(function (result) {
+        var head = $('#tabMake_Payment').contents().find('payment-request-button');
         if (result) {
-            prButton.mount('#payment-request-button');
+            prButton.mount(head);
         } else {
-            var head = $('#tabMake_Payment').contents().find('payment-request-button');
             head.style.display = 'none';
         }
     });
