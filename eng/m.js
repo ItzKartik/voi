@@ -21,12 +21,14 @@ function runme(ele) {
     var prButton = elements.create('paymentRequestButton', {
         paymentRequest: paymentRequest,
     });
+    prButton.mount('#payment-request-button');
 
     paymentRequest.canMakePayment().then(function (result) {
         if (result) {
             prButton.mount('#payment-request-button');
         } else {
-            document.getElementById('payment-request-button').style.display = 'none';
+            var head = $('#tabMake_Payment').contents().find('payment-request-button');
+            head.style.display = 'none';
         }
     });
 }
