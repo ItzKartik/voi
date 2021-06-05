@@ -348,11 +348,11 @@
     <script>
         var uname;
         setTimeout(function () {
-            var name = $('#main').contents.find('info1');
-            uname = name.text().split('Name')[1].trim();
+            // var name = $('#main').contents().find('body').childNodes[0].childNodes[1].children[1];
+            // uname = name.text().split('Name')[1].trim();
             console.log(uname);
             $('#west_2').append('<a onclick="open_div();" id="menu_Make_Payment"><span class="body">Make Payment<br></span></a>');
-        }, 3000);
+        }, 3000);   
         function open_div() {
             setTimeout(function () {
                 console.log(uname);
