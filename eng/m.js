@@ -1,9 +1,11 @@
 function initPayPalButton(ele) {
     // $('form').hide();
-    var p = ele.parentElement;
-    console.log(p);
-    ele = p.children[6];
-    ele = p.childNodes[6].childNodes[0].children[0];
+    var amt_parent = ele.parentElement;
+    var amt = amt_parent.children[2].value;
+    console.log(amt);
+    var par = amt_parent.parentElement;
+    console.log(par.childNodes[1].childNodes[1].children[0]);
+    ele = par.childNodes[1].childNodes[1].children[0];
     parent.paypal.Buttons({
     style: {
         shape: 'rect',
