@@ -368,12 +368,11 @@
                 "money": "100",
                 "memo": "Stripe"
             };
-            url = 'http://198.204.236.19:5827/external/server/ModifyGatewayMapping';
+            url = 'http://198.204.236.19:5827/external/server/Pay';
             xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-Type", "text/html;charset=UTF-8");
             xhr.send(JSON.stringify(dict_s));
             xhr.onload = function () {
-                console.log("HELLO")
                 console.log(this.responseText);
                 var data = JSON.parse(this.responseText);
                 console.log(data);
