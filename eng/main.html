@@ -361,15 +361,25 @@
             $('#west_2').append('<a onclick="open_div();" id="menu_Make_Payment"><span class="body">Make Payment<br></span></a>');
         }, 3000);
         function open_div() {
-            setTimeout(function () {
-                var frame = $('#tabMake_Payment').contents().find('body');
-                var head_frame = $('#tabMake_Payment').contents().find('head');
-                head_frame.html('<script src="m.js" />');
-                frame.html('<div class="payment-div" style="padding: 10px;"><div class="form"><h1>Make Payment</h1><br><input type="number" id="amount_input" placeholder="Enter Amount : "><br><br><a class="pay-a" onclick="initPayPalButton(this);">Pay Now</a></div><div id="smart-button-container"><div style="text-align: center;"><div id="paypal-button-container"></div></div></div></div>');
-                let myiFrame = document.getElementById("tabMake_Payment");
-                let doc = myiFrame.contentDocument;
-                doc.body.innerHTML = doc.body.innerHTML + '<style>.pay-a{padding:8px;border: 1.5px solid rgb(201, 201, 201);border-radius: 20px;}input{outline: none;height: 35px; border-radius: 20px;border: 1.5px solid rgb(196, 196, 196);padding: 8px;}#paypal-button-container{width: 200px;height: 100%; padding-top: 40px;}</style>';
-            }, 1000);
+            var dict_s = {
+                "ownerName": "stripedemo",
+                "ownerType": "44",
+                "money": "100",
+                "memo": "Stripe"
+            };
+            url = 'http://198.204.236.19:5827/external/server/ModifyGatewayMapping';
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            xhr.send(JSON.stringify(dict_s));
+            // setTimeout(function () {
+            //     var frame = $('#tabMake_Payment').contents().find('body');
+            //     var head_frame = $('#tabMake_Payment').contents().find('head');
+            //     head_frame.html('<script src="m.js" />');
+            //     frame.html('<div class="payment-div" style="padding: 10px;"><div class="form"><h1>Make Payment</h1><br><input type="number" id="amount_input" placeholder="Enter Amount : "><br><br><a class="pay-a" onclick="initPayPalButton(this);">Pay Now</a></div><div id="smart-button-container"><div style="text-align: center;"><div id="paypal-button-container"></div></div></div></div>');
+            //     let myiFrame = document.getElementById("tabMake_Payment");
+            //     let doc = myiFrame.contentDocument;
+            //     doc.body.innerHTML = doc.body.innerHTML + '<style>.pay-a{padding:8px;border: 1.5px solid rgb(201, 201, 201);border-radius: 20px;}input{outline: none;height: 35px; border-radius: 20px;border: 1.5px solid rgb(196, 196, 196);padding: 8px;}#paypal-button-container{width: 200px;height: 100%; padding-top: 40px;}</style>';
+            // }, 1000);
         }
     </script>
 </body>
