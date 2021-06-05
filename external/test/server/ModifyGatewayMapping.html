@@ -1,0 +1,921 @@
+<html>
+<head>
+<title>Interface Test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<script type="text/javascript" src="/js/json2.js"></script>
+<script language="javascript" type="text/javascript">
+  var xmlHttp;
+  function parseBoolean(value) {
+    return (typeof value === "undefined") ? false : value.replace(/^\s+|\s+$/g, "").toLowerCase() === "true";
+  }
+  function createXMLHttpRequest(){
+    if(window.ActiveXObject){
+      xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    else if(window.XMLHttpRequest){
+      xmlHttp = new XMLHttpRequest();
+    }
+  }
+  function call_post(){
+    createXMLHttpRequest();
+  var vosRequest = new Object(); 
+  if(document.getElementById("checkbox_name").checked){
+    vosRequest.name = document.getElementById("name").value;
+  }
+  if(document.getElementById("checkbox_password").checked){
+    vosRequest.password = document.getElementById("password").value;
+  }
+  if(document.getElementById("checkbox_lockType").checked){
+    vosRequest.lockType = parseFloat(document.getElementById("lockType").value);
+  }
+  if(document.getElementById("checkbox_callLevel").checked){
+    vosRequest.callLevel = parseFloat(document.getElementById("callLevel").value);
+  }
+  if(document.getElementById("checkbox_capacity").checked){
+    vosRequest.capacity = parseFloat(document.getElementById("capacity").value);
+  }
+  if(document.getElementById("checkbox_priority").checked){
+    vosRequest.priority = parseFloat(document.getElementById("priority").value);
+  }
+  if(document.getElementById("checkbox_gatewayGroups").checked){
+    vosRequest.gatewayGroups = document.getElementById("gatewayGroups").value;
+  }
+  if(document.getElementById("checkbox_routingGatewayGroupsAllow").checked){
+    vosRequest.routingGatewayGroupsAllow = parseBoolean(document.getElementById("routingGatewayGroupsAllow").value);
+  }
+  if(document.getElementById("checkbox_routingGatewayGroups").checked){
+    vosRequest.routingGatewayGroups = document.getElementById("routingGatewayGroups").value;
+  }
+  if(document.getElementById("checkbox_registerType").checked){
+    vosRequest.registerType = parseFloat(document.getElementById("registerType").value);
+  }
+  if(document.getElementById("checkbox_remoteIps").checked){
+    vosRequest.remoteIps = document.getElementById("remoteIps").value;
+  }
+  if(document.getElementById("checkbox_callerE164CheckEnable").checked){
+    vosRequest.callerE164CheckEnable = parseBoolean(document.getElementById("callerE164CheckEnable").value);
+  }
+  if(document.getElementById("checkbox_callerE164CheckCity").checked){
+    vosRequest.callerE164CheckCity = parseBoolean(document.getElementById("callerE164CheckCity").value);
+  }
+  if(document.getElementById("checkbox_callerE164CheckMobile").checked){
+    vosRequest.callerE164CheckMobile = parseBoolean(document.getElementById("callerE164CheckMobile").value);
+  }
+  if(document.getElementById("checkbox_callerE164CheckOther").checked){
+    vosRequest.callerE164CheckOther = parseBoolean(document.getElementById("callerE164CheckOther").value);
+  }
+  if(document.getElementById("checkbox_calleeE164CheckEnable").checked){
+    vosRequest.calleeE164CheckEnable = parseBoolean(document.getElementById("calleeE164CheckEnable").value);
+  }
+  if(document.getElementById("checkbox_calleeE164CheckCity").checked){
+    vosRequest.calleeE164CheckCity = parseBoolean(document.getElementById("calleeE164CheckCity").value);
+  }
+  if(document.getElementById("checkbox_calleeE164CheckMobile").checked){
+    vosRequest.calleeE164CheckMobile = parseBoolean(document.getElementById("calleeE164CheckMobile").value);
+  }
+  if(document.getElementById("checkbox_calleeE164CheckOther").checked){
+    vosRequest.calleeE164CheckOther = parseBoolean(document.getElementById("calleeE164CheckOther").value);
+  }
+  if(document.getElementById("checkbox_customerPassword").checked){
+    vosRequest.customerPassword = document.getElementById("customerPassword").value;
+  }
+  if(document.getElementById("checkbox_rtpForwardType").checked){
+    vosRequest.rtpForwardType = parseFloat(document.getElementById("rtpForwardType").value);
+  }
+  if(document.getElementById("checkbox_mediaCheckDirection").checked){
+    vosRequest.mediaCheckDirection = parseFloat(document.getElementById("mediaCheckDirection").value);
+  }
+  if(document.getElementById("checkbox_calleeE164Restrict").checked){
+    vosRequest.calleeE164Restrict = parseFloat(document.getElementById("calleeE164Restrict").value);
+  }
+  if(document.getElementById("checkbox_maxCallDurationLower").checked){
+    vosRequest.maxCallDurationLower = parseFloat(document.getElementById("maxCallDurationLower").value);
+  }
+  if(document.getElementById("checkbox_maxCallDurationUpper").checked){
+    vosRequest.maxCallDurationUpper = parseFloat(document.getElementById("maxCallDurationUpper").value);
+  }
+  if(document.getElementById("checkbox_allowPhoneBilling").checked){
+    vosRequest.allowPhoneBilling = parseBoolean(document.getElementById("allowPhoneBilling").value);
+  }
+  if(document.getElementById("checkbox_allowBindedE164Billing").checked){
+    vosRequest.allowBindedE164Billing = parseBoolean(document.getElementById("allowBindedE164Billing").value);
+  }
+  if(document.getElementById("checkbox_enablePhoneSetting").checked){
+    vosRequest.enablePhoneSetting = parseBoolean(document.getElementById("enablePhoneSetting").value);
+  }
+  if(document.getElementById("checkbox_denySameCityCodesAllow").checked){
+    vosRequest.denySameCityCodesAllow = parseBoolean(document.getElementById("denySameCityCodesAllow").value);
+  }
+  if(document.getElementById("checkbox_denySameCityCodes").checked){
+    vosRequest.denySameCityCodes = document.getElementById("denySameCityCodes").value;
+  }
+  if(document.getElementById("checkbox_checkMobileAreaAllow").checked){
+    vosRequest.checkMobileAreaAllow = parseBoolean(document.getElementById("checkMobileAreaAllow").value);
+  }
+  if(document.getElementById("checkbox_checkMobileArea").checked){
+    vosRequest.checkMobileArea = document.getElementById("checkMobileArea").value;
+  }
+  if(document.getElementById("checkbox_calloutCalleePrefixesAllow").checked){
+    vosRequest.calloutCalleePrefixesAllow = parseBoolean(document.getElementById("calloutCalleePrefixesAllow").value);
+  }
+  if(document.getElementById("checkbox_calloutCalleePrefixes").checked){
+    vosRequest.calloutCalleePrefixes = document.getElementById("calloutCalleePrefixes").value;
+  }
+  if(document.getElementById("checkbox_calloutCallerPrefixesAllow").checked){
+    vosRequest.calloutCallerPrefixesAllow = parseBoolean(document.getElementById("calloutCallerPrefixesAllow").value);
+  }
+  if(document.getElementById("checkbox_calloutCallerPrefixes").checked){
+    vosRequest.calloutCallerPrefixes = document.getElementById("calloutCallerPrefixes").value;
+  }
+  if(document.getElementById("checkbox_rewriteRulesOutCallee").checked){
+    vosRequest.rewriteRulesOutCallee = document.getElementById("rewriteRulesOutCallee").value;
+  }
+  if(document.getElementById("checkbox_rewriteRulesOutCaller").checked){
+    vosRequest.rewriteRulesOutCaller = document.getElementById("rewriteRulesOutCaller").value;
+  }
+  if(document.getElementById("checkbox_rewriteRulesInMobileAreaAllow").checked){
+    vosRequest.rewriteRulesInMobileAreaAllow = parseBoolean(document.getElementById("rewriteRulesInMobileAreaAllow").value);
+  }
+  if(document.getElementById("checkbox_rewriteRulesInMobileArea").checked){
+    vosRequest.rewriteRulesInMobileArea = document.getElementById("rewriteRulesInMobileArea").value;
+  }
+  if(document.getElementById("checkbox_timeoutCallProceeding").checked){
+    vosRequest.timeoutCallProceeding = parseFloat(document.getElementById("timeoutCallProceeding").value);
+  }
+  if(document.getElementById("checkbox_sipResponseAddressMethod").checked){
+    vosRequest.sipResponseAddressMethod = parseFloat(document.getElementById("sipResponseAddressMethod").value);
+  }
+  if(document.getElementById("checkbox_sipRequestAddressMethod").checked){
+    vosRequest.sipRequestAddressMethod = parseFloat(document.getElementById("sipRequestAddressMethod").value);
+  }
+  if(document.getElementById("checkbox_dtmfSendMethodH323").checked){
+    vosRequest.dtmfSendMethodH323 = parseFloat(document.getElementById("dtmfSendMethodH323").value);
+  }
+  if(document.getElementById("checkbox_dtmfSendMethodSip").checked){
+    vosRequest.dtmfSendMethodSip = parseFloat(document.getElementById("dtmfSendMethodSip").value);
+  }
+  if(document.getElementById("checkbox_dtmfReceiveMethod").checked){
+    vosRequest.dtmfReceiveMethod = parseFloat(document.getElementById("dtmfReceiveMethod").value);
+  }
+  if(document.getElementById("checkbox_dtmfSendPayloadTypeH323").checked){
+    vosRequest.dtmfSendPayloadTypeH323 = parseFloat(document.getElementById("dtmfSendPayloadTypeH323").value);
+  }
+  if(document.getElementById("checkbox_dtmfSendPayloadTypeSip").checked){
+    vosRequest.dtmfSendPayloadTypeSip = parseFloat(document.getElementById("dtmfSendPayloadTypeSip").value);
+  }
+  if(document.getElementById("checkbox_dtmfReceivePayloadType").checked){
+    vosRequest.dtmfReceivePayloadType = parseFloat(document.getElementById("dtmfReceivePayloadType").value);
+  }
+  if(document.getElementById("checkbox_q931ProgressIndicator").checked){
+    vosRequest.q931ProgressIndicator = parseFloat(document.getElementById("q931ProgressIndicator").value);
+  }
+  if(document.getElementById("checkbox_account").checked){
+    vosRequest.account = document.getElementById("account").value;
+  }
+  if(document.getElementById("checkbox_callFailedQ931CauseValue").checked){
+    vosRequest.callFailedQ931CauseValue = document.getElementById("callFailedQ931CauseValue").value;
+  }
+  if(document.getElementById("checkbox_callFailedSipCode").checked){
+    vosRequest.callFailedSipCode = document.getElementById("callFailedSipCode").value;
+  }
+  if(document.getElementById("checkbox_sipRemoteRingSignal").checked){
+    vosRequest.sipRemoteRingSignal = parseFloat(document.getElementById("sipRemoteRingSignal").value);
+  }
+  if(document.getElementById("checkbox_sipCalleeE164Domain").checked){
+    vosRequest.sipCalleeE164Domain = parseFloat(document.getElementById("sipCalleeE164Domain").value);
+  }
+  if(document.getElementById("checkbox_sipCallerE164Domain").checked){
+    vosRequest.sipCallerE164Domain = parseFloat(document.getElementById("sipCallerE164Domain").value);
+  }
+  if(document.getElementById("checkbox_h323CalleeE164Domain").checked){
+    vosRequest.h323CalleeE164Domain = parseFloat(document.getElementById("h323CalleeE164Domain").value);
+  }
+  if(document.getElementById("checkbox_h323CallerE164Domain").checked){
+    vosRequest.h323CallerE164Domain = parseFloat(document.getElementById("h323CallerE164Domain").value);
+  }
+  if(document.getElementById("checkbox_memo").checked){
+    vosRequest.memo = document.getElementById("memo").value;
+  }
+  if(document.getElementById("checkbox_sipAuthenticationMethod").checked){
+    vosRequest.sipAuthenticationMethod = parseFloat(document.getElementById("sipAuthenticationMethod").value);
+  }
+  if(document.getElementById("checkbox_h323FastStart").checked){
+    vosRequest.h323FastStart = parseBoolean(document.getElementById("h323FastStart").value);
+  }
+  if(document.getElementById("checkbox_h323H245Tunneling").checked){
+    vosRequest.h323H245Tunneling = parseBoolean(document.getElementById("h323H245Tunneling").value);
+  }
+  if(document.getElementById("checkbox_h323H245InSetup").checked){
+    vosRequest.h323H245InSetup = parseBoolean(document.getElementById("h323H245InSetup").value);
+  }
+  if(document.getElementById("checkbox_h323AutoCallProceeding").checked){
+    vosRequest.h323AutoCallProceeding = parseBoolean(document.getElementById("h323AutoCallProceeding").value);
+  }
+  if(document.getElementById("checkbox_h323CallProceedingFromSipTrying").checked){
+    vosRequest.h323CallProceedingFromSipTrying = parseBoolean(document.getElementById("h323CallProceedingFromSipTrying").value);
+  }
+  if(document.getElementById("checkbox_h323AlertingFromSip183Sdp").checked){
+    vosRequest.h323AlertingFromSip183Sdp = parseBoolean(document.getElementById("h323AlertingFromSip183Sdp").value);
+  }
+  if(document.getElementById("checkbox_h323T38").checked){
+    vosRequest.h323T38 = parseBoolean(document.getElementById("h323T38").value);
+  }
+  if(document.getElementById("checkbox_sipTimer").checked){
+    vosRequest.sipTimer = parseBoolean(document.getElementById("sipTimer").value);
+  }
+  if(document.getElementById("checkbox_sip100Rel").checked){
+    vosRequest.sip100Rel = parseBoolean(document.getElementById("sip100Rel").value);
+  }
+  if(document.getElementById("checkbox_sipT38").checked){
+    vosRequest.sipT38 = parseBoolean(document.getElementById("sipT38").value);
+  }
+  if(document.getElementById("checkbox_sipDisplay").checked){
+    vosRequest.sipDisplay = parseBoolean(document.getElementById("sipDisplay").value);
+  }
+  if(document.getElementById("checkbox_sipRemotePartyId").checked){
+    vosRequest.sipRemotePartyId = parseBoolean(document.getElementById("sipRemotePartyId").value);
+  }
+  if(document.getElementById("checkbox_sipPrivacySupport").checked){
+    vosRequest.sipPrivacySupport = parseBoolean(document.getElementById("sipPrivacySupport").value);
+  }
+  if(document.getElementById("checkbox_groupE164Change").checked){
+    vosRequest.groupE164Change = parseBoolean(document.getElementById("groupE164Change").value);
+  }
+  if(document.getElementById("checkbox_callerAllowLength").checked){
+    vosRequest.callerAllowLength = parseFloat(document.getElementById("callerAllowLength").value);
+  }
+  if(document.getElementById("checkbox_calleeAllowLength").checked){
+    vosRequest.calleeAllowLength = parseFloat(document.getElementById("calleeAllowLength").value);
+  }
+  if(document.getElementById("checkbox_callerLimitE164GroupsAllow").checked){
+    vosRequest.callerLimitE164GroupsAllow = parseBoolean(document.getElementById("callerLimitE164GroupsAllow").value);
+  }
+  if(document.getElementById("checkbox_callerLimitE164Groups").checked){
+    vosRequest.callerLimitE164Groups = document.getElementById("callerLimitE164Groups").value;
+  }
+  if(document.getElementById("checkbox_calleeLimitE164GroupsAllow").checked){
+    vosRequest.calleeLimitE164GroupsAllow = parseBoolean(document.getElementById("calleeLimitE164GroupsAllow").value);
+  }
+  if(document.getElementById("checkbox_calleeLimitE164Groups").checked){
+    vosRequest.calleeLimitE164Groups = document.getElementById("calleeLimitE164Groups").value;
+  }
+  if(document.getElementById("checkbox_minProfitPercentEnable").checked){
+    vosRequest.minProfitPercentEnable = parseBoolean(document.getElementById("minProfitPercentEnable").value);
+  }
+  if(document.getElementById("checkbox_minProfitPercent").checked){
+    vosRequest.minProfitPercent = parseFloat(document.getElementById("minProfitPercent").value);
+  }
+  if(document.getElementById("checkbox_maxSecondRatesEnable").checked){
+    vosRequest.maxSecondRatesEnable = parseBoolean(document.getElementById("maxSecondRatesEnable").value);
+  }
+  if(document.getElementById("checkbox_maxSecondRates").checked){
+    vosRequest.maxSecondRates = parseFloat(document.getElementById("maxSecondRates").value);
+  }
+  if(document.getElementById("checkbox_firstRoutePolicy").checked){
+    vosRequest.firstRoutePolicy = parseFloat(document.getElementById("firstRoutePolicy").value);
+  }
+  if(document.getElementById("checkbox_secondRoutePolicy").checked){
+    vosRequest.secondRoutePolicy = parseFloat(document.getElementById("secondRoutePolicy").value);
+  }
+  if(document.getElementById("checkbox_h323G729SendMode").checked){
+    vosRequest.h323G729SendMode = parseFloat(document.getElementById("h323G729SendMode").value);
+  }
+  if(document.getElementById("checkbox_sipG729SendMode").checked){
+    vosRequest.sipG729SendMode = parseFloat(document.getElementById("sipG729SendMode").value);
+  }
+  if(document.getElementById("checkbox_sipG729Annexb").checked){
+    vosRequest.sipG729Annexb = parseFloat(document.getElementById("sipG729Annexb").value);
+  }
+  if(document.getElementById("checkbox_sipG723Annexa").checked){
+    vosRequest.sipG723Annexa = parseFloat(document.getElementById("sipG723Annexa").value);
+  }
+  if(document.getElementById("checkbox_h323CodecAssign").checked){
+    vosRequest.h323CodecAssign = parseBoolean(document.getElementById("h323CodecAssign").value);
+  }
+  if(document.getElementById("checkbox_h323Codecs").checked){
+    vosRequest.h323Codecs = new Array(1);
+    vosRequest.h323Codecs[0] = new Object();
+    vosRequest.h323Codecs[0] = document.getElementById("h323Codecs").value;
+  }
+  if(document.getElementById("checkbox_sipCodecAssign").checked){
+    vosRequest.sipCodecAssign = parseBoolean(document.getElementById("sipCodecAssign").value);
+  }
+  if(document.getElementById("checkbox_sipCodecs").checked){
+    vosRequest.sipCodecs = new Array(1);
+    vosRequest.sipCodecs[0] = new Object();
+    vosRequest.sipCodecs[0] = document.getElementById("sipCodecs").value;
+  }
+  if(document.getElementById("checkbox_audioCodecTranscodingEnable").checked){
+    vosRequest.audioCodecTranscodingEnable = parseBoolean(document.getElementById("audioCodecTranscodingEnable").value);
+  }
+  if(document.getElementById("checkbox_rtpIncludeDtmfInband").checked){
+    vosRequest.rtpIncludeDtmfInband = parseBoolean(document.getElementById("rtpIncludeDtmfInband").value);
+  }
+  if(document.getElementById("checkbox_rtpNeedDtmfInband").checked){
+    vosRequest.rtpNeedDtmfInband = parseBoolean(document.getElementById("rtpNeedDtmfInband").value);
+  }
+  if(document.getElementById("checkbox_forwardSignalRewriteE164GroupEnable").checked){
+    vosRequest.forwardSignalRewriteE164GroupEnable = parseBoolean(document.getElementById("forwardSignalRewriteE164GroupEnable").value);
+  }
+  if(document.getElementById("checkbox_forwardSignalRewriteE164Group").checked){
+    vosRequest.forwardSignalRewriteE164Group = document.getElementById("forwardSignalRewriteE164Group").value;
+  }
+  if(document.getElementById("checkbox_softswitchName").checked){
+    vosRequest.softswitchName = document.getElementById("softswitchName").value;
+  }
+  if(document.getElementById("checkbox_lrnEnable").checked){
+    vosRequest.lrnEnable = parseBoolean(document.getElementById("lrnEnable").value);
+  }
+  if(document.getElementById("checkbox_lrnEatPrefixLength").checked){
+    vosRequest.lrnEatPrefixLength = parseFloat(document.getElementById("lrnEatPrefixLength").value);
+  }
+  if(document.getElementById("checkbox_lrnFailureAction").checked){
+    vosRequest.lrnFailureAction = parseFloat(document.getElementById("lrnFailureAction").value);
+  }
+  if(document.getElementById("checkbox_lrnInterstateBillingPrefix").checked){
+    vosRequest.lrnInterstateBillingPrefix = document.getElementById("lrnInterstateBillingPrefix").value;
+  }
+  if(document.getElementById("checkbox_lrnUndeterminedBillingPrefix").checked){
+    vosRequest.lrnUndeterminedBillingPrefix = document.getElementById("lrnUndeterminedBillingPrefix").value;
+  }
+  if(document.getElementById("checkbox_language").checked){
+    vosRequest.language = document.getElementById("language").value;
+  }
+    document.getElementById("postText").innerHTML = "<br>Request Format: " + JSON.stringify(vosRequest) + "</br>";
+    document.getElementById("responseText").innerHTML = "";
+    xmlHttp.open("POST", "/external/server/ModifyGatewayMapping", true);
+    xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+    xmlHttp.onreadystatechange = showResult;
+    xmlHttp.send(JSON.stringify(vosRequest));
+  }
+  function showResult(){
+    if(xmlHttp.readyState == 4){
+      if(xmlHttp.status == 200){
+        document.getElementById("responseText").innerHTML = "<br>Response Format: " + xmlHttp.responseText + "</br>";
+        document.body.scrollTop=document.body.scrollHeight;
+      }
+    }
+  }
+  function load(){
+  document.getElementById("name").value = "gatewayMapping-1";
+  document.getElementById("password").value = "1526349604599";
+  document.getElementById("lockType").value = "0";
+  document.getElementById("callLevel").value = "4";
+  document.getElementById("capacity").value = "30";
+  document.getElementById("priority").value = "1";
+  document.getElementById("gatewayGroups").value = "";
+  document.getElementById("routingGatewayGroupsAllow").value = "true";
+  document.getElementById("routingGatewayGroups").value = "";
+  document.getElementById("registerType").value = "1";
+  document.getElementById("remoteIps").value = "";
+  document.getElementById("callerE164CheckEnable").value = "false";
+  document.getElementById("callerE164CheckCity").value = "true";
+  document.getElementById("callerE164CheckMobile").value = "true";
+  document.getElementById("callerE164CheckOther").value = "false";
+  document.getElementById("calleeE164CheckEnable").value = "false";
+  document.getElementById("calleeE164CheckCity").value = "true";
+  document.getElementById("calleeE164CheckMobile").value = "true";
+  document.getElementById("calleeE164CheckOther").value = "false";
+  document.getElementById("customerPassword").value = "1526349604599";
+  document.getElementById("rtpForwardType").value = "0";
+  document.getElementById("mediaCheckDirection").value = "0";
+  document.getElementById("calleeE164Restrict").value = "0";
+  document.getElementById("maxCallDurationLower").value = "-1";
+  document.getElementById("maxCallDurationUpper").value = "-1";
+  document.getElementById("allowPhoneBilling").value = "false";
+  document.getElementById("allowBindedE164Billing").value = "false";
+  document.getElementById("enablePhoneSetting").value = "false";
+  document.getElementById("denySameCityCodesAllow").value = "true";
+  document.getElementById("denySameCityCodes").value = "";
+  document.getElementById("checkMobileAreaAllow").value = "true";
+  document.getElementById("checkMobileArea").value = "";
+  document.getElementById("calloutCalleePrefixesAllow").value = "true";
+  document.getElementById("calloutCalleePrefixes").value = "";
+  document.getElementById("calloutCallerPrefixesAllow").value = "true";
+  document.getElementById("calloutCallerPrefixes").value = "";
+  document.getElementById("rewriteRulesOutCallee").value = "";
+  document.getElementById("rewriteRulesOutCaller").value = "";
+  document.getElementById("rewriteRulesInMobileAreaAllow").value = "false";
+  document.getElementById("rewriteRulesInMobileArea").value = "";
+  document.getElementById("timeoutCallProceeding").value = "-1";
+  document.getElementById("sipResponseAddressMethod").value = "1";
+  document.getElementById("sipRequestAddressMethod").value = "1";
+  document.getElementById("dtmfSendMethodH323").value = "0";
+  document.getElementById("dtmfSendMethodSip").value = "0";
+  document.getElementById("dtmfReceiveMethod").value = "0";
+  document.getElementById("dtmfSendPayloadTypeH323").value = "0";
+  document.getElementById("dtmfSendPayloadTypeSip").value = "0";
+  document.getElementById("dtmfReceivePayloadType").value = "0";
+  document.getElementById("q931ProgressIndicator").value = "-1";
+  document.getElementById("account").value = "800801";
+  document.getElementById("callFailedQ931CauseValue").value = "";
+  document.getElementById("callFailedSipCode").value = "";
+  document.getElementById("sipRemoteRingSignal").value = "0";
+  document.getElementById("sipCalleeE164Domain").value = "0";
+  document.getElementById("sipCallerE164Domain").value = "0";
+  document.getElementById("h323CalleeE164Domain").value = "0";
+  document.getElementById("h323CallerE164Domain").value = "0";
+  document.getElementById("memo").value = "";
+  document.getElementById("sipAuthenticationMethod").value = "0";
+  document.getElementById("h323FastStart").value = "true";
+  document.getElementById("h323H245Tunneling").value = "true";
+  document.getElementById("h323H245InSetup").value = "true";
+  document.getElementById("h323AutoCallProceeding").value = "false";
+  document.getElementById("h323CallProceedingFromSipTrying").value = "true";
+  document.getElementById("h323AlertingFromSip183Sdp").value = "true";
+  document.getElementById("h323T38").value = "true";
+  document.getElementById("sipTimer").value = "true";
+  document.getElementById("sip100Rel").value = "false";
+  document.getElementById("sipT38").value = "true";
+  document.getElementById("sipDisplay").value = "false";
+  document.getElementById("sipRemotePartyId").value = "false";
+  document.getElementById("sipPrivacySupport").value = "false";
+  document.getElementById("groupE164Change").value = "false";
+  document.getElementById("callerAllowLength").value = "0";
+  document.getElementById("calleeAllowLength").value = "0";
+  document.getElementById("callerLimitE164GroupsAllow").value = "true";
+  document.getElementById("callerLimitE164Groups").value = "";
+  document.getElementById("calleeLimitE164GroupsAllow").value = "true";
+  document.getElementById("calleeLimitE164Groups").value = "";
+  document.getElementById("minProfitPercentEnable").value = "false";
+  document.getElementById("minProfitPercent").value = "0";
+  document.getElementById("maxSecondRatesEnable").value = "false";
+  document.getElementById("maxSecondRates").value = "0.0";
+  document.getElementById("firstRoutePolicy").value = "0";
+  document.getElementById("secondRoutePolicy").value = "0";
+  document.getElementById("h323G729SendMode").value = "0";
+  document.getElementById("sipG729SendMode").value = "1";
+  document.getElementById("sipG729Annexb").value = "0";
+  document.getElementById("sipG723Annexa").value = "0";
+  document.getElementById("h323CodecAssign").value = "true";
+  document.getElementById("h323Codecs").value = "g711Alaw64k";
+  document.getElementById("sipCodecAssign").value = "true";
+  document.getElementById("sipCodecs").value = "audio/PCMA";
+  document.getElementById("audioCodecTranscodingEnable").value = "false";
+  document.getElementById("rtpIncludeDtmfInband").value = "false";
+  document.getElementById("rtpNeedDtmfInband").value = "false";
+  document.getElementById("forwardSignalRewriteE164GroupEnable").value = "false";
+  document.getElementById("forwardSignalRewriteE164Group").value = "";
+  document.getElementById("softswitchName").value = "";
+  document.getElementById("lrnEnable").value = "false";
+  document.getElementById("lrnEatPrefixLength").value = "0";
+  document.getElementById("lrnFailureAction").value = "0";
+  document.getElementById("lrnInterstateBillingPrefix").value = "";
+  document.getElementById("lrnUndeterminedBillingPrefix").value = "";
+  document.getElementById("language").value = "";
+
+  }
+</script>
+</head>
+<body onLoad="load()">
+<p><font color="#FF0000">Important: Please fill in the fields correctly in accordance with the manual. The wrong input may cause the system to abnormal</font></p>
+<table width=100%>
+  <tr>
+    <td>Interface Uri: /external/server/ModifyGatewayMapping</td>
+  </tr>
+</table>
+<table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+  <tr>
+    <td> ModifyGatewayMapping</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_name">name<input type="text" id="name"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_password">password<input type="text" id="password"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_lockType">lockType<input type="text" id="lockType"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callLevel">callLevel<input type="text" id="callLevel"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_capacity">capacity<input type="text" id="capacity"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_priority">priority<input type="text" id="priority"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_gatewayGroups">gatewayGroups<input type="text" id="gatewayGroups"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_routingGatewayGroupsAllow">routingGatewayGroupsAllow<input type="text" id="routingGatewayGroupsAllow"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_routingGatewayGroups">routingGatewayGroups<input type="text" id="routingGatewayGroups"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_registerType">registerType<input type="text" id="registerType"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_remoteIps">remoteIps<input type="text" id="remoteIps"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callerE164CheckEnable">callerE164CheckEnable<input type="text" id="callerE164CheckEnable"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callerE164CheckCity">callerE164CheckCity<input type="text" id="callerE164CheckCity"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callerE164CheckMobile">callerE164CheckMobile<input type="text" id="callerE164CheckMobile"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callerE164CheckOther">callerE164CheckOther<input type="text" id="callerE164CheckOther"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calleeE164CheckEnable">calleeE164CheckEnable<input type="text" id="calleeE164CheckEnable"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calleeE164CheckCity">calleeE164CheckCity<input type="text" id="calleeE164CheckCity"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calleeE164CheckMobile">calleeE164CheckMobile<input type="text" id="calleeE164CheckMobile"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calleeE164CheckOther">calleeE164CheckOther<input type="text" id="calleeE164CheckOther"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_customerPassword">customerPassword<input type="text" id="customerPassword"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_rtpForwardType">rtpForwardType<input type="text" id="rtpForwardType"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_mediaCheckDirection">mediaCheckDirection<input type="text" id="mediaCheckDirection"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calleeE164Restrict">calleeE164Restrict<input type="text" id="calleeE164Restrict"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_maxCallDurationLower">maxCallDurationLower<input type="text" id="maxCallDurationLower"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_maxCallDurationUpper">maxCallDurationUpper<input type="text" id="maxCallDurationUpper"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_allowPhoneBilling">allowPhoneBilling<input type="text" id="allowPhoneBilling"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_allowBindedE164Billing">allowBindedE164Billing<input type="text" id="allowBindedE164Billing"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_enablePhoneSetting">enablePhoneSetting<input type="text" id="enablePhoneSetting"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_denySameCityCodesAllow">denySameCityCodesAllow<input type="text" id="denySameCityCodesAllow"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_denySameCityCodes">denySameCityCodes<input type="text" id="denySameCityCodes"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_checkMobileAreaAllow">checkMobileAreaAllow<input type="text" id="checkMobileAreaAllow"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_checkMobileArea">checkMobileArea<input type="text" id="checkMobileArea"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calloutCalleePrefixesAllow">calloutCalleePrefixesAllow<input type="text" id="calloutCalleePrefixesAllow"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calloutCalleePrefixes">calloutCalleePrefixes<input type="text" id="calloutCalleePrefixes"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calloutCallerPrefixesAllow">calloutCallerPrefixesAllow<input type="text" id="calloutCallerPrefixesAllow"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calloutCallerPrefixes">calloutCallerPrefixes<input type="text" id="calloutCallerPrefixes"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_rewriteRulesOutCallee">rewriteRulesOutCallee<input type="text" id="rewriteRulesOutCallee"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_rewriteRulesOutCaller">rewriteRulesOutCaller<input type="text" id="rewriteRulesOutCaller"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_rewriteRulesInMobileAreaAllow">rewriteRulesInMobileAreaAllow<input type="text" id="rewriteRulesInMobileAreaAllow"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_rewriteRulesInMobileArea">rewriteRulesInMobileArea<input type="text" id="rewriteRulesInMobileArea"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_timeoutCallProceeding">timeoutCallProceeding<input type="text" id="timeoutCallProceeding"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_sipResponseAddressMethod">sipResponseAddressMethod<input type="text" id="sipResponseAddressMethod"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_sipRequestAddressMethod">sipRequestAddressMethod<input type="text" id="sipRequestAddressMethod"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_dtmfSendMethodH323">dtmfSendMethodH323<input type="text" id="dtmfSendMethodH323"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_dtmfSendMethodSip">dtmfSendMethodSip<input type="text" id="dtmfSendMethodSip"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_dtmfReceiveMethod">dtmfReceiveMethod<input type="text" id="dtmfReceiveMethod"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_dtmfSendPayloadTypeH323">dtmfSendPayloadTypeH323<input type="text" id="dtmfSendPayloadTypeH323"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_dtmfSendPayloadTypeSip">dtmfSendPayloadTypeSip<input type="text" id="dtmfSendPayloadTypeSip"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_dtmfReceivePayloadType">dtmfReceivePayloadType<input type="text" id="dtmfReceivePayloadType"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_q931ProgressIndicator">q931ProgressIndicator<input type="text" id="q931ProgressIndicator"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_account">account<input type="text" id="account"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callFailedQ931CauseValue">callFailedQ931CauseValue<input type="text" id="callFailedQ931CauseValue"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callFailedSipCode">callFailedSipCode<input type="text" id="callFailedSipCode"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_sipRemoteRingSignal">sipRemoteRingSignal<input type="text" id="sipRemoteRingSignal"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_sipCalleeE164Domain">sipCalleeE164Domain<input type="text" id="sipCalleeE164Domain"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_sipCallerE164Domain">sipCallerE164Domain<input type="text" id="sipCallerE164Domain"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_h323CalleeE164Domain">h323CalleeE164Domain<input type="text" id="h323CalleeE164Domain"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_h323CallerE164Domain">h323CallerE164Domain<input type="text" id="h323CallerE164Domain"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_memo">memo<input type="text" id="memo"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_sipAuthenticationMethod">sipAuthenticationMethod<input type="text" id="sipAuthenticationMethod"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_h323FastStart">h323FastStart<input type="text" id="h323FastStart"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_h323H245Tunneling">h323H245Tunneling<input type="text" id="h323H245Tunneling"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_h323H245InSetup">h323H245InSetup<input type="text" id="h323H245InSetup"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_h323AutoCallProceeding">h323AutoCallProceeding<input type="text" id="h323AutoCallProceeding"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_h323CallProceedingFromSipTrying">h323CallProceedingFromSipTrying<input type="text" id="h323CallProceedingFromSipTrying"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_h323AlertingFromSip183Sdp">h323AlertingFromSip183Sdp<input type="text" id="h323AlertingFromSip183Sdp"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_h323T38">h323T38<input type="text" id="h323T38"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_sipTimer">sipTimer<input type="text" id="sipTimer"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_sip100Rel">sip100Rel<input type="text" id="sip100Rel"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_sipT38">sipT38<input type="text" id="sipT38"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_sipDisplay">sipDisplay<input type="text" id="sipDisplay"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_sipRemotePartyId">sipRemotePartyId<input type="text" id="sipRemotePartyId"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_sipPrivacySupport">sipPrivacySupport<input type="text" id="sipPrivacySupport"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_groupE164Change">groupE164Change<input type="text" id="groupE164Change"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callerAllowLength">callerAllowLength<input type="text" id="callerAllowLength"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calleeAllowLength">calleeAllowLength<input type="text" id="calleeAllowLength"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callerLimitE164GroupsAllow">callerLimitE164GroupsAllow<input type="text" id="callerLimitE164GroupsAllow"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callerLimitE164Groups">callerLimitE164Groups<input type="text" id="callerLimitE164Groups"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calleeLimitE164GroupsAllow">calleeLimitE164GroupsAllow<input type="text" id="calleeLimitE164GroupsAllow"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calleeLimitE164Groups">calleeLimitE164Groups<input type="text" id="calleeLimitE164Groups"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_minProfitPercentEnable">minProfitPercentEnable<input type="text" id="minProfitPercentEnable"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_minProfitPercent">minProfitPercent<input type="text" id="minProfitPercent"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_maxSecondRatesEnable">maxSecondRatesEnable<input type="text" id="maxSecondRatesEnable"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_maxSecondRates">maxSecondRates<input type="text" id="maxSecondRates"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_firstRoutePolicy">firstRoutePolicy<input type="text" id="firstRoutePolicy"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_secondRoutePolicy">secondRoutePolicy<input type="text" id="secondRoutePolicy"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_h323G729SendMode">h323G729SendMode<input type="text" id="h323G729SendMode"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_sipG729SendMode">sipG729SendMode<input type="text" id="sipG729SendMode"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_sipG729Annexb">sipG729Annexb<input type="text" id="sipG729Annexb"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_sipG723Annexa">sipG723Annexa<input type="text" id="sipG723Annexa"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_h323CodecAssign">h323CodecAssign<input type="text" id="h323CodecAssign"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_h323Codecs">h323Codecs[0]<input type="text" id="h323Codecs"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_sipCodecAssign">sipCodecAssign<input type="text" id="sipCodecAssign"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_sipCodecs">sipCodecs[0]<input type="text" id="sipCodecs"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_audioCodecTranscodingEnable">audioCodecTranscodingEnable<input type="text" id="audioCodecTranscodingEnable"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_rtpIncludeDtmfInband">rtpIncludeDtmfInband<input type="text" id="rtpIncludeDtmfInband"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_rtpNeedDtmfInband">rtpNeedDtmfInband<input type="text" id="rtpNeedDtmfInband"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_forwardSignalRewriteE164GroupEnable">forwardSignalRewriteE164GroupEnable<input type="text" id="forwardSignalRewriteE164GroupEnable"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_forwardSignalRewriteE164Group">forwardSignalRewriteE164Group<input type="text" id="forwardSignalRewriteE164Group"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_softswitchName">softswitchName<input type="text" id="softswitchName"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_lrnEnable">lrnEnable<input type="text" id="lrnEnable"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_lrnEatPrefixLength">lrnEatPrefixLength<input type="text" id="lrnEatPrefixLength"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_lrnFailureAction">lrnFailureAction<input type="text" id="lrnFailureAction"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_lrnInterstateBillingPrefix">lrnInterstateBillingPrefix<input type="text" id="lrnInterstateBillingPrefix"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_lrnUndeterminedBillingPrefix">lrnUndeterminedBillingPrefix<input type="text" id="lrnUndeterminedBillingPrefix"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_language">language<input type="text" id="language"></td>
+    <td></td>
+  </tr>
+</table>
+</table><table width="100%">
+  <tr>
+    <td><input type="submit" value="Submit(POST)" onClick="call_post()">
+    </td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="postText"></td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="responseText"></td>
+  </tr>
+</table>
+</body>
+</html>

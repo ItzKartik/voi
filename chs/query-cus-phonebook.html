@@ -1,0 +1,439 @@
+<html>
+<head>
+<title>VOS3000</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<meta name="keywords" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="description" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="author" content="www.linknat.com, 昆石网络"/>
+<meta name="copyright" content="www.linknat.com, 昆石网络"/>
+<link rel="shortcut icon" href="images/vos3000.ico"/>
+<link rel="stylesheet" type="text/css" href="css/ext-all.css"/>
+<script type="text/javascript" src="js/ext-base.js"></script>
+<script type="text/javascript" src="js/ext-all.js"></script>
+<script type="text/javascript" src="js/lang.js"></script>
+<script type="text/javascript" src="js/util.js"></script>
+<style type="text/css">
+    .x-layout-collapsed-west {
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .add {
+        background-image: url(images/add.gif) !important;
+    }
+
+    .delete {
+        background-image: url(images/delete.gif) !important;
+    }
+
+    .apply {
+        background-image: url(images/apply.png) !important;
+    }
+
+    .x-combo-list-item {
+        height: 18px;
+    }
+</style>
+<script type="text/javascript">
+Ext.onReady(function()
+{
+    Ext.MessageBox.wait(s[0], s[1]);
+    Ext.QuickTips.init();
+    Ext.form.Field.prototype.msgTarget = 'side';
+    var ds;
+    var contentPanel = {
+        id: 'info',
+        region: 'center',
+        layout: 'fit',
+        margins: '5 5 0 0',
+        border: false,
+        items: [
+            {
+                layout: 'border',
+                hideMode: Ext.isIE ? 'offsets' : 'display',
+                items: [
+                    {
+                        title: s[256],
+                        region: 'west',
+                        collapsible: true,
+                        width: 212,
+                        minSize: 100,
+                        maxSize: 350,
+                        margins: '5 0 0 5',
+                        cmargins: '5 5 0 5',
+                        split: true,
+                        items: [
+                            new Ext.form.FieldSet({
+                                title: s[65],
+                                height: '100%',
+                                labelAlign: 'top',
+                                labelWidth: 40,
+                                buttonAlign: 'center',
+                                items: [
+                                    new Ext.form.TextField({
+                                        fieldLabel: s[11],
+                                        id: 'name',
+                                        width: 180
+                                    }),
+                                    new Ext.form.TextField({
+                                        fieldLabel: s[73],
+                                        id: 'e164',
+                                        width: 180
+                                    }),
+                                    {
+                                        border: false
+                                    } ,
+                                    new Ext.Button({
+                                        text: s[70],
+                                        minWidth: 177,
+                                        handler: filter
+                                    })
+                                ]
+                            })
+                        ]
+                    },
+                    {
+                        id: 'grid',
+                        region: 'center',
+                        margins: '5 5 0 0' ,
+                        title: s[290],
+                        xtype: 'editorgrid',
+                        loadMask: true,
+                        layout: 'fit',
+                        store: ds = new Ext.data.Store({
+                            proxy: new Ext.data.HttpProxy({
+                                url: 'query-phonebook.jsp'
+                            }),
+                            reader: new Ext.data.JsonReader({
+                                root: 'webInfoPhonebooks',
+                                successProperty: 'retCode'
+                            }, [
+                                'id', 'name', 'department', 'e164', 'shortE164s', 'deviceType', 'addressType', 'memo'
+                            ]),
+                            pruneModifiedRecords: true,
+                            remoteSort: false
+                        }),
+                        sm: new Ext.grid.RowSelectionModel({
+                            singleSelect: true,
+                            listeners: {
+                                selectionchange: function(sm)
+                                {
+                                    if(sm.getCount())
+                                    {
+                                        Ext.getCmp('delete').enable();
+                                    }
+                                    else
+                                    {
+                                        Ext.getCmp('delete').disable();
+                                    }
+                                }
+                            }
+                        }),
+                        tbar: [
+                            {
+                                iconCls: 'add',
+                                text: s[206],
+                                handler: function()
+                                {
+                                    var Record = ds.recordType;
+                                    var rec = new Record({
+                                        id: -1,
+                                        name: '',
+                                        e164: '',
+                                        shortE164s: '',
+                                        deviceType: '0',
+                                        addressType: '0',
+                                        memo: ''
+                                    });
+                                    Ext.getCmp('grid').stopEditing();
+                                    ds.insert(0, rec);
+                                    Ext.getCmp('grid').getSelectionModel().selectFirstRow();
+                                    Ext.getCmp('grid').startEditing(0, 0);
+                                }
+                            },
+                            {
+                                iconCls: 'delete',
+                                text: s[205],
+                                id: 'delete',
+                                handler: onDelete,
+                                disabled: true
+                            },
+                            {
+                                iconCls: 'apply',
+                                text: s[155],
+                                id: 'apply',
+                                handler: onApply
+                            }
+                        ],
+                        columns: [
+                            {
+                                header: s[314],
+                                width: 150,
+                                sortable: true,
+                                dataIndex: 'e164',
+                                editor: new Ext.form.TextField({
+                                    maskRe: /[0-9]/
+                                })
+                            },
+                            {
+                                header: s[308],
+                                width: 150,
+                                sortable: true,
+                                dataIndex: 'shortE164s',
+                                editor: new Ext.form.TextField({
+                                    maskRe: /[0-9]/
+                                })
+                            },
+                            {
+                                header: s[11],
+                                width: 150,
+                                sortable: true,
+                                dataIndex: 'name',
+                                editor: new Ext.form.TextField()
+                            },
+                            {
+                                header: s[339],
+                                width: 150,
+                                sortable: true,
+                                dataIndex: 'department',
+                                editor: new Ext.form.TextField()
+                            },
+                            {
+                                header: s[236],
+                                width: 150,
+                                sortable: true,
+                                dataIndex: 'deviceType',
+                                editor: new Ext.form.ComboBox({
+                                    store: new Ext.data.SimpleStore({
+                                        fields: ['type','name'],
+                                        data: [
+                                            ['0',''],
+                                            ['1',s[233]],
+                                            ['2',s[234]],
+                                            ['3',s[235]]
+                                        ]
+                                    }),
+                                    hiddenName: 'type',
+                                    valueField: 'type',
+                                    displayField: 'name',
+                                    mode: 'local',
+                                    triggerAction: 'all',
+                                    lazyRender: true,
+                                    listClass: 'x-combo-list-small'
+                                }),
+                                renderer: rendererDeviceType
+                            },
+                            {
+                                header: s[239],
+                                width: 150,
+                                sortable: true,
+                                dataIndex: 'addressType',
+                                editor: new Ext.form.ComboBox({
+                                    store: new Ext.data.SimpleStore({
+                                        fields: ['type','name'],
+                                        data: [
+                                            ['0',''],
+                                            ['1',s[237]],
+                                            ['2',s[238]]
+                                        ]
+                                    }),
+                                    hiddenName: 'type',
+                                    valueField: 'type',
+                                    displayField: 'name',
+                                    mode: 'local',
+                                    triggerAction: 'all',
+                                    lazyRender: true,
+                                    listClass: 'x-combo-list-small'
+                                }),
+                                renderer: renderAddressType
+                            },
+                            {
+                                header: s[121],
+                                width: 150,
+                                sortable: true,
+                                dataIndex: 'memo',
+                                editor: new Ext.form.TextField()
+                            }
+                        ],
+                        stripeRows: true,
+                        bbar:  new Ext.PagingToolbar({
+                            store: ds,
+                            displayInfo: true
+                        })
+                    }
+                ]
+            }
+        ]
+    };
+
+    function filter()
+    {
+        ds.on('beforeload', function()
+        {
+            ds.baseParams = {
+                name: document.getElementById('name').value,
+                e164: document.getElementById('e164').value,
+                phonebookType: '26'
+            }
+        });
+        ds.load({
+            params: {start: 0, limit: 100},
+            callback: function()
+            {
+                if(ds.reader.jsonData.retCode < 0)
+                {
+                    ds.removeAll();
+                    if(ds.reader.jsonData.retCode == -10031)
+                    {
+                        return;
+                    }
+                    Ext.MessageBox.show({
+                        title: s[54],
+                        msg: ds.reader.jsonData.exception,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
+                    if(ds.reader.jsonData.retCode == -10049)
+                    {
+                        window.parent.location.href = 'index.html';
+                    }
+                }
+            }
+        });
+    }
+
+    function onApply()
+    {
+        var requestVos = new Object();
+        requestVos.createInfos = [];
+        requestVos.modifyInfos = [];
+        requestVos.phoneBookType = 26;
+        Ext.each(ds.modified, function (item) {
+        	if(item.data.id < 0)
+        	{
+        			requestVos.createInfos.push(item.data);
+        	}
+        	else
+        	{
+        		  requestVos.modifyInfos.push(item.data);
+        	}
+        });
+        if(requestVos.createInfos.length == 0 && requestVos.modifyInfos.length == 0)
+        {
+            return;
+        }
+        Ext.Ajax.request({
+            url: 'set-phonebook.jsp',
+            jsonData: requestVos,
+            success: function(result)
+            {
+                var responseJson = Ext.decode(result.responseText);
+                if(responseJson.retCode == 0)
+                {
+                    Ext.MessageBox.show({
+                        title: s[54],
+                        msg: s[141],
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.INFO
+                    });
+                    ds.reload();
+                }
+                else
+                {
+                    Ext.MessageBox.show({
+                        title: s[142],
+                        msg: responseJson.exception,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
+                    if(responseJson.retCode == -10049)
+                    {
+                        window.parent.location.href = 'index.html';
+                    }
+                }
+            },
+            failure: function ()
+            {
+                Ext.MessageBox.show({
+                    title: s[4],
+                    msg: s[5],
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        });
+    }
+
+    function onDelete()
+    {
+        var records = Ext.getCmp('grid').getSelectionModel().getSelections();
+        var requestVos = new Object();
+        requestVos.deleteIds = [];        
+        requestVos.phoneBookType = 26;
+        for(var i = 0; i < records.length; i++)
+        {
+            if(records[i].data.id == -1)
+            {
+                ds.remove(records[i]);
+                continue;
+            }
+            requestVos.deleteIds[i] =  records[i].data.id;
+        }
+        if(requestVos.deleteIds.length == 0)
+        {
+            return;
+        }
+        Ext.Ajax.request({
+            url: 'set-phonebook.jsp',
+            jsonData: requestVos,
+            success: function(result)
+            {
+                var responseJson = Ext.decode(result.responseText);
+                if(responseJson.retCode == 0)
+                {
+                    for(var i = 0; i < records.length; i++)
+                    {
+                        ds.remove(records[i]);
+                    }
+                }
+                else
+                {
+                    Ext.MessageBox.show({
+                        title: s[142],
+                        msg: responseJson.exception,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
+                    if(responseJson.retCode == -10049)
+                    {
+                        window.parent.location.href = 'index.html';
+                    }
+                }
+            },
+            failure: function ()
+            {
+                Ext.MessageBox.show({
+                    title: s[4],
+                    msg: s[5],
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        });
+    }
+
+    new Ext.Viewport({
+        layout: 'border',
+        items: [
+            contentPanel
+        ],
+        renderTo: Ext.getBody()
+    });
+    Ext.MessageBox.hide();
+});
+</script>
+</head>
+<body>
+</body>
+</html>

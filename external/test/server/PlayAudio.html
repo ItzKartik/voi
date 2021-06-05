@@ -1,0 +1,141 @@
+<html>
+<head>
+<title>Interface Test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<script type="text/javascript" src="/js/json2.js"></script>
+<script language="javascript" type="text/javascript">
+  var xmlHttp;
+  function parseBoolean(value) {
+    return (typeof value === "undefined") ? false : value.replace(/^\s+|\s+$/g, "").toLowerCase() === "true";
+  }
+  function createXMLHttpRequest(){
+    if(window.ActiveXObject){
+      xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    else if(window.XMLHttpRequest){
+      xmlHttp = new XMLHttpRequest();
+    }
+  }
+  function call_post(){
+    createXMLHttpRequest();
+  var vosRequest = new Object(); 
+  if(document.getElementById("checkbox_audioes").checked){
+    vosRequest.audioes = document.getElementById("audioes").value;
+  }
+  if(document.getElementById("checkbox_language").checked){
+    vosRequest.language = document.getElementById("language").value;
+  }
+  if(document.getElementById("checkbox_callerDisplayNumber").checked){
+    vosRequest.callerDisplayNumber = document.getElementById("callerDisplayNumber").value;
+  }
+  if(document.getElementById("checkbox_callee").checked){
+    vosRequest.callee = document.getElementById("callee").value;
+  }
+  if(document.getElementById("checkbox_accessE164").checked){
+    vosRequest.accessE164 = document.getElementById("accessE164").value;
+  }
+  if(document.getElementById("checkbox_accessE164Password").checked){
+    vosRequest.accessE164Password = document.getElementById("accessE164Password").value;
+  }
+  if(document.getElementById("checkbox_billingNumber").checked){
+    vosRequest.billingNumber = document.getElementById("billingNumber").value;
+  }
+  if(document.getElementById("checkbox_billingNumberType").checked){
+    vosRequest.billingNumberType = parseFloat(document.getElementById("billingNumberType").value);
+  }
+  if(document.getElementById("checkbox_transactionId").checked){
+    vosRequest.transactionId = document.getElementById("transactionId").value;
+  }
+    document.getElementById("postText").innerHTML = "<br>Request Format: " + JSON.stringify(vosRequest) + "</br>";
+    document.getElementById("responseText").innerHTML = "";
+    xmlHttp.open("POST", "/external/server/PlayAudio", true);
+    xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+    xmlHttp.onreadystatechange = showResult;
+    xmlHttp.send(JSON.stringify(vosRequest));
+  }
+  function showResult(){
+    if(xmlHttp.readyState == 4){
+      if(xmlHttp.status == 200){
+        document.getElementById("responseText").innerHTML = "<br>Response Format: " + xmlHttp.responseText + "</br>";
+        document.body.scrollTop=document.body.scrollHeight;
+      }
+    }
+  }
+  function load(){
+  document.getElementById("audioes").value = "dialing";
+  document.getElementById("language").value = "";
+  document.getElementById("callerDisplayNumber").value = "";
+  document.getElementById("callee").value = "800802";
+  document.getElementById("accessE164").value = "800801";
+  document.getElementById("accessE164Password").value = "12345";
+  document.getElementById("billingNumber").value = "800801";
+  document.getElementById("billingNumberType").value = "0";
+  document.getElementById("transactionId").value = "123456-123";
+
+  }
+</script>
+</head>
+<body onLoad="load()">
+<p><font color="#FF0000">Important: Please fill in the fields correctly in accordance with the manual. The wrong input may cause the system to abnormal</font></p>
+<table width=100%>
+  <tr>
+    <td>Interface Uri: /external/server/PlayAudio</td>
+  </tr>
+</table>
+<table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+  <tr>
+    <td> PlayAudio</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_audioes">audioes<input type="text" id="audioes"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_language">language<input type="text" id="language"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callerDisplayNumber">callerDisplayNumber<input type="text" id="callerDisplayNumber"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callee">callee<input type="text" id="callee"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_accessE164">accessE164<input type="text" id="accessE164"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_accessE164Password">accessE164Password<input type="text" id="accessE164Password"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_billingNumber">billingNumber<input type="text" id="billingNumber"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_billingNumberType">billingNumberType<input type="text" id="billingNumberType"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_transactionId">transactionId<input type="text" id="transactionId"></td>
+    <td></td>
+  </tr>
+</table>
+</table><table width="100%">
+  <tr>
+    <td><input type="submit" value="Submit(POST)" onClick="call_post()">
+    </td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="postText"></td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="responseText"></td>
+  </tr>
+</table>
+</body>
+</html>

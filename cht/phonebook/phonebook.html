@@ -1,0 +1,708 @@
+<html>
+<head>
+<title>VOS3000</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<meta name="keywords" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="description" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="author" content="www.linknat.com, 昆石网络"/>
+<meta name="copyright" content="www.linknat.com, 昆石网络"/>
+<link rel="shortcut icon" href="../images/vos3000.ico"/>
+<link rel="stylesheet" type="text/css" href="../css/ext-all.css"/>
+<script type="text/javascript" src="../js/ext-base.js"></script>
+<script type="text/javascript" src="../js/ext-all.js"></script>
+<script type="text/javascript" src="../js/lang.js"></script>
+<style type="text/css">
+    .book_open {
+        background-image: url(../images/book_open.png) !important;
+    }
+
+    .book_add {
+        background-image: url(../images/book_add.png) !important;
+    }
+
+    .call {
+        background-image: url(../images/telephone_go.png) !important;
+    }
+
+    .user_add {
+        background-image: url(../images/user_add.png) !important;
+    }
+
+    .user_delete {
+        background-image: url(../images/user_delete.png) !important;
+    }
+
+    .user_go {
+        background-image: url(../images/user_go.png) !important;
+    }
+
+    .status {
+        color: #15428B;
+        text-align: center;
+    }
+
+    .user_green {
+        background-image: url(../images/user_green.png) !important;
+    }
+
+    .user_suit {
+        background-image: url(../images/user_gray.png) !important;
+    }
+
+    .user {
+        background-image: url(../images/user.png) !important;
+    }
+
+    .x-combo-list-item {
+        height: 18px;
+    }
+</style>
+<script type="text/javascript">
+JsonTreeLoader = function(config)
+{
+    JsonTreeLoader.superclass.constructor.call(this, config);
+};
+Ext.extend(JsonTreeLoader, Ext.tree.TreeLoader, {
+    processResponse: function(response, node, callback, scope)
+    {
+        try
+        {
+            var o = response.responseData || Ext.decode(response.responseText);
+            if(o.retCode < 0)
+            {
+                Ext.MessageBox.show({
+                    title: s[54],
+                    msg: o.exception,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
+                window.parent.location.href = 'index.html';
+                return;
+            }
+            o = o.webInfoPhonebooks;
+            for(var i = 0,len = o.length; i < len; i++)
+            {
+                o[i].iconCls = 'user';
+                o[i].text = o[i].name + " " + o[i].e164;
+                o[i].leaf = true;
+                o[i].qtip = s[264];
+                switch(o[i].addressType)
+                {
+                case 1: o[i].text += ' (' + s[237] + ')';
+                    break;
+                case 2: o[i].text += ' (' + s[238] + ')';
+                    break;
+                }
+            }
+            node.beginUpdate();
+            for(i = 0,len = o.length; i < len; i++)
+            {
+                var n = this.createNode(o[i]);
+                if(n)
+                {
+                    node.appendChild(n);
+                }
+            }
+            node.endUpdate();
+            this.runCallback(callback, scope || node, [node]);
+        }
+        catch(e)
+        {
+            this.handleFailure(response);
+        }
+    }
+});
+Ext.onReady(function()
+{
+    Ext.QuickTips.init();
+    var contact = new Ext.tree.TreePanel({
+        id: 'tree',
+        hideCollapseTool: true,
+        title: s[260],
+        tbar: [
+            {
+                xtype: 'textfield',
+                width: 175,
+                emptyText: s[242],
+                colspan: 2,
+                listeners: {
+                    render: function(f)
+                    {
+                        f.el.on('keydown', filterTree, f, {buffer: 350});
+                    }
+                }
+            },
+            {
+                tooltip: s[244],
+                text: s[206],
+                iconCls: 'user_add',
+                handler: onAdd
+            },
+            {
+                tooltip: s[245],
+                text: s[205],
+                iconCls: 'user_delete',
+                handler: onDelete
+            },
+            {
+                tooltip: s[155],
+                text: s[155],
+                iconCls: 'user_go',
+                handler: onApply
+            }
+        ],
+        loader: new JsonTreeLoader({
+            dataUrl: 'query-cus-phonebook.jsp'
+        }),
+        rootVisible: false,
+        border: false,
+        lines: false,
+        autoScroll: true,
+        tools: [
+            {
+                id: 'refresh',
+                on: {
+                    click: function()
+                    {
+                        fresh();
+                    }
+                }
+            }
+        ],
+        root: new Ext.tree.AsyncTreeNode()
+    });
+
+    var detail = new Ext.FormPanel({
+        style: 'margin: 2px 0px 0px 10px',
+        border: false,
+        width: 500,
+        labelAlign: 'top',
+        labelWidth: 75,
+        items: [
+            {
+                layout: 'column',
+                border: false,
+                items: [
+                    {
+                        columnWidth: .25,
+                        layout: 'form',
+                        border: false,
+                        items: [
+                            {
+                                xtype: 'textfield',
+                                fieldLabel: s[11],
+                                id: 'name',
+                                anchor: '90%'
+                            }
+                        ]
+                    },
+                    {
+                        columnWidth: .25,
+                        layout: 'form',
+                        border: false,
+                        items: [
+                            {
+                                xtype: 'textfield',
+                                fieldLabel: s[73],
+                                id: 'number',
+                                anchor: '90%'
+                            }
+                        ]
+                    },
+                    {
+                        columnWidth: .25,
+                        layout: 'form',
+                        border: false,
+                        items: [
+                            {
+                                xtype: 'combo',
+                                anchor: '90%',
+                                fieldLabel: s[236],
+                                id: 'deviceType',
+                                store: new Ext.data.SimpleStore({
+                                    fields: ['type','name'],
+                                    data: [
+                                        ['0',''],
+                                        ['1',s[233]],
+                                        ['2',s[234]],
+                                        ['3',s[235]]
+                                    ]
+                                }),
+                                hiddenName: 'type',
+                                valueField: 'type',
+                                displayField: 'name',
+                                mode: 'local',
+                                triggerAction: 'all',
+                                readOnly: true,
+                                value: 0
+                            }
+                        ]
+                    },
+                    {
+                        columnWidth: .25,
+                        layout: 'form',
+                        border: false,
+                        items: [
+                            {
+                                xtype: 'combo',
+                                anchor: '90%',
+                                fieldLabel: s[239],
+                                id: 'addressType',
+                                store: new Ext.data.SimpleStore({
+                                    fields: ['type','name'],
+                                    data: [
+                                        ['0',''],
+                                        ['1',s[237]],
+                                        ['2',s[238]]
+                                    ]
+                                }),
+                                hiddenName: 'type',
+                                valueField: 'type',
+                                displayField: 'name',
+                                mode: 'local',
+                                triggerAction: 'all',
+                                readOnly: true,
+                                value: 0
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    });
+
+    var win;
+    if(!win)
+    {
+        win = new Ext.Window({
+            id: 'acc-win',
+            closable: false,
+            title: s[240],
+            width: 530,
+            minWidth: 530,
+            height: 450,
+            iconCls: 'book_open',
+            tbar: [
+                {
+                            xtype: 'textfield',
+                            id: 'callee',
+                            width: 175,
+                            emptyText: s[262],
+                            colspan: 2,
+                            listeners: {
+                                render: function(f)
+                                {
+                                    f.el.on('keydown', filterTree, f, {buffer: 350});
+                                }
+                            }
+                        },
+                        {
+                            tooltip: s[241],
+                            text: s[261],
+                            iconCls: 'book_add',
+                            handler: onSave
+                        },
+                        {
+                            id: 'caller',
+                            xtype: 'textfield',
+                            style: 'margin: 2px 0px 0px 10px',
+                            width: 175,
+                            emptyText: s[247]
+                        },
+                        {
+                            tooltip: s[243],
+                            text: s[243] ,
+                            iconCls: 'call',
+                            handler: callback
+                        }
+            ],
+            layout: 'border',
+            border: false,
+            items: [
+                {
+                    region: 'center',
+                    margins: '2 2 0 2',
+                    layout: 'fit',
+                    items: [contact]
+                },
+                {
+                    id: 'detail',
+                    region: 'south',
+                    margins: '0 2 2 2',
+                    cmargins: '2 2 2 2',
+                    collapsible: true,
+                    title: s[246],
+                    height: 80,
+                    items: [detail]
+                }
+            ]
+        });
+    }
+    win.show();
+
+    var selectedNode;
+
+    function select(node)
+    {
+        if(node.isLeaf())
+        {
+            selectedNode = node;
+            Ext.getCmp('callee').setValue('');
+            Ext.getCmp('name').setValue(node.attributes.name);
+            Ext.getCmp('number').setValue(node.attributes.e164);
+            Ext.getCmp('deviceType').setValue(node.attributes.deviceType);
+            Ext.getCmp('addressType').setValue(node.attributes.addressType);
+        }
+    }
+
+    contact.on('click', function(node, e)
+    {
+        e.stopEvent();
+        select(node);
+    });
+    contact.on('dblclick', function(node, e)
+    {
+        if(node.isLeaf())
+        {
+            e.stopEvent();
+            Ext.getCmp('callee').setValue(node.attributes.e164);
+            callback();
+        }
+    });
+    function callback()
+    {
+        var caller = Ext.getCmp('caller').getValue();
+        var callee = Ext.getCmp('callee').getValue();
+        if(callee.length == 0)
+        {
+            Ext.MessageBox.show({
+                title: s[6],
+                msg: s[248],
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+            return;
+        }
+        if(caller.length > 0)
+        {
+            Ext.Ajax.request({
+                url: 'callback.jsp',
+                params: {'caller': caller, 'callees': callee},
+                success: function(result)
+                {
+                    var r = result.responseText.split("|");
+                    if(r[0] == 0)
+                    {
+                        Ext.MessageBox.show({
+                            title: s[54],
+                            msg: s[232],
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.INFO
+                        });
+                    }
+                    else
+                    {
+                        Ext.MessageBox.show({
+                            title: r[0] == -8006006 ? s[54] : s[6],
+                            msg: r[0] == -8006006 ? s[232] : r[1],
+                            buttons: Ext.MessageBox.OK,
+                            icon: r[0] == -8006006 ? Ext.MessageBox.INFO : Ext.MessageBox.ERROR
+                        });
+                        if(r[0] == -10049)
+                        {
+                            window.parent.location.href = 'index.html';
+                        }
+                    }
+                },
+                failure: function ()
+                {
+                    Ext.MessageBox.show({
+                        title: s[4],
+                        msg: s[5],
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
+                }
+            });
+        }
+        else
+        {
+            Ext.MessageBox.show({
+                title: s[6],
+                msg: s[247],
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    }
+
+    var filter = new Ext.tree.TreeFilter(contact, {
+        clearBlank: true,
+        autoClear: true
+    });
+    var hiddenPkgs = [];
+
+    function filterTree(e)
+    {
+        var text = e.target.value;
+        Ext.each(hiddenPkgs, function(n)
+        {
+            n.ui.show();
+        });
+        if(!text)
+        {
+            filter.clear();
+            return;
+        }
+        contact.expandAll();
+        var re = new RegExp(Ext.escapeRe(text), 'i');
+        filter.filterBy(function(n)
+        {
+            return re.test(n.text);
+        });
+        hiddenPkgs = [];
+        contact.root.cascade(function(n)
+        {
+            if(!n.attributes.leaf && n.ui.ctNode.offsetHeight < 3)
+            {
+                n.ui.hide();
+                hiddenPkgs.push(n);
+            }
+        });
+    }
+
+    function fresh()
+    {
+        var tree = Ext.getCmp('tree');
+        tree.body.mask('Loading', 'x-mask-loading');
+        tree.root.reload();
+        tree.root.collapse(true, false);
+        setTimeout(function()
+        {
+            tree.body.unmask();
+            tree.root.expand(true, true);
+        }, 1000);
+        clear();
+    }
+
+    function clear()
+    {
+        Ext.getCmp('name').setValue("");
+        Ext.getCmp('number').setValue("");
+        Ext.getCmp('deviceType').setValue("");
+        Ext.getCmp('addressType').setValue("");
+    }
+
+    function onApply()
+    {
+        var name = Ext.getCmp('name').getValue().trim();
+        var number = Ext.getCmp('number').getValue().trim();
+        var deviceType = Ext.getCmp('deviceType').getValue();
+        var addressType = Ext.getCmp('addressType').getValue();
+        var node = contact.getSelectionModel().getSelectedNode();
+        if(node)
+        {
+            if(name.length > 0 && number.length > 0)
+            {
+                if(selectedNode.attributes.name == name &&
+                        selectedNode.attributes.e164 == number &&
+                        selectedNode.attributes.deviceType == deviceType &&
+                        selectedNode.attributes.addressType == addressType)
+                {
+                    return;
+                }
+                var requestVos = new Object();
+				        requestVos.createInfos = [];
+				        requestVos.modifyInfos = [];
+				        var info = new Object();
+				        info.id = node.attributes.id;
+				        info.e164 = number;
+				        info.name = name;
+				        info.deviceType = parseFloat(deviceType);
+				        info.addressType = parseFloat(addressType);
+			        	if(info.id < 0)
+			        	{
+			        			requestVos.createInfos[0] =info;
+			        	}
+			        	else
+			        	{
+			        		  requestVos.modifyInfos[0] = info;
+			        	}				     
+				        if(requestVos.createInfos.length == 0 && requestVos.modifyInfos.length == 0)
+				        {
+				            return;
+				        }
+                Ext.Ajax.request({
+                    url: 'set-cus-phonebook.jsp',
+                    jsonData: requestVos,
+                    success: function(result)
+                    {
+                        var responseJson = Ext.util.JSON.decode(result.responseText);
+                        if(responseJson.retCode == 0)
+                        {
+                            fresh();
+                        }
+                        else
+                        {
+                            Ext.MessageBox.show({
+                                title: s[6],
+                                msg: responseJson.exception,
+                                buttons: Ext.MessageBox.OK,
+                                icon: Ext.MessageBox.ERROR
+                            });
+                            if(responseJson.retCode == -10049)
+                            {
+                                window.parent.location.href = 'index.html';
+                            }
+                        }
+                    },
+                    failure: function ()
+                    {
+                        Ext.MessageBox.show({
+                            title: s[4],
+                            msg: s[5],
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        });
+                    }
+                });
+            }
+        }
+    }
+
+    function onSave()
+    {
+        var e164 = Ext.getCmp('callee').getValue().trim();
+        if(e164.length > 0)
+        {
+            Ext.each(hiddenPkgs, function(n)
+            {
+                n.ui.show();
+            });
+            filter.clear();
+            add(e164);
+        }
+    }
+
+    function onAdd()
+    {
+        add('');
+    }
+
+    function add(e164)
+    {
+        var w = Ext.getCmp('detail');
+        if(w.collapsed)
+        {
+            w.toggleCollapse();
+        }
+        var node;
+        contact.root.cascade(function(n)
+        {
+            if(n.attributes.leaf)
+            {
+                if(n.attributes.id == -1)
+                {
+                    node = n;
+                }
+            }
+        });
+        if(!node)
+        {
+            node = new Ext.tree.TreeNode({
+                text: '',
+                iconCls: 'user',
+                leaf: true,
+                id: -1,
+                name: '',
+                e164: e164
+            });
+            contact.root.appendChild(node);
+        }
+        node.select();
+        select(node);
+        Ext.getCmp('name').focus();
+    }
+
+    function onDelete()
+    {
+        var node = contact.getSelectionModel().getSelectedNode();
+        if(node)
+        {
+            if(node.attributes.id < 0)
+            {
+                node.remove();
+                return;
+            }
+            var requestVos = new Object();
+            requestVos.deleteIds = [];
+            requestVos.deleteIds[0] = node.attributes.id;
+            Ext.Ajax.request({
+                url: 'set-cus-phonebook.jsp',
+                jsonData: requestVos,
+                success: function(result)
+                {
+                    var responseJson = Ext.util.JSON.decode(result.responseText);
+                    if(responseJson.retCode == 0)
+                    {
+                        node.remove();
+                        clear();
+                    }
+                    else
+                    {
+                        Ext.MessageBox.show({
+                            title: s[6],
+                            msg: responseJson.exception,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        });
+                        if(responseJson.retCode == -10049)
+                        {
+                            window.parent.location.href = 'index.html';
+                        }
+                    }
+                },
+                failure: function ()
+                {
+                    Ext.MessageBox.show({
+                        title: s[4],
+                        msg: s[5],
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
+                }
+            });
+        }
+    }
+});
+function Load()
+{
+    Ext.Ajax.request({
+        url: '../query-cus-bindede164.jsp',
+        success: function (response)
+        {
+            var o = response.responseData || Ext.decode(response.responseText);
+            var id = -1;
+            var e164 = '';
+            if(o.retCode == 0)
+            {
+                o = o.infos;
+                for(var i = 0,len = o.length; i < len; i++)
+                {
+                    if(id < o[i].id)
+                    {
+                        id = o[i].id;
+                        e164 = o[i].e164;
+                    }
+                }
+                Ext.getCmp('caller').setValue(e164);
+            }
+        }
+    });
+}
+</script>
+</head>
+<body onload=Load();>
+</body>
+</html>

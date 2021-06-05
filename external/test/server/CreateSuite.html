@@ -1,0 +1,202 @@
+<html>
+<head>
+<title>Interface Test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<script type="text/javascript" src="/js/json2.js"></script>
+<script language="javascript" type="text/javascript">
+  var xmlHttp;
+  function parseBoolean(value) {
+    return (typeof value === "undefined") ? false : value.replace(/^\s+|\s+$/g, "").toLowerCase() === "true";
+  }
+  function createXMLHttpRequest(){
+    if(window.ActiveXObject){
+      xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    else if(window.XMLHttpRequest){
+      xmlHttp = new XMLHttpRequest();
+    }
+  }
+  function call_post(){
+    createXMLHttpRequest();
+  var vosRequest = new Object(); 
+  if(document.getElementById("checkbox_name").checked){
+    vosRequest.name = document.getElementById("name").value;
+  }
+  if(document.getElementById("checkbox_rentPeriod").checked){
+    vosRequest.rentPeriod = parseFloat(document.getElementById("rentPeriod").value);
+  }
+  if(document.getElementById("checkbox_rentType").checked){
+    vosRequest.rentType = parseFloat(document.getElementById("rentType").value);
+  }
+  if(document.getElementById("checkbox_nonholonomicOrder").checked){
+    vosRequest.nonholonomicOrder = parseBoolean(document.getElementById("nonholonomicOrder").value);
+  }
+  if(document.getElementById("checkbox_rentFee").checked){
+    vosRequest.rentFee = parseFloat(document.getElementById("rentFee").value);
+  }
+  if(document.getElementById("checkbox_minConsumption").checked){
+    vosRequest.minConsumption = parseFloat(document.getElementById("minConsumption").value);
+  }
+  if(document.getElementById("checkbox_lowerConsumption").checked){
+    vosRequest.lowerConsumption = parseFloat(document.getElementById("lowerConsumption").value);
+  }
+  if(document.getElementById("checkbox_giftMoney").checked){
+    vosRequest.giftMoney = parseFloat(document.getElementById("giftMoney").value);
+  }
+  if(document.getElementById("checkbox_infoGiftTimes").checked){
+    vosRequest.infoGiftTimes = new Array(1);
+    vosRequest.infoGiftTimes[0] = new Object(); 
+    if(document.getElementById("checkbox_infoGiftTimes_prefix").checked){
+      vosRequest.infoGiftTimes[0].prefix = document.getElementById("infoGiftTimes_prefix").value;
+    }
+    if(document.getElementById("checkbox_infoGiftTimes_startTime").checked){
+      vosRequest.infoGiftTimes[0].startTime = parseFloat(document.getElementById("infoGiftTimes_startTime").value);
+    }
+    if(document.getElementById("checkbox_infoGiftTimes_endTime").checked){
+      vosRequest.infoGiftTimes[0].endTime = parseFloat(document.getElementById("infoGiftTimes_endTime").value);
+    }
+    if(document.getElementById("checkbox_infoGiftTimes_giftTime").checked){
+      vosRequest.infoGiftTimes[0].giftTime = parseFloat(document.getElementById("infoGiftTimes_giftTime").value);
+    }
+    if(document.getElementById("checkbox_infoGiftTimes_billingTime").checked){
+      vosRequest.infoGiftTimes[0].billingTime = parseFloat(document.getElementById("infoGiftTimes_billingTime").value);
+    }
+    if(document.getElementById("checkbox_infoGiftTimes_memo").checked){
+      vosRequest.infoGiftTimes[0].memo = document.getElementById("infoGiftTimes_memo").value;
+    }
+  }
+  if(document.getElementById("checkbox_memo").checked){
+    vosRequest.memo = document.getElementById("memo").value;
+  }
+    document.getElementById("postText").innerHTML = "<br>Request Format: " + JSON.stringify(vosRequest) + "</br>";
+    document.getElementById("responseText").innerHTML = "";
+    xmlHttp.open("POST", "/external/server/CreateSuite", true);
+    xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+    xmlHttp.onreadystatechange = showResult;
+    xmlHttp.send(JSON.stringify(vosRequest));
+  }
+  function showResult(){
+    if(xmlHttp.readyState == 4){
+      if(xmlHttp.status == 200){
+        document.getElementById("responseText").innerHTML = "<br>Response Format: " + xmlHttp.responseText + "</br>";
+        document.body.scrollTop=document.body.scrollHeight;
+      }
+    }
+  }
+  function load(){
+  document.getElementById("name").value = "suite-1";
+  document.getElementById("rentPeriod").value = "1";
+  document.getElementById("rentType").value = "1";
+  document.getElementById("nonholonomicOrder").value = "false";
+  document.getElementById("rentFee").value = "1.0";
+  document.getElementById("minConsumption").value = "0.0";
+  document.getElementById("lowerConsumption").value = "0.0";
+  document.getElementById("giftMoney").value = "2.0";
+  document.getElementById("infoGiftTimes_prefix").value = "0086,00852";
+  document.getElementById("infoGiftTimes_startTime").value = "0";
+  document.getElementById("infoGiftTimes_endTime").value = "86400";
+  document.getElementById("infoGiftTimes_giftTime").value = "100";
+  document.getElementById("infoGiftTimes_billingTime").value = "60";
+  document.getElementById("infoGiftTimes_memo").value = "中文备注-1";
+
+  document.getElementById("memo").value = "中文备注";
+
+  }
+</script>
+</head>
+<body onLoad="load()">
+<p><font color="#FF0000">Important: Please fill in the fields correctly in accordance with the manual. The wrong input may cause the system to abnormal</font></p>
+<table width=100%>
+  <tr>
+    <td>Interface Uri: /external/server/CreateSuite</td>
+  </tr>
+</table>
+<table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+  <tr>
+    <td>CreateSuite</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_name">name<input type="text" id="name"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_rentPeriod">rentPeriod<input type="text" id="rentPeriod"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_rentType">rentType<input type="text" id="rentType"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_nonholonomicOrder">nonholonomicOrder<input type="text" id="nonholonomicOrder"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_rentFee">rentFee<input type="text" id="rentFee"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_minConsumption">minConsumption<input type="text" id="minConsumption"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_lowerConsumption">lowerConsumption<input type="text" id="lowerConsumption"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_giftMoney">giftMoney<input type="text" id="giftMoney"></td>
+    <td></td>
+  </tr>
+  <tr><td colspan="2">
+  <table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+    <tr>
+        <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoGiftTimes">infoGiftTimes InfoGiftTime</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoGiftTimes_prefix">prefix<input type="text" id="infoGiftTimes_prefix"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoGiftTimes_startTime">startTime<input type="text" id="infoGiftTimes_startTime"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoGiftTimes_endTime">endTime<input type="text" id="infoGiftTimes_endTime"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoGiftTimes_giftTime">giftTime<input type="text" id="infoGiftTimes_giftTime"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoGiftTimes_billingTime">billingTime<input type="text" id="infoGiftTimes_billingTime"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoGiftTimes_memo">memo<input type="text" id="infoGiftTimes_memo"></td>
+      <td></td>
+    </tr>
+  </table>
+  </td></tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_memo">memo<input type="text" id="memo"></td>
+    <td></td>
+  </tr>
+</table>
+</table><table width="100%">
+  <tr>
+    <td><input type="submit" value="Submit(POST)" onClick="call_post()">
+    </td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="postText"></td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="responseText"></td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,614 @@
+<html>
+<head>
+<title>VOS3000</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<meta name="keywords" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="description" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="author" content="www.linknat.com, 昆石网络"/>
+<meta name="copyright" content="www.linknat.com, 昆石网络"/>
+<link rel="shortcut icon" href="images/vos3000.ico"/>
+<link rel="stylesheet" type="text/css" href="css/ext-all.css"/>
+<script type="text/javascript" src="js/ext-base.js"></script>
+<script type="text/javascript" src="js/ext-all.js"></script>
+<script type="text/javascript" src="js/lang.js"></script>
+<style type="text/css">
+    body {
+        font-family: Arial, verdana, tahoma, helvetica;
+        font-size: 12px;
+        background-color: #fff !important;
+    }
+
+    #main-panel {
+        padding: 15px;
+    }
+
+    .x-fieldset {
+        padding: 10px 10px 35px;
+    }
+</style>
+<script type="text/javascript">
+Ext.onReady(function()
+{
+    Ext.MessageBox.wait(s[0], s[1]);
+    Ext.QuickTips.init();
+    Ext.form.Field.prototype.msgTarget = 'side';
+    Ext.Ajax.request({
+        url: 'query-terminal-info.jsp',
+        success: function (result)
+        {
+            var r = result.responseText.split("|");
+            if(r[0] == 0)
+            {
+                var comboBox1;
+                var comboBox2;
+                var comboBox3;
+                var comboBox4;
+                var comboBox5;
+                var comboBox6;
+                var busyForwardNumber = r[2].split(":");
+                var unconditionalForwardNumber = r[3].split(":");
+                var noAnswerForwardNumber = r[4].split(":");
+                var enableValueAdded = r[11] == 1;
+                var form = new Ext.FormPanel({
+                    id: 'main-panel',
+                    title: s[145],
+                    bodyStyle: 'padding:5px',
+                    width: 860,
+                    labelWidth:100,  
+                    items: [                    
+                        {
+                            layout: 'form',
+                            items: [
+                                {
+                                    border: false
+                                },
+                                {
+                                		 xtype: 'fieldset',
+                                		 layout: 'column',
+                                		 border: false,
+                                		 items: [
+		                                		{
+		                                        xtype: 'label',
+		                                        width: 100,
+		                                        text: s[146]
+		                                    },
+		                                    {
+                                            xtype: 'checkbox',
+                                            boxLabel: s[147],
+                                            id: 'MASK_DSPOPEN',
+                                            checked: (r[1] & 1 << 0) > 0,
+                                            disabled: true
+		                                    }
+                                      ]
+                                },
+                                {
+                                    border: false
+                                },
+                                {
+                                		xtype: 'fieldset',
+                                		layout: 'column',
+                                		border: false,
+                                		items: [
+                                			   {
+		                                        xtype: 'label',
+		                                        width: 100,
+		                                        text: s[148]
+		                                    },
+		                                    {
+		                                    		xtype: 'checkbox',
+                                            boxLabel: s[147],
+                                            id: 'MASK_CTOPEN',
+                                            checked: (r[1] & 1 << 1) > 0,
+                                            disabled: true,
+                                            width: 'auto'
+                                        }
+                                		]
+                               
+                                },
+                                {
+                                    border: false
+                                },
+                                {
+                                	  xtype: 'fieldset',
+                                		layout: 'column',
+                                		border: false,
+                                		items: [
+                                		  	{
+		                                        xtype: 'label',
+		                                        width: 100,
+		                                        text: s[149]
+		                                    },
+		                                    {
+		                                     		xtype: 'checkbox',
+                                            boxLabel: s[147],
+                                            id: 'MASK_NTBOPEN',
+                                            checked: (r[1] & 1 << 2) > 0,
+                                            disabled: true,
+                                            width: 80
+                                        },
+                                        {
+                                        	  xtype: 'checkbox',
+                                            boxLabel: s[150],
+                                            id: 'MASK_DO_NOT_DISTURB',
+                                            checked: (r[1] & 1 << 3) > 0,
+                                            disabled: (r[1] & 1 << 2) == 0,
+                                            width: 'auto'
+                                        }
+                                		]
+                                },
+                                {
+                                    border: false
+                                },
+                                {
+                                		xtype: 'fieldset',
+                                		layout: 'column',
+                                		border: false,
+                                		items: [
+                                				{
+		                                        xtype: 'label',
+		                                        width: 100,
+		                                        text: s[151]
+		                                    },
+		                                    {
+		                                    	  xtype: 'checkbox',
+                                            boxLabel: s[147],
+                                            id: 'MASK_CFBOPEN',
+                                            checked:( r[1] & 1 << 6) > 0,
+                                            disabled: true,
+                                            width: 80
+                                        },
+                                        {
+                                            xtype: 'checkbox',
+                                            boxLabel: s[150],
+                                            id: 'MASK_BUSY_FORWARD',
+                                            checked:( r[1] & 1 << 7 ) > 0,
+                                            disabled: (r[1] & 1 << 6) == 0,
+                                            width: 80
+                                        },
+                                        {
+                                            xtype: 'label',
+                                            text: s[273]
+                                        },
+                                        comboBox1 = new Ext.form.ComboBox({
+                                            hiddenName: 'callQuickName',
+                                            store: new Ext.data.SimpleStore({
+                                                fields: ['callQuickType', 'callQuickName'],
+                                                data : [
+                                                    ['0', s[274]],
+                                                    ['1', s[275]],
+                                                    ['2', s[276]]
+                                                ]
+                                            }),
+                                            valueField: 'callQuickType',
+                                            displayField: 'callQuickName',
+                                            editable: false,
+                                            width: 80,
+                                            mode: 'local',
+                                            triggerAction: 'all',
+                                            id: 'busyForwardNumberType',
+                                            value: busyForwardNumber.length > 2 ? busyForwardNumber[0] : 0,
+                                            selectOnFocus: true
+                                        }),
+                                        {
+                                            xtype: 'label',
+                                            text: s[277]
+                                        },
+                                        {
+                                            xtype: 'textfield',
+                                            id: 'busyForwardE164Alert',
+                                            value: busyForwardNumber.length > 2 ? busyForwardNumber[1] : "",
+                                            width: 100
+                                        },
+                                        {
+                                            xtype: 'label',
+                                            text: s[152]
+                                        },
+                                        {
+                                            xtype: 'textfield',
+                                            id: 'busyForwardNumber',
+                                            value: busyForwardNumber.length > 2 ? busyForwardNumber[2] : "",
+                                            width: 120
+                                        }
+                                		]                                  
+                                   
+                                },
+                                {
+                                		xtype: 'fieldset',
+                                		layout: 'column',
+                                		border: false,
+                                		items: [
+                                				{
+		                                        xtype: 'label',
+		                                        width: 100,
+		                                        text: s[153]
+		                                    },
+		                                    {
+		                                        xtype: 'checkbox',
+                                            boxLabel: s[147],
+                                            id: 'MASK_CFUOPEN',
+                                            checked: (r[1] & 1 << 4) > 0,
+                                            disabled: true,
+                                            width: 80
+                                        },
+                                        {
+                                            xtype: 'checkbox',
+                                            boxLabel: s[150],
+                                            id: 'MASK_UNCONDITIONAL_FORWARD',
+                                            checked:( r[1] & 1 << 5) > 0,
+                                            disabled: (r[1] & 1 << 4) == 0,
+                                            width: 80
+                                        },
+                                        {
+                                            xtype: 'label',
+                                            text: s[273]
+                                        },
+                                        comboBox2 = new Ext.form.ComboBox({
+                                            hiddenName: 'callQuickName',
+                                            store: new Ext.data.SimpleStore({
+                                                fields: ['callQuickType', 'callQuickName'],
+                                                data : [
+                                                    ['0', s[274]],
+                                                    ['1', s[275]],
+                                                    ['2', s[276]]
+                                                ]
+                                            }),
+                                            width: 80,
+                                            valueField: 'callQuickType',
+                                            displayField: 'callQuickName',
+                                            editable: false,
+                                            mode: 'local',
+                                            triggerAction: 'all',
+                                            value: unconditionalForwardNumber.length > 2 ? unconditionalForwardNumber[0] : 0,
+                                            selectOnFocus: true
+                                        }),
+                                        {
+                                            xtype: 'label',
+                                            text: s[277]
+                                        },
+                                        {
+                                            xtype: 'textfield',
+                                            id: 'unconditionalForwardAlert',
+                                            value: unconditionalForwardNumber.length > 2 ? unconditionalForwardNumber[1] : "",
+                                            width: 100
+                                        },
+                                        {
+                                            xtype: 'label',
+                                            text: s[152]
+                                        },
+                                        {
+                                            xtype: 'textfield',
+                                            id: 'unconditionalForwardNumber',
+                                            value: unconditionalForwardNumber.length > 2 ? unconditionalForwardNumber[2] : "",
+                                            width: 120
+                                        }
+                                		]                                		
+                                  
+                                   
+                                },
+                                {
+                                		xtype: 'fieldset',
+                                		layout: 'column',
+                                		border: false,
+                                		items: [
+                                		    {
+		                                        xtype: 'label',
+		                                        width: 100,
+		                                        text: s[154]
+		                                    },
+		                                    {
+		                                    		xtype: 'checkbox',
+                                            boxLabel: s[147],
+                                            id: 'MASK_CFNROPEN',
+                                            checked: (r[1] & 1 << 8 ) > 0,
+                                            disabled: true,
+                                            width: 80
+                                        },
+                                        {
+                                        		xtype: 'checkbox',
+                                            boxLabel: s[150],
+                                            id: 'MASK_NO_ANSWER_FORWARD',
+                                            checked: (r[1] & 1 << 9 ) > 0,
+                                            disabled: (r[1] & 1 << 8) == 0,
+                                            width: 80
+                                        },
+                                        {
+                                            xtype: 'label',
+                                            text: s[273]
+                                        },
+                                        comboBox3 = new Ext.form.ComboBox({
+                                            hiddenName: 'callQuickName',
+                                            store: new Ext.data.SimpleStore({
+                                                fields: ['callQuickType', 'callQuickName'],
+                                                data : [
+                                                    ['0', s[274]],
+                                                    ['1', s[275]],
+                                                    ['2', s[276]]
+                                                ]
+                                            }),
+                                            width: 80,
+                                            valueField: 'callQuickType',
+                                            displayField: 'callQuickName',
+                                            editable: false,
+                                            mode: 'local',
+                                            triggerAction: 'all',
+                                            value: noAnswerForwardNumber.length > 2 ? noAnswerForwardNumber[0] : 0,
+                                            selectOnFocus: true
+                                        }),
+                                        {
+                                            xtype: 'label',
+                                            text: s[277]
+                                        },
+                                        {
+                                            xtype: 'textfield',
+                                            id: 'noAnswerForwardAlert',
+                                            value: noAnswerForwardNumber.length > 2 ? noAnswerForwardNumber[1] : "",
+                                            width: 100
+                                        },
+                                        {
+                                            xtype: 'label',
+                                            text: s[152]
+                                        },
+                                        {
+                                            xtype: 'textfield',
+                                            id: 'noAnswerForwardNumber',
+                                            value: noAnswerForwardNumber.length > 2 ? noAnswerForwardNumber[2] : "",
+                                            width: 120
+                                        }
+                                		]
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'fieldset',
+                            hidden: !enableValueAdded,
+                            layout: 'form',
+                            items: [
+                                {
+                                    border: false
+                                },
+                                {
+                                		xtype: 'fieldset',
+                                		layout: 'column',
+                                		border: false,
+                                		items: [
+                                			  {
+		                                        xtype: 'label',
+		                                        width: 100,
+		                                        text: s[279]
+		                                    },
+		                                    {
+		                                    	  xtype: 'checkbox',
+                                            boxLabel: s[147],
+                                            id: 'MASK_LOCALRINGOPEN',
+                                            checked:( r[1] & 1 << 14) > 0,
+                                            disabled: true,
+                                            width: 80
+                                        },
+                                        {
+                                            xtype: 'checkbox',
+                                            boxLabel: s[150],
+                                            id: 'MASK_COLOR_RING',
+                                            checked:( r[1] & 1 << 15 ) > 0,
+                                            disabled: (r[1] & 1 << 14) == 0,
+                                            width: 80
+                                        },
+                                        {
+                                        		xtype: 'checkbox',
+                                            boxLabel: s[280],
+                                            id: 'remoteAlertingPassthrough',
+                                            checked: r[7] != 0,
+                                            disabled: (r[1] & 1 << 14) == 0,
+                                            width: 80
+                                        },
+                                        {
+                                            xtype: 'label',
+                                            text: s[281]
+                                        },
+                                        {
+                                            xtype: 'textfield',
+                                            id: 'colorRingName',
+                                            width: 120,
+                                            value: r[12]
+                                        }
+                                		]
+                                },
+                                {
+                                    border: false
+                                },
+                                {
+                                    xtype: 'fieldset',
+                                		layout: 'column',
+                                		border: false,
+                                		items: [
+                                		    {
+		                                        xtype: 'label',
+		                                        text: s[282]
+		                                    },
+		                                    comboBox4 = new Ext.form.ComboBox({
+                                            hiddenName: 'callQuickName',
+                                            store: new Ext.data.SimpleStore({
+                                                fields: ['callQuickType', 'callQuickName'],
+                                                data : [
+                                                    ['0', s[285]],
+                                                    ['1', s[286]],
+                                                    ['2', s[14]]
+                                                ]
+                                            }),
+                                            width: 80,
+                                            valueField: 'callQuickType',
+                                            displayField: 'callQuickName',
+                                            editable: false,
+                                            mode: 'local',
+                                            triggerAction: 'all',
+                                            value: r[8],
+                                            selectOnFocus: true
+                                        }),
+                                        {
+                                            xtype: 'label',
+                                            text: s[283]
+                                        },
+                                        comboBox5 = new Ext.form.ComboBox({
+                                            hiddenName: 'callQuickName',
+                                            store: new Ext.data.SimpleStore({
+                                                fields: ['callQuickType', 'callQuickName'],
+                                                data : [
+                                                    ['0', s[285]],
+                                                    ['1', s[286]],
+                                                    ['2', s[14]]
+                                                ]
+                                            }),
+                                            width: 80,
+                                            valueField: 'callQuickType',
+                                            displayField: 'callQuickName',
+                                            editable: false,
+                                            mode: 'local',
+                                            triggerAction: 'all',
+                                            value: r[9],
+                                            selectOnFocus: true
+                                        }),
+                                        {
+                                            xtype: 'label',
+                                            text: s[284]
+                                        },
+                                        comboBox6 = new Ext.form.ComboBox({
+                                            hiddenName: 'callQuickName',
+                                            store: new Ext.data.SimpleStore({
+                                                fields: ['callQuickType', 'callQuickName'],
+                                                data : [
+                                                    ['0', s[285]],
+                                                    ['1', s[287]],
+                                                    ['2', s[288]],
+                                                    ['3', s[14]]
+                                                ]
+                                            }),
+                                            width: 80,
+                                            valueField: 'callQuickType',
+                                            displayField: 'callQuickName',
+                                            editable: false,
+                                            mode: 'local',
+                                            triggerAction: 'all',
+                                            value: r[10],
+                                            selectOnFocus: true
+                                        })
+                                		]
+                                }
+                            ]
+                        }
+                    ],
+                    buttons: [
+                        {
+                            text: s[155],
+                            handler: function Handle()
+                            {
+                                var requestVos = new Object();
+                                requestVos.doNotDisturb = (document.getElementById('MASK_DO_NOT_DISTURB').checked) ? true : false;
+                                requestVos.unconditionalForward = (document.getElementById('MASK_UNCONDITIONAL_FORWARD').checked) ? true : false;
+                                requestVos.noAnswerForward = (document.getElementById('MASK_NO_ANSWER_FORWARD').checked) ? true : false;
+                                requestVos.busyForward = (document.getElementById('MASK_BUSY_FORWARD').checked) ? true : false;
+                                if(enableValueAdded)
+                                {
+                                  requestVos.colorRing = (document.getElementById('MASK_COLOR_RING').checked) ? true : false;
+                                  requestVos.remoteColorRingPassthrough =  (document.getElementById('remoteAlertingPassthrough').checked) ? true :false;
+                                  requestVos.colorRingName = document.getElementById('colorRingName').value
+                                  requestVos.unableToConnectVoicePrompts = parseFloat(comboBox4.getValue());
+                                  requestVos.callRemainingTimePrompts = parseFloat(comboBox5.getValue());
+                                  requestVos.balanceNotEnoughAlarm = parseFloat(comboBox6.getValue());
+                                }
+                                requestVos.unconditionalForwardE164 = new Object();
+                                requestVos.unconditionalForwardE164.forwardMethod =  parseFloat(comboBox2.getValue());
+                                requestVos.unconditionalForwardE164.alertSecond = parseFloat(document.getElementById('unconditionalForwardAlert').value);
+                                requestVos.unconditionalForwardE164.e164 = document.getElementById('unconditionalForwardNumber').value;
+                                requestVos.noAnswerForwardE164 = new Object();
+                                requestVos.noAnswerForwardE164.forwardMethod = parseFloat(comboBox3.getValue());
+                                requestVos.noAnswerForwardE164.alertSecond = parseFloat(document.getElementById('noAnswerForwardAlert').value);
+                                requestVos.noAnswerForwardE164.e164 = document.getElementById('noAnswerForwardNumber').value;
+                                requestVos.busyForwardE164 = new Object();
+                                requestVos.busyForwardE164.forwardMethod = parseFloat(comboBox1.getValue());
+                                requestVos.busyForwardE164.alertSecond = parseFloat(document.getElementById('busyForwardE164Alert').value);
+                                requestVos.busyForwardE164.e164 = document.getElementById('busyForwardNumber').value;                                
+                                Ext.MessageBox.wait(s[53], s[1]);
+                                Ext.Ajax.request({
+                                    url: 'set-terminal-info.jsp',
+                                    jsonData: requestVos,
+                                    success: function (result)
+                                    {
+                                       var responseJson = Ext.decode(result.responseText);
+                                        if(responseJson.retCode == 0)
+                                        {
+                                            Ext.MessageBox.show({
+                                                title: s[54],
+                                                msg: s[141],
+                                                buttons: Ext.MessageBox.OK,
+                                                icon: Ext.MessageBox.INFO
+                                            });
+                                        }
+                                        else
+                                        {
+                                            Ext.MessageBox.show({
+                                                title: s[142],
+                                                msg: responseJson.exception,
+                                                buttons: Ext.MessageBox.OK,
+                                                icon: Ext.MessageBox.ERROR
+                                            });
+                                            if(responseJson.retCode == -10049)
+                                            {
+                                                window.parent.location.href = 'index.html';
+                                            }
+                                        }
+                                    },
+                                    failure: function ()
+                                    {
+                                        Ext.MessageBox.show({
+                                            title: s[4],
+                                            msg: s[5],
+                                            buttons: Ext.MessageBox.OK,
+                                            icon: Ext.MessageBox.ERROR
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                    ]
+                });
+                form.render(document.body);
+                new Ext.KeyMap(document, {
+                    key: Ext.EventObject.ENTER,
+                    fn: function()
+                    {
+                        Handle();
+                    },
+                    scope: this
+                });
+                Ext.MessageBox.hide();
+            }
+            else
+            {
+                Ext.MessageBox.show({
+                    title: s[42],
+                    msg: r[1],
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
+                if(r[0] == -10049)
+                {
+                    window.parent.location.href = 'index.html';
+                }
+            }
+        },
+        failure: function ()
+        {
+            Ext.MessageBox.show({
+                title: s[4],
+                msg: s[5],
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+});
+</script>
+</head>
+<body>
+</body>
+</html>

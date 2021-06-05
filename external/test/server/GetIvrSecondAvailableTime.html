@@ -1,0 +1,141 @@
+<html>
+<head>
+<title>Interface Test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<script type="text/javascript" src="/js/json2.js"></script>
+<script language="javascript" type="text/javascript">
+  var xmlHttp;
+  function parseBoolean(value) {
+    return (typeof value === "undefined") ? false : value.replace(/^\s+|\s+$/g, "").toLowerCase() === "true";
+  }
+  function createXMLHttpRequest(){
+    if(window.ActiveXObject){
+      xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    else if(window.XMLHttpRequest){
+      xmlHttp = new XMLHttpRequest();
+    }
+  }
+  function call_post(){
+    createXMLHttpRequest();
+  var vosRequest = new Object(); 
+  if(document.getElementById("checkbox_billingType").checked){
+    vosRequest.billingType = parseFloat(document.getElementById("billingType").value);
+  }
+  if(document.getElementById("checkbox_billingNumber").checked){
+    vosRequest.billingNumber = document.getElementById("billingNumber").value;
+  }
+  if(document.getElementById("checkbox_calleeE164").checked){
+    vosRequest.calleeE164 = document.getElementById("calleeE164").value;
+  }
+  if(document.getElementById("checkbox_accessE164").checked){
+    vosRequest.accessE164 = document.getElementById("accessE164").value;
+  }
+  if(document.getElementById("checkbox_mergeBillingType").checked){
+    vosRequest.mergeBillingType = parseFloat(document.getElementById("mergeBillingType").value);
+  }
+  if(document.getElementById("checkbox_mergeE164").checked){
+    vosRequest.mergeE164 = document.getElementById("mergeE164").value;
+  }
+  if(document.getElementById("checkbox_firstE164").checked){
+    vosRequest.firstE164 = document.getElementById("firstE164").value;
+  }
+  if(document.getElementById("checkbox_firstConnectTime").checked){
+    vosRequest.firstConnectTime = parseFloat(document.getElementById("firstConnectTime").value);
+  }
+  if(document.getElementById("checkbox_firstStopTime").checked){
+    vosRequest.firstStopTime = parseFloat(document.getElementById("firstStopTime").value);
+  }
+    xmlHttp.open("POST", "/external/server/GetIvrSecondAvailableTime", true);
+    xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+    xmlHttp.onreadystatechange = showResult;
+    xmlHttp.send(JSON.stringify(vosRequest));
+    document.getElementById("postText").innerHTML = "<br>Request Format: " + JSON.stringify(vosRequest) + "</br>";
+    document.getElementById("responseText").innerHTML = "";
+  }
+  function showResult(){
+    if(xmlHttp.readyState == 4){
+      if(xmlHttp.status == 200){
+        document.getElementById("responseText").innerHTML = "<br>Response Format: " + xmlHttp.responseText + "</br>";
+        document.body.scrollTop=document.body.scrollHeight;
+      }
+    }
+  }
+  function load(){
+  document.getElementById("billingType").value = "2";
+  document.getElementById("billingNumber").value = "800801001";
+  document.getElementById("calleeE164").value = "800801";
+  document.getElementById("accessE164").value = "";
+  document.getElementById("mergeBillingType").value = "0";
+  document.getElementById("mergeE164").value = "";
+  document.getElementById("firstE164").value = "800801";
+  document.getElementById("firstConnectTime").value = "1384760937073";
+  document.getElementById("firstStopTime").value = "1384760937073";
+
+  }
+</script>
+</head>
+<body onLoad="load()">
+<p><font color="#FF0000">Important: Please fill in the fields correctly in accordance with the manual. The wrong input may cause the system to abnormal</font></p>
+<table width=100%>
+  <tr>
+    <td>Interface Uri: /external/server/GetIvrSecondAvailableTime</td>
+  </tr>
+</table>
+<table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+  <tr>
+    <td>GetIvrSecondAvailableTime</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_billingType">billingType<input type="text" id="billingType"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_billingNumber">billingNumber<input type="text" id="billingNumber"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calleeE164">calleeE164<input type="text" id="calleeE164"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_accessE164">accessE164<input type="text" id="accessE164"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_mergeBillingType">mergeBillingType<input type="text" id="mergeBillingType"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_mergeE164">mergeE164<input type="text" id="mergeE164"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_firstE164">firstE164<input type="text" id="firstE164"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_firstConnectTime">firstConnectTime<input type="text" id="firstConnectTime"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_firstStopTime">firstStopTime<input type="text" id="firstStopTime"></td>
+    <td></td>
+  </tr>
+</table>
+</table><table width="100%">
+  <tr>
+    <td><input type="submit" value="Submit(POST)" onClick="call_post()">
+    </td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="postText"></td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="responseText"></td>
+  </tr>
+</table>
+</body>
+</html>

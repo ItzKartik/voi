@@ -1,0 +1,105 @@
+<html>
+<head>
+<title>Interface Test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<script type="text/javascript" src="/js/json2.js"></script>
+<script language="javascript" type="text/javascript">
+  var xmlHttp;
+  function parseBoolean(value) {
+    return (typeof value === "undefined") ? false : value.replace(/^\s+|\s+$/g, "").toLowerCase() === "true";
+  }
+  function createXMLHttpRequest(){
+    if(window.ActiveXObject){
+      xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    else if(window.XMLHttpRequest){
+      xmlHttp = new XMLHttpRequest();
+    }
+  }
+  function call_post(){
+    createXMLHttpRequest();
+  var vosRequest = new Object(); 
+  if(document.getElementById("checkbox_callerE164s").checked){
+    vosRequest.callerE164s = new Array(1);
+    vosRequest.callerE164s[0] = new Object();
+    vosRequest.callerE164s[0] = document.getElementById("callerE164s").value;
+  }
+  if(document.getElementById("checkbox_calleeE164s").checked){
+    vosRequest.calleeE164s = new Array(1);
+    vosRequest.calleeE164s[0] = new Object();
+    vosRequest.calleeE164s[0] = document.getElementById("calleeE164s").value;
+  }
+  if(document.getElementById("checkbox_gatewayMappingName").checked){
+    vosRequest.gatewayMappingName = document.getElementById("gatewayMappingName").value;
+  }
+  if(document.getElementById("checkbox_gatewayRoutingName").checked){
+    vosRequest.gatewayRoutingName = document.getElementById("gatewayRoutingName").value;
+  }
+    xmlHttp.open("POST", "/external/server/GetCurrentCall", true);
+    xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+    xmlHttp.onreadystatechange = showResult;
+    xmlHttp.send(JSON.stringify(vosRequest));
+    document.getElementById("postText").innerHTML = "<br>Request Format: " + JSON.stringify(vosRequest) + "</br>";
+    document.getElementById("responseText").innerHTML = "";
+  }
+  function showResult(){
+    if(xmlHttp.readyState == 4){
+      if(xmlHttp.status == 200){
+        document.getElementById("responseText").innerHTML = "<br>Response Format: " + xmlHttp.responseText + "</br>";
+        document.body.scrollTop=document.body.scrollHeight;
+      }
+    }
+  }
+  function load(){
+  document.getElementById("callerE164s").value = "800801";
+  document.getElementById("calleeE164s").value = "800801";
+  document.getElementById("gatewayMappingName").value = "gatewayMapping-1";
+  document.getElementById("gatewayRoutingName").value = "gatewayRouting-1";
+
+  }
+</script>
+</head>
+<body onLoad="load()">
+<p><font color="#FF0000">Important: Please fill in the fields correctly in accordance with the manual. The wrong input may cause the system to abnormal</font></p>
+<table width=100%>
+  <tr>
+    <td>Interface Uri: /external/server/GetCurrentCall</td>
+  </tr>
+</table>
+<table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+  <tr>
+    <td>GetCurrentCall</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callerE164s">callerE164s<input type="text" id="callerE164s"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calleeE164s">calleeE164s<input type="text" id="calleeE164s"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_gatewayMappingName">gatewayMappingName<input type="text" id="gatewayMappingName"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_gatewayRoutingName">gatewayRoutingName<input type="text" id="gatewayRoutingName"></td>
+    <td></td>
+  </tr>
+</table>
+</table><table width="100%">
+  <tr>
+    <td><input type="submit" value="Submit(POST)" onClick="call_post()">
+    </td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="postText"></td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="responseText"></td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,662 @@
+<html>
+<head>
+<title>VOS3000</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<meta name="keywords" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="description" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="author" content="www.linknat.com, 昆石网络"/>
+<meta name="copyright" content="www.linknat.com, 昆石网络"/>
+<link rel="shortcut icon" href="images/vos3000.ico"/>
+<link rel="stylesheet" type="text/css" href="css/ext-all.css"/>
+<script type="text/javascript" src="js/ext-base.js"></script>
+<script type="text/javascript" src="js/ext-all.js"></script>
+<script type="text/javascript" src="js/lang.js"></script>
+<style type="text/css">
+    .x-grid3-header-offset {
+        width: auto;
+    }
+
+    .x-grid3-cell-inner a {
+        color: #385F95;
+        text-decoration: none;
+    }
+</style>
+<script type="text/javascript">
+Ext.onReady(function()
+{
+    Ext.MessageBox.wait(s[0], s[1]);
+    loadSuiteOrder();
+    var ds = new Ext.data.Store({
+        proxy: new Ext.data.HttpProxy({
+            url: 'query-suite.jsp'
+        }),
+        reader: new Ext.data.JsonReader({
+            root: 'infos',
+            totalProperty: 'total',
+            successProperty: 'retCode'
+        }, [
+            'suiteId', 'suiteName', 'rentType', 'rentFee', 'giftMoney', 'memo'
+        ]),
+        remoteSort: false
+    });
+    var cm = new Ext.grid.ColumnModel([
+        {
+            header: s[178],
+            dataIndex: 'suiteName',
+            renderer: renderLink
+        },
+        {
+            header: s[179],
+            dataIndex: 'rentType',
+            renderer: renderType
+        },
+        {
+            header: s[180],
+            dataIndex: 'rentFee'
+        },
+        {
+            header: s[268],
+            dataIndex: 'giftMoney'
+        },
+        {
+            header: s[121],
+            dataIndex: 'memo',
+            width: 270
+        },
+        {
+            header: s[204],
+            renderer: renderOperateAdd
+        }
+    ]);
+    cm.defaultSortable = true;
+    cm.defaultWidth = 100;
+    var grid = new Ext.grid.GridPanel({
+        el: 'suite-grid',
+        id: 'Grid2',
+        stripeRows: true,
+        autoWidth: true,
+        autoHeight: true,
+        title: s[203],
+        store: ds,
+        cm: cm,
+        autoScroll: false,
+        trackMouseOver: true,
+        loadMask: true,
+        viewConfig: {
+            enableRowBody: true
+        },
+        bbar: new Ext.PagingToolbar({
+            store: ds,
+            pageSize: 2147483647,
+            displayInfo: true
+        })
+    });
+    grid.render();
+    Ext.MessageBox.hide();
+    ds.load({params: {start: 0, limit: 100}});
+    ds.on('load', function(store)
+    {
+        if(store.reader.jsonData.retCode < 0)
+        {
+            ds.removeAll();
+            if(store.reader.jsonData.retCode == -10031)
+            {
+                return;
+            }
+            Ext.MessageBox.show({
+                title: s[54],
+                msg: store.reader.jsonData.exception,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+});
+function renderType(val)
+{
+    switch(val)
+    {
+    case 0:
+        return s[183];
+        break;
+    case 1:
+        return s[184];
+        break;
+    case 2:
+        return s[185];
+        break;
+    default:
+        return "";
+    }
+}
+function renderDay(val, p, record)
+{
+    if(record.data.type == 0)
+    {
+        return Date.dayNames[val - 1];
+    }
+    return val;
+}
+function renderTime(val)
+{
+    var s = new String(val);
+    return s.substr(0, 19);
+}
+function renderLink(val, p, record)
+{
+    return val == null ? "" : String.format('<b><a href="javascript:loadFeeRateByTime({1},\'{0}\');loadGiftTime({1},\'{0}\');">{0}</a></b>', val, record.data.suiteId);
+}
+function renderOperateRemove(val, p, record)
+{
+    return String.format('<a href="javascript:setSuiteOrder({1},-1,-1);">{0}</a>', s[205], record.data.id);
+}
+function renderOperateAdd(val, p, record)
+{
+    return String.format('<a href="javascript:setSuiteOrder({1},1,{2});">{0}</a>', s[206], record.data.suiteId, record.data.rentType);
+}
+function loadSuiteOrder()
+{
+    document.getElementById('suiteorder-grid').innerHTML = "";
+    var ds = new Ext.data.Store({
+        proxy: new Ext.data.HttpProxy({
+            url: 'query-cus-suiteorder.jsp'
+        }),
+        reader: new Ext.data.JsonReader({
+            root: 'infos',
+            totalProperty: 'total',
+            successProperty: 'retCode'
+        }, [
+            'id','suiteId', 'suiteName', 'rentPeriod', 'rentType', 'rentFee', 'availabletime', 'giftMoney', 'memo'
+        ]),
+        remoteSort: false
+    });
+    var cm = new Ext.grid.ColumnModel([
+        {
+            header: s[178],
+            dataIndex: 'suiteName',
+            renderer: renderLink
+        },
+        {
+            header: s[267],
+            dataIndex: 'rentPeriod'
+        },
+        {
+            header: s[179],
+            dataIndex: 'rentType',
+            renderer: renderType
+        },
+        {
+            header: s[180],
+            dataIndex: 'rentFee'
+        },
+        {
+            header: s[268],
+            dataIndex: 'giftMoney'
+        },
+        {
+            header: s[201],
+            dataIndex: 'availabletime',
+            width: 140,
+            renderer: renderTime
+        },
+        {
+            header: s[121],
+            dataIndex: 'memo',
+            width: 130
+        },
+        {
+            header: s[204],
+            renderer: renderOperateRemove
+        }
+    ]);
+    cm.defaultSortable = true;
+    cm.defaultWidth = 100;
+    var grid = new Ext.grid.GridPanel({
+        el: 'suiteorder-grid',
+        id: 'Grid',
+        stripeRows: true,
+        autoWidth: true,
+        autoHeight: true,
+        title: s[202],
+        store: ds,
+        cm: cm,
+        autoScroll: false,
+        trackMouseOver: true,
+        loadMask: true,
+        viewConfig: {
+            enableRowBody: true
+        },
+        bbar: new Ext.PagingToolbar({
+            store: ds,
+            pageSize: 2147483647,
+            displayInfo: true
+        })
+    });
+    grid.render();
+    ds.load({params: {start: 0, limit: 100}});
+    ds.on('load', function(store)
+    {
+        if(store.reader.jsonData.retCode < 0)
+        {
+            ds.removeAll();
+            if(store.reader.jsonData.retCode == -10031)
+            {
+                return;
+            }
+            Ext.MessageBox.show({
+                title: s[54],
+                msg: store.reader.jsonData.exception,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+            if(store.reader.jsonData.retCode == -10049)
+            {
+                window.parent.location.href = 'index.html';
+            }
+        }
+    });
+}
+function loadFeeRateByTime(id, name)
+{
+    Ext.MessageBox.wait(s[0], s[1]);
+    document.getElementById('feeratebytime-grid').innerHTML = "";
+    var ds = new Ext.data.Store({
+        proxy: new Ext.data.HttpProxy({
+            url: 'query-cus-feeratebytime.jsp?suiteId=' + id
+        }),
+        reader: new Ext.data.JsonReader({
+            root: 'infos',
+            totalProperty: 'total',
+            successProperty: 'retCode'
+        }, [
+            'type', 'startday', 'endday', 'starttime', 'endtime', 'feerategroup_name', 'feerategroup_id'
+        ]),
+        remoteSort: false
+    });
+
+    function renderType(val)
+    {
+        switch(val)
+        {
+        case 0:
+            return s[193];
+            break;
+        case 1:
+            return s[194];
+            break;
+        case 2:
+            return s[195];
+            break;
+        default:
+            return "";
+        }
+    }
+
+    function renderLink(val, p, record)
+    {
+        return val == null ? "" : String.format('<b><a href="javascript:loadFeeRate({1},\'{0}\');">{0}</a></b>', val, record.data.feerategroup_id);
+    }
+
+    var cm = new Ext.grid.ColumnModel([
+        {
+            header: s[189],
+            dataIndex: 'feerategroup_name',
+            renderer: renderLink
+        },
+        {
+            header: s[190],
+            dataIndex: 'type',
+            renderer: renderType
+        },
+        {
+            header: s[191],
+            dataIndex: 'startday',
+            renderer: renderDay
+        },
+        {
+            header: s[192],
+            dataIndex: 'endday',
+            renderer: renderDay
+        },
+        {
+            header: s[66],
+            dataIndex: 'starttime',
+            width: 165
+        },
+        {
+            header: s[67],
+            dataIndex: 'endtime',
+            width: 165
+        }
+    ]);
+    cm.defaultSortable = true;
+    cm.defaultWidth = 110;
+    var grid = new Ext.grid.GridPanel({
+        el: 'feeratebytime-grid',
+        id: 'Feeratebytime',
+        stripeRows: true,
+        autoWidth: true,
+        autoHeight: true,
+        title: s[207] + "[" + name + "]" + s[188],
+        store: ds,
+        cm: cm,
+        autoScroll: false,
+        trackMouseOver: true,
+        loadMask: true,
+        viewConfig: {
+            enableRowBody: true
+        },
+        bbar: new Ext.PagingToolbar({
+            store: ds,
+            pageSize: 2147483647,
+            displayInfo: true
+        })
+    });
+    grid.render();
+    Ext.MessageBox.hide();
+    ds.load({params: {start: 0, limit: 100}});
+    ds.on('load', function(store)
+    {
+        if(store.reader.jsonData.retCode < 0)
+        {
+            ds.removeAll();
+            if(store.reader.jsonData.retCode == -10031)
+            {
+                return;
+            }
+            Ext.MessageBox.show({
+                title: s[54],
+                msg: store.reader.jsonData.exception,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+            if(store.reader.jsonData.retCode == -10049)
+            {
+                window.parent.location.href = 'index.html';
+            }
+        }
+    });
+}
+function loadFeeRate(id, name)
+{
+    Ext.MessageBox.wait(s[0], s[1]);
+    document.getElementById('feerate-grid').innerHTML = "";
+    var ds = new Ext.data.Store({
+        proxy: new Ext.data.HttpProxy({
+            url: 'query-cus-feerate.jsp?feerategroup_id=' + id
+        }),
+        reader: new Ext.data.JsonReader({
+            root: 'infos',
+            totalProperty: 'total',
+            successProperty: 'retCode'
+        }, [
+            'period', 'fee', 'locationName', 'areaCode', 'feePrefix', {
+                name: 'type',
+                type: 'int'
+            }
+        ]),
+        remoteSort: false
+    });
+
+    function renderType(val)
+    {
+        switch(val)
+        {
+        case 1:
+            return s[71];
+            break;
+        case 2:
+            return s[72];
+            break;
+        case 4:
+            return s[74];
+            break;
+        case 5:
+            return s[75];
+            break;
+        default:
+            return "";
+        }
+    }
+
+    var cm = new Ext.grid.ColumnModel([
+        {
+            header: s[100],
+            dataIndex: 'feePrefix'
+        },
+        {
+            header: s[103],
+            dataIndex: 'areaCode'
+        },
+        {
+            header: s[101],
+            dataIndex: 'type',
+            renderer: renderType
+        },
+        {
+            header: s[102],
+            dataIndex: 'locationName'
+        },
+        {
+            header: s[105],
+            dataIndex: 'fee'
+        },
+        {
+            header: s[106],
+            dataIndex: 'period'
+        }
+    ]);
+    cm.defaultSortable = true;
+    cm.defaultWidth = 110;
+    var grid = new Ext.grid.GridPanel({
+        el: 'feerate-grid',
+        id: 'Feerate',
+        stripeRows: true,
+        autoWidth: true,
+        autoHeight: true,
+        title: s[208] + "[" + name + "]" + s[209],
+        store: ds,
+        cm: cm,
+        autoScroll: false,
+        trackMouseOver: true,
+        loadMask: true,
+        viewConfig: {
+            enableRowBody: true
+        },
+        bbar: new Ext.PagingToolbar({
+            store: ds,
+            displayInfo: true
+        })
+    });
+    grid.render();
+    Ext.MessageBox.hide();
+    ds.load({params: {start: 0, limit: 100}});
+    ds.on('load', function(store)
+    {
+        if(store.reader.jsonData.retCode < 0)
+        {
+            ds.removeAll();
+            if(store.reader.jsonData.retCode == -10031)
+            {
+                return;
+            }
+            Ext.MessageBox.show({
+                title: s[54],
+                msg: store.reader.jsonData.exception,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+            if(store.reader.jsonData.retCode == -10049)
+            {
+                window.parent.location.href = 'index.html';
+            }
+        }
+    });
+}
+function loadGiftTime(id, name)
+{
+    Ext.MessageBox.wait(s[0], s[1]);
+    document.getElementById('gifttime-grid').innerHTML = "";
+    var ds = new Ext.data.Store({
+        proxy: new Ext.data.HttpProxy({
+            url: 'query-gifttime.jsp?suiteId=' + id
+        }),
+        reader: new Ext.data.JsonReader({
+            root: 'infos',
+            successProperty: 'retCode'
+        }, [
+            'startTime', 'endTime', 'prefix', 'giftTime', 'memo'
+        ]),
+        remoteSort: false
+    });
+    var cm = new Ext.grid.ColumnModel([
+        {
+            header: s[66],
+            dataIndex: 'startTime'
+        },
+        {
+            header: s[67],
+            dataIndex: 'endTime'
+        },
+        {
+            header: s[100],
+            dataIndex: 'prefix'
+        },
+        {
+            header: s[196],
+            dataIndex: 'giftTime'
+        },
+        {
+            header: s[121],
+            dataIndex: 'memo',
+            width: 330
+        }
+    ]);
+    cm.defaultSortable = true;
+    cm.defaultWidth = 220;
+    var grid = new Ext.grid.GridPanel({
+        el: 'gifttime-grid',
+        id: 'Gifttime',
+        stripeRows: true,
+        autoWidth: true,
+        autoHeight: true,
+        title: s[207] + "[" + name + "]" + s[196],
+        store: ds,
+        cm: cm,
+        autoScroll: false,
+        trackMouseOver: true,
+        loadMask: true,
+        viewConfig: {
+            enableRowBody: true
+        },
+        bbar: new Ext.PagingToolbar({
+            store: ds,
+            pageSize: 2147483647,            
+            displayInfo: true
+        })
+    });
+    grid.render();
+    Ext.MessageBox.hide();
+    ds.load({params: {start: 0, limit: 100}});
+    ds.on('load', function(store)
+    {
+        if(store.reader.jsonData.retCode < 0)
+        {
+            ds.removeAll();
+            if(store.reader.jsonData.retCode == -10031)
+            {
+                return;
+            }
+            Ext.MessageBox.show({
+                title: s[54],
+                msg: store.reader.jsonData.exception,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+            if(store.reader.jsonData.retCode == -10049)
+            {
+                window.parent.location.href = 'index.html';
+            }
+        }
+    });
+}
+var autoRefreshTimeOut = null;
+function setSuiteOrder(id, type, rentType)
+{
+		var requestVos = new Object();
+		if(parseFloat(type) < 0)
+		{
+			requestVos.deleteId = parseFloat(id);
+		}
+		else
+		{
+			requestVos.orderSuiteId = parseFloat(id);
+		}
+		if(autoRefreshTimeOut != null)
+    {
+    	clearTimeout(autoRefreshTimeOut);
+    	autoRefreshTimeOut = null;
+    }
+    Ext.MessageBox.wait(s[53], s[1]);
+    Ext.Ajax.request({
+        url: 'set-cus-suiteorder.jsp',
+        jsonData: requestVos,
+        success: function (result)
+        {
+            var responseJson = Ext.decode(result.responseText);
+            if(responseJson.retCode == 0)
+            {
+                Ext.MessageBox.show({
+                    title: s[54],
+                    msg: s[211],
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO
+                });
+                autoRefreshTimeOut = setTimeout("loadSuiteOrder()", 3000);
+            }
+            else
+            {
+                Ext.MessageBox.show({
+                    title: s[142],
+                    msg: responseJson.exception,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
+                if(responseJson.retCode == -10049)
+                {
+                    window.parent.location.href = 'index.html';
+                }
+            }
+        },
+        failure: function ()
+        {
+            Ext.MessageBox.show({
+                title: s[4],
+                msg: s[5],
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+}
+</script>
+</head>
+<body>
+<div id="suiteorder-grid"></div>
+<br/>
+
+<div id="suite-grid"></div>
+<br/>
+
+<div id="gifttime-grid"></div>
+<br/>
+
+<div id="feeratebytime-grid"></div>
+<br/>
+
+<div id="feerate-grid"></div>
+<br/>
+
+</body>
+</html>

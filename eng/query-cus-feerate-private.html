@@ -1,0 +1,211 @@
+<html>
+<head>
+<title>VOS3000</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<meta name="keywords" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="description" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="author" content="www.linknat.com, 昆石网络"/>
+<meta name="copyright" content="www.linknat.com, 昆石网络"/>
+<link rel="shortcut icon" href="images/vos3000.ico"/>
+<link rel="stylesheet" type="text/css" href="css/ext-all.css"/>
+<script type="text/javascript" src="js/ext-base.js"></script>
+<script type="text/javascript" src="js/ext-all.js"></script>
+<script type="text/javascript" src="js/lang.js"></script>
+<style type="text/css">
+    .x-layout-collapsed-west {
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+</style>
+<script type="text/javascript">
+    function renderType(val)
+    {
+        switch(val)
+        {
+        case 1:
+            return s[71];
+            break;
+        case 2:
+            return s[72];
+            break;
+        case 4:
+            return s[74];
+            break;
+        case 5:
+            return s[75];
+            break;
+        default:
+            return "";
+        }
+    }
+    Ext.onReady(function()
+    {
+        Ext.MessageBox.wait(s[0], s[1]);
+        Ext.QuickTips.init();
+        Ext.form.Field.prototype.msgTarget = 'side';
+        var ds;
+        var contentPanel = {
+            id: 'info',
+            region: 'center',
+            layout: 'fit',
+            margins: '5 5 0 0',
+            border: false,
+            items: [
+                {
+                    layout: 'border',
+                    hideMode: Ext.isIE ? 'offsets' : 'display',
+                    items:[
+                        {
+                            title:s[270],
+                            region: 'west',
+                            collapsible: true,
+                            width: 212,
+                            minSize: 100,
+                            maxSize: 350,
+                            margins: '5 0 0 5',
+                            cmargins: '5 5 0 5',
+                            split: true,
+                            items: [
+                                new Ext.form.FieldSet({
+                                    title: s[65],
+                                    height: '100%',
+                                    labelAlign: 'top',
+                                    labelWidth: 40,
+                                    buttonAlign: 'center',
+                                    items:[
+                                        new Ext.form.TextField({
+                                            fieldLabel: s[103],
+                                            id: 'areaCode',
+                                            width: 180
+                                        }),
+                                        {
+                                            border: false
+                                        } ,
+                                        new Ext.Button({
+                                            text: s[70],
+                                            minWidth: 177,
+                                            handler: Handle
+                                        })
+                                    ]
+                                })
+                            ]
+                        },
+                        {
+                            region: 'center',
+                            margins: '5 5 0 0' ,
+                            title: s[107],
+                            xtype: 'grid',
+                            layout: 'fit',
+                            store: ds = new Ext.data.Store({
+                                proxy: new Ext.data.HttpProxy({
+                                    url: 'query-cus-feerate.jsp'
+                                }),
+                                reader: new Ext.data.JsonReader({
+                                    root: 'infos',
+                                    totalProperty: 'total',
+                                    successProperty: 'retCode'
+                                }, [
+                                    'period', 'fee', 'locationName', 'areaCode', 'feePrefix', {
+                                        name: 'type',
+                                        type: 'int'
+                                    }
+                                ]),
+                                remoteSort: false
+                            }),
+                            columns: [
+                                {
+                                    header: s[100],
+                                    dataIndex: 'feePrefix'
+                                },
+                                {
+                                    header: s[103],
+                                    dataIndex: 'areaCode'
+                                },
+                                {
+                                    header: s[101],
+                                    dataIndex: 'type',
+                                    renderer: renderType
+                                },
+                                {
+                                    header: s[102],
+                                    dataIndex: 'locationName'
+                                },
+                                {
+                                    header: s[105],
+                                    dataIndex: 'fee'
+                                },
+                                {
+                                    header: s[106],
+                                    dataIndex: 'period'
+                                }
+                            ],
+                            stripeRows: true,
+                            bbar: new Ext.PagingToolbar({
+                                store: ds,
+                                displayInfo: true
+                            })
+                        }
+                    ]
+                }
+            ]
+        };
+
+        function Handle()
+        {
+            ds.on('beforeload', function()
+            {
+                ds.baseParams = {
+                    mask: 1 << 2,
+                    areaCode : document.getElementById('areaCode').value
+                }
+            });
+            ds.load({
+                params: {start:0, limit: 100},
+                callback: function()
+                {
+                    if(ds.reader.jsonData.retCode < 0)
+                    {
+                        ds.removeAll();
+                        if(ds.reader.jsonData.retCode == -10031)
+                        {
+                            return;
+                        }
+                        Ext.MessageBox.show({
+                            title: s[54],
+                            msg: ds.reader.jsonData.exception,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        });
+                        if(ds.reader.jsonData.retCode == -10049)
+                        {
+                            window.parent.location.href = 'index.html';
+                        }
+                    }
+                }
+            });
+        }
+
+        new Ext.Viewport({
+            layout: 'border',
+            items: [
+                contentPanel
+            ],
+            renderTo: Ext.getBody()
+        });
+
+        new Ext.KeyMap(document, {
+            key: Ext.EventObject.ENTER,
+            fn: function()
+            {
+                Handle();
+            },
+            scope: this
+        });
+        Ext.MessageBox.hide();
+    });
+</script>
+</head>
+<body>
+</body>
+</html>

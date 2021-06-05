@@ -1,0 +1,184 @@
+<html>
+<head>
+    <title>VOS3000</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="expires" content="-1"/>
+    <meta name="keywords" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+    <meta name="description" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+    <meta name="author" content="www.linknat.com, 昆石网络"/>
+    <meta name="copyright" content="www.linknat.com, 昆石网络"/>
+    <link rel="shortcut icon" href="images/vos3000.ico"/>
+    <script type="text/javascript" src="js/ext-base.js"></script>
+    <script type="text/javascript" src="js/ext-all.js"></script>
+    <script type="text/javascript" src="js/lang.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/ext-all.css"/>
+    <style type="text/css">
+        body {
+            background: url(images/welcome-bg.gif) top left;
+            font-family: Arial, Tahoma, Verdana, Arial, Helvetica, sans-serif;
+            color: #000000;
+            margin: 0;
+            font-size: 11px;
+            padding-bottom: 15px;
+        }
+
+        a {
+            font-weight: normal;
+            color: #083772;
+        }
+
+        a:link {
+            color: #083772;
+            text-decoration: none;
+        }
+
+        a:visited {
+            color: #1e4e8f;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: #0000CC;
+        }
+
+        .col {
+            width: 85%;
+            float: left;
+            margin-left: 10px;
+        }
+
+        .block {
+            border: 3px solid #B2D0F7;
+            background: white url(images/block-bg.gif) repeat-x;
+            margin-top: 10px;
+        }
+
+        .block-title {
+            color: #083772;
+            font-weight: bold;
+            padding: 4px;
+            padding-left: 8px;
+        }
+
+        .block-body {
+            padding: 8px;
+            padding-top: 2px;
+        }
+
+        .block-body b {
+            color: #333333;
+            font-size: 11px;
+        }
+
+        .block-body em {
+            display: block;
+            margin-top: 5px;
+            font-size: 11px;
+            color: gray;
+            text-align: right;
+        }
+
+        .list {
+            list-style: square;
+            padding-left: 20px;
+            margin-top: 5px;
+        }
+    </style>
+    <script type="text/javascript">
+        function Load()
+        {
+            Ext.MessageBox.wait(s[0], s[1]);
+            Ext.Ajax.request({
+                url: 'welcome.jsp',
+                success: function (result)
+                {
+                    var responseJson = Ext.decode(result.responseText);
+                    if(responseJson.retCode == 0)
+                    {
+                        Ext.MessageBox.hide();
+                        document.getElementById('info1').innerHTML = s[45] + '　' + responseJson.webInfoTerminalLogin.terminalName + '<br /><br />';
+                        document.getElementById('info2').innerHTML = s[46] + '　' + ((responseJson.webInfoTerminalLogin.terminalType == 0) ? s[51] : (responseJson.webInfoTerminalLogin.terminalType == 1) ? s[52] : (responseJson.webInfoTerminalLogin.terminalType == 2) ? s[214] : (responseJson.webInfoTerminalLogin.terminalType == 3) ? s[266] : s[258]) + '<br /><br />';
+                        document.getElementById('info3').innerHTML = s[47] + '　' + responseJson.webInfoTerminalLogin.customerAccount  + '<br /><br />';
+                        document.getElementById('info4').innerHTML = s[48] + '　' + responseJson.webInfoTerminalLogin.customerName  + '<br /><br />';
+                        document.getElementById('info5').innerHTML = s[49] + '　' + responseJson.webInfoTerminalLogin.customerMoney  + '<br /><br />';
+                    }
+                    else
+                    {
+                        Ext.MessageBox.show({
+                            title: s[42],
+                            msg: r[1],
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        });
+                        if(responseJson.retCode == -10049)
+                        {
+                            window.parent.location.href = 'index.html';
+                        }
+                    }
+                },
+                failure: function ()
+                {
+                    Ext.MessageBox.show({
+                        title: s[4],
+                        msg: s[5],
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
+                }
+            });
+        }
+
+        function onLoad()
+        {
+            document.getElementById('welcome1').innerHTML = s[165];
+            document.getElementById('welcome2').innerHTML = s[166];
+            //document.getElementById('welcome3').innerHTML = s[167]+'<a href="guide.html">'+s[168]+'</a>。';
+            document.getElementById('welcome4').innerHTML = s[169];
+            document.getElementById('welcome5').innerHTML = s[170] + '　<a href="javascript:Load();">' + s[171] + '</a>';
+            document.getElementById('welcome6').innerHTML = s[172];
+            document.getElementById('welcome7').innerHTML = s[173] + '　<a href="javascript:window.parent.location.href=\'index.html\';">' + s[163] + '</a>　' + s[174] + '<br /><br />';
+            document.getElementById('welcome8').innerHTML = s[175] + '<br /><br />';
+            Load();
+        }
+    </script>
+</head>
+<body onload=onLoad()>
+<div class="col">
+    <div class="block">
+        <h3 class="block-title" id="welcome1"></h3>
+
+        <div class="block-body">
+            <div id="welcome2"></div>
+            <br/>
+
+            <div id="welcome3"></div>
+            <em id="welcome4"></em>
+        </div>
+    </div>
+    <div class="block">
+        <h3 class="block-title" id="welcome5"></h3>
+
+        <div class="block-body">
+            <ul class="list">
+                <li id="info1"></li>
+                <li id="info2"></li>
+                <li id="info3"></li>
+                <li id="info4"></li>
+                <li id="info5"></li>
+            </ul>
+        </div>
+    </div>
+    <div class="block">
+        <h3 class="block-title" id="welcome6"></h3>
+
+        <div class="block-body">
+            <ul class="list">
+                <li id="welcome7"></li>
+                <li id="welcome8"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

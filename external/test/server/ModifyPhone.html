@@ -1,0 +1,1192 @@
+<html>
+<head>
+<title>Interface Test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<script type="text/javascript" src="/js/json2.js"></script>
+<script language="javascript" type="text/javascript">
+  var xmlHttp;
+  function parseBoolean(value) {
+    return (typeof value === "undefined") ? false : value.replace(/^\s+|\s+$/g, "").toLowerCase() === "true";
+  }
+  function createXMLHttpRequest(){
+    if(window.ActiveXObject){
+      xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    else if(window.XMLHttpRequest){
+      xmlHttp = new XMLHttpRequest();
+    }
+  }
+  function call_post(){
+    createXMLHttpRequest();
+  var vosRequest = new Object(); 
+  if(document.getElementById("checkbox_e164").checked){
+    vosRequest.e164 = document.getElementById("e164").value;
+  }
+  if(document.getElementById("checkbox_account").checked){
+    vosRequest.account = document.getElementById("account").value;
+  }
+  if(document.getElementById("checkbox_password").checked){
+    vosRequest.password = document.getElementById("password").value;
+  }
+  if(document.getElementById("checkbox_displayNumber").checked){
+    vosRequest.displayNumber = document.getElementById("displayNumber").value;
+  }
+  if(document.getElementById("checkbox_lockType").checked){
+    vosRequest.lockType = parseFloat(document.getElementById("lockType").value);
+  }
+  if(document.getElementById("checkbox_callLevel").checked){
+    vosRequest.callLevel = parseFloat(document.getElementById("callLevel").value);
+  }
+  if(document.getElementById("checkbox_feerateGroup").checked){
+    vosRequest.feerateGroup = document.getElementById("feerateGroup").value;
+  }
+  if(document.getElementById("checkbox_monthlyMoneyMinimum").checked){
+    vosRequest.monthlyMoneyMinimum = parseFloat(document.getElementById("monthlyMoneyMinimum").value);
+  }
+  if(document.getElementById("checkbox_monthlyMoneyMaximum").checked){
+    vosRequest.monthlyMoneyMaximum = parseFloat(document.getElementById("monthlyMoneyMaximum").value);
+  }
+  if(document.getElementById("checkbox_monthlyRentFee").checked){
+    vosRequest.monthlyRentFee = parseFloat(document.getElementById("monthlyRentFee").value);
+  }
+  if(document.getElementById("checkbox_rewriteRulesOutCallee").checked){
+    vosRequest.rewriteRulesOutCallee = document.getElementById("rewriteRulesOutCallee").value;
+  }
+  if(document.getElementById("checkbox_rewriteRulesInCallee").checked){
+    vosRequest.rewriteRulesInCallee = document.getElementById("rewriteRulesInCallee").value;
+  }
+  if(document.getElementById("checkbox_rewriteRulesInCaller").checked){
+    vosRequest.rewriteRulesInCaller = document.getElementById("rewriteRulesInCaller").value;
+  }
+  if(document.getElementById("checkbox_routingGatewayGroupsAllow").checked){
+    vosRequest.routingGatewayGroupsAllow = parseBoolean(document.getElementById("routingGatewayGroupsAllow").value);
+  }
+  if(document.getElementById("checkbox_routingGatewayGroups").checked){
+    vosRequest.routingGatewayGroups = document.getElementById("routingGatewayGroups").value;
+  }
+  if(document.getElementById("checkbox_equipment").checked){
+    vosRequest.equipment = document.getElementById("equipment").value;
+  }
+  if(document.getElementById("checkbox_calleeBilling").checked){
+    vosRequest.calleeBilling = parseBoolean(document.getElementById("calleeBilling").value);
+  }
+  if(document.getElementById("checkbox_customerPassword").checked){
+    vosRequest.customerPassword = document.getElementById("customerPassword").value;
+  }
+  if(document.getElementById("checkbox_lineCallIn").checked){
+    vosRequest.lineCallIn = parseFloat(document.getElementById("lineCallIn").value);
+  }
+  if(document.getElementById("checkbox_lineCallOut").checked){
+    vosRequest.lineCallOut = parseFloat(document.getElementById("lineCallOut").value);
+  }
+  if(document.getElementById("checkbox_lineCapacity").checked){
+    vosRequest.lineCapacity = parseFloat(document.getElementById("lineCapacity").value);
+  }
+  if(document.getElementById("checkbox_phonebookLimit").checked){
+    vosRequest.phonebookLimit = parseFloat(document.getElementById("phonebookLimit").value);
+  }
+  if(document.getElementById("checkbox_callerLimitE164GroupsAllow").checked){
+    vosRequest.callerLimitE164GroupsAllow = parseBoolean(document.getElementById("callerLimitE164GroupsAllow").value);
+  }
+  if(document.getElementById("checkbox_callerLimitE164Groups").checked){
+    vosRequest.callerLimitE164Groups = document.getElementById("callerLimitE164Groups").value;
+  }
+  if(document.getElementById("checkbox_calleeLimitE164Allow").checked){
+    vosRequest.calleeLimitE164Allow = parseBoolean(document.getElementById("calleeLimitE164Allow").value);
+  }
+  if(document.getElementById("checkbox_calleeLimitE164Groups").checked){
+    vosRequest.calleeLimitE164Groups = document.getElementById("calleeLimitE164Groups").value;
+  }
+  if(document.getElementById("checkbox_dids").checked){
+    vosRequest.dids = document.getElementById("dids").value;
+  }
+  if(document.getElementById("checkbox_memo").checked){
+    vosRequest.memo = document.getElementById("memo").value;
+  }
+  if(document.getElementById("checkbox_infoPhoneValueAdded").checked){
+    vosRequest.infoPhoneValueAdded = new Object(); 
+    if(document.getElementById("checkbox_infoPhoneValueAdded_callerIdDisplay").checked){
+      vosRequest.infoPhoneValueAdded.callerIdDisplay = parseBoolean(document.getElementById("infoPhoneValueAdded_callerIdDisplay").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_callTransfer").checked){
+      vosRequest.infoPhoneValueAdded.callTransfer = parseBoolean(document.getElementById("infoPhoneValueAdded_callTransfer").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_doNotDisturb").checked){
+      vosRequest.infoPhoneValueAdded.doNotDisturb = parseBoolean(document.getElementById("infoPhoneValueAdded_doNotDisturb").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_periodForwarding").checked){
+      vosRequest.infoPhoneValueAdded.periodForwarding = parseBoolean(document.getElementById("infoPhoneValueAdded_periodForwarding").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings").checked){
+      vosRequest.infoPhoneValueAdded.infoPhoneValueAddedPeriodForwardings = new Array(1);
+      vosRequest.infoPhoneValueAdded.infoPhoneValueAddedPeriodForwardings[0] = new Object(); 
+      if(document.getElementById("checkbox_infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_weekOfDay").checked){
+        vosRequest.infoPhoneValueAdded.infoPhoneValueAddedPeriodForwardings[0].weekOfDay = document.getElementById("infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_weekOfDay").value;
+      }
+      if(document.getElementById("checkbox_infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_beginSecondInDay").checked){
+        vosRequest.infoPhoneValueAdded.infoPhoneValueAddedPeriodForwardings[0].beginSecondInDay = parseFloat(document.getElementById("infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_beginSecondInDay").value);
+      }
+      if(document.getElementById("checkbox_infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_endSecondInDay").checked){
+        vosRequest.infoPhoneValueAdded.infoPhoneValueAddedPeriodForwardings[0].endSecondInDay = parseFloat(document.getElementById("infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_endSecondInDay").value);
+      }
+      if(document.getElementById("checkbox_infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_forwardE164").checked){
+        vosRequest.infoPhoneValueAdded.infoPhoneValueAddedPeriodForwardings[0].forwardE164 = new Object(); 
+        if(document.getElementById("checkbox_infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_forwardE164_forwardMethod").checked){
+          vosRequest.infoPhoneValueAdded.infoPhoneValueAddedPeriodForwardings[0].forwardE164.forwardMethod = parseFloat(document.getElementById("infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_forwardE164_forwardMethod").value);
+        }
+        if(document.getElementById("checkbox_infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_forwardE164_alertSecond").checked){
+          vosRequest.infoPhoneValueAdded.infoPhoneValueAddedPeriodForwardings[0].forwardE164.alertSecond = parseFloat(document.getElementById("infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_forwardE164_alertSecond").value);
+        }
+        if(document.getElementById("checkbox_infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_forwardE164_e164").checked){
+          vosRequest.infoPhoneValueAdded.infoPhoneValueAddedPeriodForwardings[0].forwardE164.e164 = document.getElementById("infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_forwardE164_e164").value;
+        }
+      }
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_unconditionalForward").checked){
+      vosRequest.infoPhoneValueAdded.unconditionalForward = parseBoolean(document.getElementById("infoPhoneValueAdded_unconditionalForward").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_unconditionalForwardE164").checked){
+      vosRequest.infoPhoneValueAdded.unconditionalForwardE164 = new Object(); 
+      if(document.getElementById("checkbox_infoPhoneValueAdded_unconditionalForwardE164_forwardMethod").checked){
+        vosRequest.infoPhoneValueAdded.unconditionalForwardE164.forwardMethod = parseFloat(document.getElementById("infoPhoneValueAdded_unconditionalForwardE164_forwardMethod").value);
+      }
+      if(document.getElementById("checkbox_infoPhoneValueAdded_unconditionalForwardE164_alertSecond").checked){
+        vosRequest.infoPhoneValueAdded.unconditionalForwardE164.alertSecond = parseFloat(document.getElementById("infoPhoneValueAdded_unconditionalForwardE164_alertSecond").value);
+      }
+      if(document.getElementById("checkbox_infoPhoneValueAdded_unconditionalForwardE164_e164").checked){
+        vosRequest.infoPhoneValueAdded.unconditionalForwardE164.e164 = document.getElementById("infoPhoneValueAdded_unconditionalForwardE164_e164").value;
+      }
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_noAnswerForward").checked){
+      vosRequest.infoPhoneValueAdded.noAnswerForward = parseBoolean(document.getElementById("infoPhoneValueAdded_noAnswerForward").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_noAnswerForwardE164").checked){
+      vosRequest.infoPhoneValueAdded.noAnswerForwardE164 = new Object(); 
+      if(document.getElementById("checkbox_infoPhoneValueAdded_noAnswerForwardE164_forwardMethod").checked){
+        vosRequest.infoPhoneValueAdded.noAnswerForwardE164.forwardMethod = parseFloat(document.getElementById("infoPhoneValueAdded_noAnswerForwardE164_forwardMethod").value);
+      }
+      if(document.getElementById("checkbox_infoPhoneValueAdded_noAnswerForwardE164_alertSecond").checked){
+        vosRequest.infoPhoneValueAdded.noAnswerForwardE164.alertSecond = parseFloat(document.getElementById("infoPhoneValueAdded_noAnswerForwardE164_alertSecond").value);
+      }
+      if(document.getElementById("checkbox_infoPhoneValueAdded_noAnswerForwardE164_e164").checked){
+        vosRequest.infoPhoneValueAdded.noAnswerForwardE164.e164 = document.getElementById("infoPhoneValueAdded_noAnswerForwardE164_e164").value;
+      }
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_offlineForward").checked){
+      vosRequest.infoPhoneValueAdded.offlineForward = parseBoolean(document.getElementById("infoPhoneValueAdded_offlineForward").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_offlineForwardE164").checked){
+      vosRequest.infoPhoneValueAdded.offlineForwardE164 = new Object(); 
+      if(document.getElementById("checkbox_infoPhoneValueAdded_offlineForwardE164_forwardMethod").checked){
+        vosRequest.infoPhoneValueAdded.offlineForwardE164.forwardMethod = parseFloat(document.getElementById("infoPhoneValueAdded_offlineForwardE164_forwardMethod").value);
+      }
+      if(document.getElementById("checkbox_infoPhoneValueAdded_offlineForwardE164_alertSecond").checked){
+        vosRequest.infoPhoneValueAdded.offlineForwardE164.alertSecond = parseFloat(document.getElementById("infoPhoneValueAdded_offlineForwardE164_alertSecond").value);
+      }
+      if(document.getElementById("checkbox_infoPhoneValueAdded_offlineForwardE164_e164").checked){
+        vosRequest.infoPhoneValueAdded.offlineForwardE164.e164 = document.getElementById("infoPhoneValueAdded_offlineForwardE164_e164").value;
+      }
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_busyForward").checked){
+      vosRequest.infoPhoneValueAdded.busyForward = parseBoolean(document.getElementById("infoPhoneValueAdded_busyForward").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_busyForwardE164").checked){
+      vosRequest.infoPhoneValueAdded.busyForwardE164 = new Object(); 
+      if(document.getElementById("checkbox_infoPhoneValueAdded_busyForwardE164_forwardMethod").checked){
+        vosRequest.infoPhoneValueAdded.busyForwardE164.forwardMethod = parseFloat(document.getElementById("infoPhoneValueAdded_busyForwardE164_forwardMethod").value);
+      }
+      if(document.getElementById("checkbox_infoPhoneValueAdded_busyForwardE164_alertSecond").checked){
+        vosRequest.infoPhoneValueAdded.busyForwardE164.alertSecond = parseFloat(document.getElementById("infoPhoneValueAdded_busyForwardE164_alertSecond").value);
+      }
+      if(document.getElementById("checkbox_infoPhoneValueAdded_busyForwardE164_e164").checked){
+        vosRequest.infoPhoneValueAdded.busyForwardE164.e164 = document.getElementById("infoPhoneValueAdded_busyForwardE164_e164").value;
+      }
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_callForwardDisplay").checked){
+      vosRequest.infoPhoneValueAdded.callForwardDisplay = parseFloat(document.getElementById("infoPhoneValueAdded_callForwardDisplay").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_callTransferNormalDisplay").checked){
+      vosRequest.infoPhoneValueAdded.callTransferNormalDisplay = parseFloat(document.getElementById("infoPhoneValueAdded_callTransferNormalDisplay").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_callTransferAskDisplay").checked){
+      vosRequest.infoPhoneValueAdded.callTransferAskDisplay = parseFloat(document.getElementById("infoPhoneValueAdded_callTransferAskDisplay").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_colorRing").checked){
+      vosRequest.infoPhoneValueAdded.colorRing = parseBoolean(document.getElementById("infoPhoneValueAdded_colorRing").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_remoteColorRingPassthrough").checked){
+      vosRequest.infoPhoneValueAdded.remoteColorRingPassthrough = parseBoolean(document.getElementById("infoPhoneValueAdded_remoteColorRingPassthrough").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_colorRingName").checked){
+      vosRequest.infoPhoneValueAdded.colorRingName = document.getElementById("infoPhoneValueAdded_colorRingName").value;
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_language").checked){
+      vosRequest.infoPhoneValueAdded.language = document.getElementById("infoPhoneValueAdded_language").value;
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_unableToConnectVoicePrompts").checked){
+      vosRequest.infoPhoneValueAdded.unableToConnectVoicePrompts = parseFloat(document.getElementById("infoPhoneValueAdded_unableToConnectVoicePrompts").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_callRemainingTimePrompts").checked){
+      vosRequest.infoPhoneValueAdded.callRemainingTimePrompts = parseFloat(document.getElementById("infoPhoneValueAdded_callRemainingTimePrompts").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_balanceNotEnoughAlarm").checked){
+      vosRequest.infoPhoneValueAdded.balanceNotEnoughAlarm = parseFloat(document.getElementById("infoPhoneValueAdded_balanceNotEnoughAlarm").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_voiceMail").checked){
+      vosRequest.infoPhoneValueAdded.voiceMail = parseBoolean(document.getElementById("infoPhoneValueAdded_voiceMail").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_voiceMailCheckPassword").checked){
+      vosRequest.infoPhoneValueAdded.voiceMailCheckPassword = parseBoolean(document.getElementById("infoPhoneValueAdded_voiceMailCheckPassword").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_voiceMailMaxNumber").checked){
+      vosRequest.infoPhoneValueAdded.voiceMailMaxNumber = parseFloat(document.getElementById("infoPhoneValueAdded_voiceMailMaxNumber").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_voiceMailExpireDay").checked){
+      vosRequest.infoPhoneValueAdded.voiceMailExpireDay = parseFloat(document.getElementById("infoPhoneValueAdded_voiceMailExpireDay").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneValueAdded_voiceMailAudioType").checked){
+      vosRequest.infoPhoneValueAdded.voiceMailAudioType = parseFloat(document.getElementById("infoPhoneValueAdded_voiceMailAudioType").value);
+    }
+  }
+  if(document.getElementById("checkbox_infoPhoneAdditional").checked){
+    vosRequest.infoPhoneAdditional = new Object(); 
+    if(document.getElementById("checkbox_infoPhoneAdditional_registerType").checked){
+      vosRequest.infoPhoneAdditional.registerType = parseFloat(document.getElementById("infoPhoneAdditional_registerType").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_protocol").checked){
+      vosRequest.infoPhoneAdditional.protocol = parseFloat(document.getElementById("infoPhoneAdditional_protocol").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_ip").checked){
+      vosRequest.infoPhoneAdditional.ip = document.getElementById("infoPhoneAdditional_ip").value;
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_port").checked){
+      vosRequest.infoPhoneAdditional.port = parseFloat(document.getElementById("infoPhoneAdditional_port").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_localIp").checked){
+      vosRequest.infoPhoneAdditional.localIp = document.getElementById("infoPhoneAdditional_localIp").value;
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_rtpRelay").checked){
+      vosRequest.infoPhoneAdditional.rtpRelay = parseFloat(document.getElementById("infoPhoneAdditional_rtpRelay").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_rtpInterruptDetection").checked){
+      vosRequest.infoPhoneAdditional.rtpInterruptDetection = parseFloat(document.getElementById("infoPhoneAdditional_rtpInterruptDetection").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_callDurationLimit").checked){
+      vosRequest.infoPhoneAdditional.callDurationLimit = parseFloat(document.getElementById("infoPhoneAdditional_callDurationLimit").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_callTransferBillingMethod").checked){
+      vosRequest.infoPhoneAdditional.callTransferBillingMethod = parseFloat(document.getElementById("infoPhoneAdditional_callTransferBillingMethod").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_useCallerPhoneDisplay").checked){
+      vosRequest.infoPhoneAdditional.useCallerPhoneDisplay = parseFloat(document.getElementById("infoPhoneAdditional_useCallerPhoneDisplay").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_noBillingToPhone").checked){
+      vosRequest.infoPhoneAdditional.noBillingToPhone = parseFloat(document.getElementById("infoPhoneAdditional_noBillingToPhone").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_displayCallerShortNumber").checked){
+      vosRequest.infoPhoneAdditional.displayCallerShortNumber = parseBoolean(document.getElementById("infoPhoneAdditional_displayCallerShortNumber").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_useRoutingGatewayNotOnline").checked){
+      vosRequest.infoPhoneAdditional.useRoutingGatewayNotOnline = parseFloat(document.getElementById("infoPhoneAdditional_useRoutingGatewayNotOnline").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_minProfitPercentEnable").checked){
+      vosRequest.infoPhoneAdditional.minProfitPercentEnable = parseBoolean(document.getElementById("infoPhoneAdditional_minProfitPercentEnable").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_minProfitPercent").checked){
+      vosRequest.infoPhoneAdditional.minProfitPercent = parseFloat(document.getElementById("infoPhoneAdditional_minProfitPercent").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_maxSecondRatesEnable").checked){
+      vosRequest.infoPhoneAdditional.maxSecondRatesEnable = parseBoolean(document.getElementById("infoPhoneAdditional_maxSecondRatesEnable").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_maxSecondRates").checked){
+      vosRequest.infoPhoneAdditional.maxSecondRates = parseFloat(document.getElementById("infoPhoneAdditional_maxSecondRates").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_firstRoutingPolicy").checked){
+      vosRequest.infoPhoneAdditional.firstRoutingPolicy = parseFloat(document.getElementById("infoPhoneAdditional_firstRoutingPolicy").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_secondRoutingPolicy").checked){
+      vosRequest.infoPhoneAdditional.secondRoutingPolicy = parseFloat(document.getElementById("infoPhoneAdditional_secondRoutingPolicy").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_sipAuthenticationMethod").checked){
+      vosRequest.infoPhoneAdditional.sipAuthenticationMethod = parseFloat(document.getElementById("infoPhoneAdditional_sipAuthenticationMethod").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_sipRemoteAlertingMethod").checked){
+      vosRequest.infoPhoneAdditional.sipRemoteAlertingMethod = parseFloat(document.getElementById("infoPhoneAdditional_sipRemoteAlertingMethod").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_sipTimerSupport").checked){
+      vosRequest.infoPhoneAdditional.sipTimerSupport = parseBoolean(document.getElementById("infoPhoneAdditional_sipTimerSupport").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_sip100RelSupport").checked){
+      vosRequest.infoPhoneAdditional.sip100RelSupport = parseBoolean(document.getElementById("infoPhoneAdditional_sip100RelSupport").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_sipT38Support").checked){
+      vosRequest.infoPhoneAdditional.sipT38Support = parseBoolean(document.getElementById("infoPhoneAdditional_sipT38Support").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_sipPrivacySupport").checked){
+      vosRequest.infoPhoneAdditional.sipPrivacySupport = parseBoolean(document.getElementById("infoPhoneAdditional_sipPrivacySupport").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_sipPrivacy").checked){
+      vosRequest.infoPhoneAdditional.sipPrivacy = parseFloat(document.getElementById("infoPhoneAdditional_sipPrivacy").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_sipPPreferredIdentity").checked){
+      vosRequest.infoPhoneAdditional.sipPPreferredIdentity = parseFloat(document.getElementById("infoPhoneAdditional_sipPPreferredIdentity").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_sipPAssertedIdentity").checked){
+      vosRequest.infoPhoneAdditional.sipPAssertedIdentity = parseFloat(document.getElementById("infoPhoneAdditional_sipPAssertedIdentity").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_dtmfReceiveMethod").checked){
+      vosRequest.infoPhoneAdditional.dtmfReceiveMethod = parseFloat(document.getElementById("infoPhoneAdditional_dtmfReceiveMethod").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_dtmfSipSendMethod").checked){
+      vosRequest.infoPhoneAdditional.dtmfSipSendMethod = parseFloat(document.getElementById("infoPhoneAdditional_dtmfSipSendMethod").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_sipCodecAssign").checked){
+      vosRequest.infoPhoneAdditional.sipCodecAssign = parseBoolean(document.getElementById("infoPhoneAdditional_sipCodecAssign").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_sipCodecs").checked){
+      vosRequest.infoPhoneAdditional.sipCodecs = new Array(1);
+      vosRequest.infoPhoneAdditional.sipCodecs[0] = new Object();
+      vosRequest.infoPhoneAdditional.sipCodecs[0] = document.getElementById("infoPhoneAdditional_sipCodecs").value;
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_audioCodecTranscodingEnable").checked){
+      vosRequest.infoPhoneAdditional.audioCodecTranscodingEnable = parseBoolean(document.getElementById("infoPhoneAdditional_audioCodecTranscodingEnable").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_rtpIncludeDtmfInband").checked){
+      vosRequest.infoPhoneAdditional.rtpIncludeDtmfInband = parseBoolean(document.getElementById("infoPhoneAdditional_rtpIncludeDtmfInband").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_rtpNeedDtmfInband").checked){
+      vosRequest.infoPhoneAdditional.rtpNeedDtmfInband = parseBoolean(document.getElementById("infoPhoneAdditional_rtpNeedDtmfInband").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_ivrEquipmentType").checked){
+      vosRequest.infoPhoneAdditional.ivrEquipmentType = parseFloat(document.getElementById("infoPhoneAdditional_ivrEquipmentType").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_ivrServiceName").checked){
+      vosRequest.infoPhoneAdditional.ivrServiceName = document.getElementById("infoPhoneAdditional_ivrServiceName").value;
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_ivrCallbackBillingMode").checked){
+      vosRequest.infoPhoneAdditional.ivrCallbackBillingMode = parseFloat(document.getElementById("infoPhoneAdditional_ivrCallbackBillingMode").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_ivrCallbackMergeBillingMode").checked){
+      vosRequest.infoPhoneAdditional.ivrCallbackMergeBillingMode = parseFloat(document.getElementById("infoPhoneAdditional_ivrCallbackMergeBillingMode").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_ivrDirectMergeBillingMode").checked){
+      vosRequest.infoPhoneAdditional.ivrDirectMergeBillingMode = parseFloat(document.getElementById("infoPhoneAdditional_ivrDirectMergeBillingMode").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_ivrSecondBillingMode").checked){
+      vosRequest.infoPhoneAdditional.ivrSecondBillingMode = parseFloat(document.getElementById("infoPhoneAdditional_ivrSecondBillingMode").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_ivrCallbackBillingSecordNotConnectedOnAccessE164").checked){
+      vosRequest.infoPhoneAdditional.ivrCallbackBillingSecordNotConnectedOnAccessE164 = parseBoolean(document.getElementById("infoPhoneAdditional_ivrCallbackBillingSecordNotConnectedOnAccessE164").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_ivrCallbackBillingSecordConnectedOnSecondAccount").checked){
+      vosRequest.infoPhoneAdditional.ivrCallbackBillingSecordConnectedOnSecondAccount = parseBoolean(document.getElementById("infoPhoneAdditional_ivrCallbackBillingSecordConnectedOnSecondAccount").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_ivrAccessVerifyActivePhoneCard").checked){
+      vosRequest.infoPhoneAdditional.ivrAccessVerifyActivePhoneCard = parseBoolean(document.getElementById("infoPhoneAdditional_ivrAccessVerifyActivePhoneCard").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_ivrAccessVerifyBindedE164").checked){
+      vosRequest.infoPhoneAdditional.ivrAccessVerifyBindedE164 = parseBoolean(document.getElementById("infoPhoneAdditional_ivrAccessVerifyBindedE164").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_ivrAccessVerifyCallerE164Phone").checked){
+      vosRequest.infoPhoneAdditional.ivrAccessVerifyCallerE164Phone = parseBoolean(document.getElementById("infoPhoneAdditional_ivrAccessVerifyCallerE164Phone").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_ivrAccessVerifyAccessE164Phone").checked){
+      vosRequest.infoPhoneAdditional.ivrAccessVerifyAccessE164Phone = parseBoolean(document.getElementById("infoPhoneAdditional_ivrAccessVerifyAccessE164Phone").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_ivrEnablePhoneSetting").checked){
+      vosRequest.infoPhoneAdditional.ivrEnablePhoneSetting = parseBoolean(document.getElementById("infoPhoneAdditional_ivrEnablePhoneSetting").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_lrnEnable").checked){
+      vosRequest.infoPhoneAdditional.lrnEnable = parseBoolean(document.getElementById("infoPhoneAdditional_lrnEnable").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_lrnEatPrefixLength").checked){
+      vosRequest.infoPhoneAdditional.lrnEatPrefixLength = parseFloat(document.getElementById("infoPhoneAdditional_lrnEatPrefixLength").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_lrnFailureAction").checked){
+      vosRequest.infoPhoneAdditional.lrnFailureAction = parseFloat(document.getElementById("infoPhoneAdditional_lrnFailureAction").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_lrnInterstateBillingPrefix").checked){
+      vosRequest.infoPhoneAdditional.lrnInterstateBillingPrefix = document.getElementById("infoPhoneAdditional_lrnInterstateBillingPrefix").value;
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_lrnUndeterminedBillingPrefix").checked){
+      vosRequest.infoPhoneAdditional.lrnUndeterminedBillingPrefix = document.getElementById("infoPhoneAdditional_lrnUndeterminedBillingPrefix").value;
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_rewriteCalleeMobileAreaEnable").checked){
+      vosRequest.infoPhoneAdditional.rewriteCalleeMobileAreaEnable = parseBoolean(document.getElementById("infoPhoneAdditional_rewriteCalleeMobileAreaEnable").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_rewriteCalleeMobileArea").checked){
+      vosRequest.infoPhoneAdditional.rewriteCalleeMobileArea = document.getElementById("infoPhoneAdditional_rewriteCalleeMobileArea").value;
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_callStateReport").checked){
+      vosRequest.infoPhoneAdditional.callStateReport = parseBoolean(document.getElementById("infoPhoneAdditional_callStateReport").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_playAudioConnected").checked){
+      vosRequest.infoPhoneAdditional.playAudioConnected = parseBoolean(document.getElementById("infoPhoneAdditional_playAudioConnected").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_sipRequestAddress").checked){
+      vosRequest.infoPhoneAdditional.sipRequestAddress = parseFloat(document.getElementById("infoPhoneAdditional_sipRequestAddress").value);
+    }
+    if(document.getElementById("checkbox_infoPhoneAdditional_sipResponseAddress").checked){
+      vosRequest.infoPhoneAdditional.sipResponseAddress = parseFloat(document.getElementById("infoPhoneAdditional_sipResponseAddress").value);
+    }
+  }
+    document.getElementById("postText").innerHTML = "<br>Request Format: " + JSON.stringify(vosRequest) + "</br>";
+    document.getElementById("responseText").innerHTML = "";
+    xmlHttp.open("POST", "/external/server/ModifyPhone", true);
+    xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+    xmlHttp.onreadystatechange = showResult;
+    xmlHttp.send(JSON.stringify(vosRequest));
+  }
+  function showResult(){
+    if(xmlHttp.readyState == 4){
+      if(xmlHttp.status == 200){
+        document.getElementById("responseText").innerHTML = "<br>Response Format: " + xmlHttp.responseText + "</br>";
+        document.body.scrollTop=document.body.scrollHeight;
+      }
+    }
+  }
+  function load(){
+  document.getElementById("e164").value = "800801";
+  document.getElementById("account").value = "800801";
+  document.getElementById("password").value = "55753592";
+  document.getElementById("displayNumber").value = "0258008001";
+  document.getElementById("lockType").value = "0";
+  document.getElementById("callLevel").value = "5";
+  document.getElementById("feerateGroup").value = "0.01";
+  document.getElementById("monthlyMoneyMinimum").value = "0.0";
+  document.getElementById("monthlyMoneyMaximum").value = "100.0";
+  document.getElementById("monthlyRentFee").value = "10.0";
+  document.getElementById("rewriteRulesOutCallee").value = "";
+  document.getElementById("rewriteRulesInCallee").value = "";
+  document.getElementById("rewriteRulesInCaller").value = "";
+  document.getElementById("routingGatewayGroupsAllow").value = "true";
+  document.getElementById("routingGatewayGroups").value = "gatewayGroup1,gatewayGroup2";
+  document.getElementById("equipment").value = "";
+  document.getElementById("calleeBilling").value = "false";
+  document.getElementById("customerPassword").value = "55753592";
+  document.getElementById("lineCallIn").value = "2147483647";
+  document.getElementById("lineCallOut").value = "2147483647";
+  document.getElementById("lineCapacity").value = "2";
+  document.getElementById("phonebookLimit").value = "10";
+  document.getElementById("callerLimitE164GroupsAllow").value = "true";
+  document.getElementById("callerLimitE164Groups").value = "";
+  document.getElementById("calleeLimitE164Allow").value = "true";
+  document.getElementById("calleeLimitE164Groups").value = "";
+  document.getElementById("dids").value = "";
+  document.getElementById("memo").value = "测试中文";
+  document.getElementById("infoPhoneValueAdded_callerIdDisplay").value = "true";
+  document.getElementById("infoPhoneValueAdded_callTransfer").value = "true";
+  document.getElementById("infoPhoneValueAdded_doNotDisturb").value = "false";
+  document.getElementById("infoPhoneValueAdded_periodForwarding").value = "false";
+  document.getElementById("infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_weekOfDay").value = "0,1,2,3";
+  document.getElementById("infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_beginSecondInDay").value = "0";
+  document.getElementById("infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_endSecondInDay").value = "86400";
+  document.getElementById("infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_forwardE164_forwardMethod").value = "0";
+  document.getElementById("infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_forwardE164_alertSecond").value = "-1";
+  document.getElementById("infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_forwardE164_e164").value = "8465674";
+
+
+  document.getElementById("infoPhoneValueAdded_unconditionalForward").value = "false";
+  document.getElementById("infoPhoneValueAdded_unconditionalForwardE164_forwardMethod").value = "0";
+  document.getElementById("infoPhoneValueAdded_unconditionalForwardE164_alertSecond").value = "-1";
+  document.getElementById("infoPhoneValueAdded_unconditionalForwardE164_e164").value = "8465674";
+
+  document.getElementById("infoPhoneValueAdded_noAnswerForward").value = "false";
+  document.getElementById("infoPhoneValueAdded_noAnswerForwardE164_forwardMethod").value = "0";
+  document.getElementById("infoPhoneValueAdded_noAnswerForwardE164_alertSecond").value = "-1";
+  document.getElementById("infoPhoneValueAdded_noAnswerForwardE164_e164").value = "8465674";
+
+  document.getElementById("infoPhoneValueAdded_offlineForward").value = "false";
+  document.getElementById("infoPhoneValueAdded_offlineForwardE164_forwardMethod").value = "0";
+  document.getElementById("infoPhoneValueAdded_offlineForwardE164_alertSecond").value = "-1";
+  document.getElementById("infoPhoneValueAdded_offlineForwardE164_e164").value = "8465674";
+
+  document.getElementById("infoPhoneValueAdded_busyForward").value = "false";
+  document.getElementById("infoPhoneValueAdded_busyForwardE164_forwardMethod").value = "0";
+  document.getElementById("infoPhoneValueAdded_busyForwardE164_alertSecond").value = "-1";
+  document.getElementById("infoPhoneValueAdded_busyForwardE164_e164").value = "8465674";
+
+  document.getElementById("infoPhoneValueAdded_callForwardDisplay").value = "0";
+  document.getElementById("infoPhoneValueAdded_callTransferNormalDisplay").value = "0";
+  document.getElementById("infoPhoneValueAdded_callTransferAskDisplay").value = "0";
+  document.getElementById("infoPhoneValueAdded_colorRing").value = "true";
+  document.getElementById("infoPhoneValueAdded_remoteColorRingPassthrough").value = "false";
+  document.getElementById("infoPhoneValueAdded_colorRingName").value = "";
+  document.getElementById("infoPhoneValueAdded_language").value = "";
+  document.getElementById("infoPhoneValueAdded_unableToConnectVoicePrompts").value = "0";
+  document.getElementById("infoPhoneValueAdded_callRemainingTimePrompts").value = "0";
+  document.getElementById("infoPhoneValueAdded_balanceNotEnoughAlarm").value = "0";
+  document.getElementById("infoPhoneValueAdded_voiceMail").value = "false";
+  document.getElementById("infoPhoneValueAdded_voiceMailCheckPassword").value = "false";
+  document.getElementById("infoPhoneValueAdded_voiceMailMaxNumber").value = "-1";
+  document.getElementById("infoPhoneValueAdded_voiceMailExpireDay").value = "-1";
+  document.getElementById("infoPhoneValueAdded_voiceMailAudioType").value = "0";
+
+  document.getElementById("infoPhoneAdditional_registerType").value = "1";
+  document.getElementById("infoPhoneAdditional_protocol").value = "1";
+  document.getElementById("infoPhoneAdditional_ip").value = "";
+  document.getElementById("infoPhoneAdditional_port").value = "5060";
+  document.getElementById("infoPhoneAdditional_localIp").value = "";
+  document.getElementById("infoPhoneAdditional_rtpRelay").value = "0";
+  document.getElementById("infoPhoneAdditional_rtpInterruptDetection").value = "0";
+  document.getElementById("infoPhoneAdditional_callDurationLimit").value = "-1";
+  document.getElementById("infoPhoneAdditional_callTransferBillingMethod").value = "0";
+  document.getElementById("infoPhoneAdditional_useCallerPhoneDisplay").value = "0";
+  document.getElementById("infoPhoneAdditional_noBillingToPhone").value = "0";
+  document.getElementById("infoPhoneAdditional_displayCallerShortNumber").value = "true";
+  document.getElementById("infoPhoneAdditional_useRoutingGatewayNotOnline").value = "0";
+  document.getElementById("infoPhoneAdditional_minProfitPercentEnable").value = "false";
+  document.getElementById("infoPhoneAdditional_minProfitPercent").value = "0";
+  document.getElementById("infoPhoneAdditional_maxSecondRatesEnable").value = "false";
+  document.getElementById("infoPhoneAdditional_maxSecondRates").value = "0.0";
+  document.getElementById("infoPhoneAdditional_firstRoutingPolicy").value = "0";
+  document.getElementById("infoPhoneAdditional_secondRoutingPolicy").value = "0";
+  document.getElementById("infoPhoneAdditional_sipAuthenticationMethod").value = "0";
+  document.getElementById("infoPhoneAdditional_sipRemoteAlertingMethod").value = "0";
+  document.getElementById("infoPhoneAdditional_sipTimerSupport").value = "true";
+  document.getElementById("infoPhoneAdditional_sip100RelSupport").value = "false";
+  document.getElementById("infoPhoneAdditional_sipT38Support").value = "true";
+  document.getElementById("infoPhoneAdditional_sipPrivacySupport").value = "false";
+  document.getElementById("infoPhoneAdditional_sipPrivacy").value = "0";
+  document.getElementById("infoPhoneAdditional_sipPPreferredIdentity").value = "0";
+  document.getElementById("infoPhoneAdditional_sipPAssertedIdentity").value = "0";
+  document.getElementById("infoPhoneAdditional_dtmfReceiveMethod").value = "0";
+  document.getElementById("infoPhoneAdditional_dtmfSipSendMethod").value = "0";
+  document.getElementById("infoPhoneAdditional_sipCodecAssign").value = "false";
+  document.getElementById("infoPhoneAdditional_sipCodecs").value = "audio/PCMA";
+  document.getElementById("infoPhoneAdditional_audioCodecTranscodingEnable").value = "false";
+  document.getElementById("infoPhoneAdditional_rtpIncludeDtmfInband").value = "false";
+  document.getElementById("infoPhoneAdditional_rtpNeedDtmfInband").value = "false";
+  document.getElementById("infoPhoneAdditional_ivrEquipmentType").value = "-1";
+  document.getElementById("infoPhoneAdditional_ivrServiceName").value = "";
+  document.getElementById("infoPhoneAdditional_ivrCallbackBillingMode").value = "0";
+  document.getElementById("infoPhoneAdditional_ivrCallbackMergeBillingMode").value = "0";
+  document.getElementById("infoPhoneAdditional_ivrDirectMergeBillingMode").value = "0";
+  document.getElementById("infoPhoneAdditional_ivrSecondBillingMode").value = "0";
+  document.getElementById("infoPhoneAdditional_ivrCallbackBillingSecordNotConnectedOnAccessE164").value = "false";
+  document.getElementById("infoPhoneAdditional_ivrCallbackBillingSecordConnectedOnSecondAccount").value = "false";
+  document.getElementById("infoPhoneAdditional_ivrAccessVerifyActivePhoneCard").value = "false";
+  document.getElementById("infoPhoneAdditional_ivrAccessVerifyBindedE164").value = "false";
+  document.getElementById("infoPhoneAdditional_ivrAccessVerifyCallerE164Phone").value = "false";
+  document.getElementById("infoPhoneAdditional_ivrAccessVerifyAccessE164Phone").value = "false";
+  document.getElementById("infoPhoneAdditional_ivrEnablePhoneSetting").value = "false";
+  document.getElementById("infoPhoneAdditional_lrnEnable").value = "false";
+  document.getElementById("infoPhoneAdditional_lrnEatPrefixLength").value = "0";
+  document.getElementById("infoPhoneAdditional_lrnFailureAction").value = "0";
+  document.getElementById("infoPhoneAdditional_lrnInterstateBillingPrefix").value = "";
+  document.getElementById("infoPhoneAdditional_lrnUndeterminedBillingPrefix").value = "";
+  document.getElementById("infoPhoneAdditional_rewriteCalleeMobileAreaEnable").value = "false";
+  document.getElementById("infoPhoneAdditional_rewriteCalleeMobileArea").value = "";
+  document.getElementById("infoPhoneAdditional_callStateReport").value = "false";
+  document.getElementById("infoPhoneAdditional_playAudioConnected").value = "false";
+  document.getElementById("infoPhoneAdditional_sipRequestAddress").value = "1";
+  document.getElementById("infoPhoneAdditional_sipResponseAddress").value = "1";
+
+
+  }
+</script>
+</head>
+<body onLoad="load()">
+<p><font color="#FF0000">Important: Please fill in the fields correctly in accordance with the manual. The wrong input may cause the system to abnormal</font></p>
+<table width=100%>
+  <tr>
+    <td>Interface Uri: /external/server/ModifyPhone</td>
+  </tr>
+</table>
+<table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+  <tr>
+    <td> ModifyPhone</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_e164">e164<input type="text" id="e164"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_account">account<input type="text" id="account"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_password">password<input type="text" id="password"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_displayNumber">displayNumber<input type="text" id="displayNumber"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_lockType">lockType<input type="text" id="lockType"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callLevel">callLevel<input type="text" id="callLevel"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_feerateGroup">feerateGroup<input type="text" id="feerateGroup"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_monthlyMoneyMinimum">monthlyMoneyMinimum<input type="text" id="monthlyMoneyMinimum"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_monthlyMoneyMaximum">monthlyMoneyMaximum<input type="text" id="monthlyMoneyMaximum"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_monthlyRentFee">monthlyRentFee<input type="text" id="monthlyRentFee"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_rewriteRulesOutCallee">rewriteRulesOutCallee<input type="text" id="rewriteRulesOutCallee"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_rewriteRulesInCallee">rewriteRulesInCallee<input type="text" id="rewriteRulesInCallee"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_rewriteRulesInCaller">rewriteRulesInCaller<input type="text" id="rewriteRulesInCaller"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_routingGatewayGroupsAllow">routingGatewayGroupsAllow<input type="text" id="routingGatewayGroupsAllow"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_routingGatewayGroups">routingGatewayGroups<input type="text" id="routingGatewayGroups"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_equipment">equipment<input type="text" id="equipment"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calleeBilling">calleeBilling<input type="text" id="calleeBilling"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_customerPassword">customerPassword<input type="text" id="customerPassword"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_lineCallIn">lineCallIn<input type="text" id="lineCallIn"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_lineCallOut">lineCallOut<input type="text" id="lineCallOut"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_lineCapacity">lineCapacity<input type="text" id="lineCapacity"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_phonebookLimit">phonebookLimit<input type="text" id="phonebookLimit"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callerLimitE164GroupsAllow">callerLimitE164GroupsAllow<input type="text" id="callerLimitE164GroupsAllow"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callerLimitE164Groups">callerLimitE164Groups<input type="text" id="callerLimitE164Groups"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calleeLimitE164Allow">calleeLimitE164Allow<input type="text" id="calleeLimitE164Allow"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calleeLimitE164Groups">calleeLimitE164Groups<input type="text" id="calleeLimitE164Groups"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_dids">dids<input type="text" id="dids"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_memo">memo<input type="text" id="memo"></td>
+    <td></td>
+  </tr>
+  <tr><td colspan="2">
+  <table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+    <tr>
+        <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded">infoPhoneValueAdded InfoPhoneValueAdded</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_callerIdDisplay">callerIdDisplay<input type="text" id="infoPhoneValueAdded_callerIdDisplay"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_callTransfer">callTransfer<input type="text" id="infoPhoneValueAdded_callTransfer"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_doNotDisturb">doNotDisturb<input type="text" id="infoPhoneValueAdded_doNotDisturb"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_periodForwarding">periodForwarding<input type="text" id="infoPhoneValueAdded_periodForwarding"></td>
+      <td></td>
+    </tr>
+    <tr><td colspan="2">
+    <table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+      <tr>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings">infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings[0] InfoPhoneValueAddedPeriodForwarding</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_weekOfDay">weekOfDay<input type="text" id="infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_weekOfDay"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_beginSecondInDay">beginSecondInDay<input type="text" id="infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_beginSecondInDay"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_endSecondInDay">endSecondInDay<input type="text" id="infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_endSecondInDay"></td>
+        <td></td>
+      </tr>
+      <tr><td colspan="2">
+      <table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+        <tr>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_forwardE164">infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_forwardE164 InfoPhoneValueAddedForwardE164</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_forwardE164_forwardMethod">forwardMethod<input type="text" id="infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_forwardE164_forwardMethod"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_forwardE164_alertSecond">alertSecond<input type="text" id="infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_forwardE164_alertSecond"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_forwardE164_e164">e164<input type="text" id="infoPhoneValueAdded_infoPhoneValueAddedPeriodForwardings_forwardE164_e164"></td>
+          <td></td>
+        </tr>
+      </table>
+      </td></tr>
+    </table>
+    </td></tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_unconditionalForward">unconditionalForward<input type="text" id="infoPhoneValueAdded_unconditionalForward"></td>
+      <td></td>
+    </tr>
+    <tr><td colspan="2">
+    <table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+      <tr>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_unconditionalForwardE164">infoPhoneValueAdded_unconditionalForwardE164 InfoPhoneValueAddedForwardE164</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_unconditionalForwardE164_forwardMethod">forwardMethod<input type="text" id="infoPhoneValueAdded_unconditionalForwardE164_forwardMethod"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_unconditionalForwardE164_alertSecond">alertSecond<input type="text" id="infoPhoneValueAdded_unconditionalForwardE164_alertSecond"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_unconditionalForwardE164_e164">e164<input type="text" id="infoPhoneValueAdded_unconditionalForwardE164_e164"></td>
+        <td></td>
+      </tr>
+    </table>
+    </td></tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_noAnswerForward">noAnswerForward<input type="text" id="infoPhoneValueAdded_noAnswerForward"></td>
+      <td></td>
+    </tr>
+    <tr><td colspan="2">
+    <table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+      <tr>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_noAnswerForwardE164">infoPhoneValueAdded_noAnswerForwardE164 InfoPhoneValueAddedForwardE164</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_noAnswerForwardE164_forwardMethod">forwardMethod<input type="text" id="infoPhoneValueAdded_noAnswerForwardE164_forwardMethod"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_noAnswerForwardE164_alertSecond">alertSecond<input type="text" id="infoPhoneValueAdded_noAnswerForwardE164_alertSecond"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_noAnswerForwardE164_e164">e164<input type="text" id="infoPhoneValueAdded_noAnswerForwardE164_e164"></td>
+        <td></td>
+      </tr>
+    </table>
+    </td></tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_offlineForward">offlineForward<input type="text" id="infoPhoneValueAdded_offlineForward"></td>
+      <td></td>
+    </tr>
+    <tr><td colspan="2">
+    <table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+      <tr>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_offlineForwardE164">infoPhoneValueAdded_offlineForwardE164 InfoPhoneValueAddedForwardE164</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_offlineForwardE164_forwardMethod">forwardMethod<input type="text" id="infoPhoneValueAdded_offlineForwardE164_forwardMethod"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_offlineForwardE164_alertSecond">alertSecond<input type="text" id="infoPhoneValueAdded_offlineForwardE164_alertSecond"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_offlineForwardE164_e164">e164<input type="text" id="infoPhoneValueAdded_offlineForwardE164_e164"></td>
+        <td></td>
+      </tr>
+    </table>
+    </td></tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_busyForward">busyForward<input type="text" id="infoPhoneValueAdded_busyForward"></td>
+      <td></td>
+    </tr>
+    <tr><td colspan="2">
+    <table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+      <tr>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_busyForwardE164">infoPhoneValueAdded_busyForwardE164 InfoPhoneValueAddedForwardE164</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_busyForwardE164_forwardMethod">forwardMethod<input type="text" id="infoPhoneValueAdded_busyForwardE164_forwardMethod"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_busyForwardE164_alertSecond">alertSecond<input type="text" id="infoPhoneValueAdded_busyForwardE164_alertSecond"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_busyForwardE164_e164">e164<input type="text" id="infoPhoneValueAdded_busyForwardE164_e164"></td>
+        <td></td>
+      </tr>
+    </table>
+    </td></tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_callForwardDisplay">callForwardDisplay<input type="text" id="infoPhoneValueAdded_callForwardDisplay"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_callTransferNormalDisplay">callTransferNormalDisplay<input type="text" id="infoPhoneValueAdded_callTransferNormalDisplay"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_callTransferAskDisplay">callTransferAskDisplay<input type="text" id="infoPhoneValueAdded_callTransferAskDisplay"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_colorRing">colorRing<input type="text" id="infoPhoneValueAdded_colorRing"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_remoteColorRingPassthrough">remoteColorRingPassthrough<input type="text" id="infoPhoneValueAdded_remoteColorRingPassthrough"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_colorRingName">colorRingName<input type="text" id="infoPhoneValueAdded_colorRingName"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_language">language<input type="text" id="infoPhoneValueAdded_language"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_unableToConnectVoicePrompts">unableToConnectVoicePrompts<input type="text" id="infoPhoneValueAdded_unableToConnectVoicePrompts"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_callRemainingTimePrompts">callRemainingTimePrompts<input type="text" id="infoPhoneValueAdded_callRemainingTimePrompts"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_balanceNotEnoughAlarm">balanceNotEnoughAlarm<input type="text" id="infoPhoneValueAdded_balanceNotEnoughAlarm"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_voiceMail">voiceMail<input type="text" id="infoPhoneValueAdded_voiceMail"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_voiceMailCheckPassword">voiceMailCheckPassword<input type="text" id="infoPhoneValueAdded_voiceMailCheckPassword"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_voiceMailMaxNumber">voiceMailMaxNumber<input type="text" id="infoPhoneValueAdded_voiceMailMaxNumber"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_voiceMailExpireDay">voiceMailExpireDay<input type="text" id="infoPhoneValueAdded_voiceMailExpireDay"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneValueAdded_voiceMailAudioType">voiceMailAudioType<input type="text" id="infoPhoneValueAdded_voiceMailAudioType"></td>
+      <td></td>
+    </tr>
+  </table>
+  </td></tr>
+  <tr><td colspan="2">
+  <table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+    <tr>
+        <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional">infoPhoneAdditional InfoPhoneAdditional</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_registerType">registerType<input type="text" id="infoPhoneAdditional_registerType"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_protocol">protocol<input type="text" id="infoPhoneAdditional_protocol"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_ip">ip<input type="text" id="infoPhoneAdditional_ip"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_port">port<input type="text" id="infoPhoneAdditional_port"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_localIp">localIp<input type="text" id="infoPhoneAdditional_localIp"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_rtpRelay">rtpRelay<input type="text" id="infoPhoneAdditional_rtpRelay"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_rtpInterruptDetection">rtpInterruptDetection<input type="text" id="infoPhoneAdditional_rtpInterruptDetection"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_callDurationLimit">callDurationLimit<input type="text" id="infoPhoneAdditional_callDurationLimit"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_callTransferBillingMethod">callTransferBillingMethod<input type="text" id="infoPhoneAdditional_callTransferBillingMethod"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_useCallerPhoneDisplay">useCallerPhoneDisplay<input type="text" id="infoPhoneAdditional_useCallerPhoneDisplay"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_noBillingToPhone">noBillingToPhone<input type="text" id="infoPhoneAdditional_noBillingToPhone"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_displayCallerShortNumber">displayCallerShortNumber<input type="text" id="infoPhoneAdditional_displayCallerShortNumber"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_useRoutingGatewayNotOnline">useRoutingGatewayNotOnline<input type="text" id="infoPhoneAdditional_useRoutingGatewayNotOnline"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_minProfitPercentEnable">minProfitPercentEnable<input type="text" id="infoPhoneAdditional_minProfitPercentEnable"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_minProfitPercent">minProfitPercent<input type="text" id="infoPhoneAdditional_minProfitPercent"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_maxSecondRatesEnable">maxSecondRatesEnable<input type="text" id="infoPhoneAdditional_maxSecondRatesEnable"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_maxSecondRates">maxSecondRates<input type="text" id="infoPhoneAdditional_maxSecondRates"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_firstRoutingPolicy">firstRoutingPolicy<input type="text" id="infoPhoneAdditional_firstRoutingPolicy"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_secondRoutingPolicy">secondRoutingPolicy<input type="text" id="infoPhoneAdditional_secondRoutingPolicy"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_sipAuthenticationMethod">sipAuthenticationMethod<input type="text" id="infoPhoneAdditional_sipAuthenticationMethod"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_sipRemoteAlertingMethod">sipRemoteAlertingMethod<input type="text" id="infoPhoneAdditional_sipRemoteAlertingMethod"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_sipTimerSupport">sipTimerSupport<input type="text" id="infoPhoneAdditional_sipTimerSupport"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_sip100RelSupport">sip100RelSupport<input type="text" id="infoPhoneAdditional_sip100RelSupport"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_sipT38Support">sipT38Support<input type="text" id="infoPhoneAdditional_sipT38Support"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_sipPrivacySupport">sipPrivacySupport<input type="text" id="infoPhoneAdditional_sipPrivacySupport"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_sipPrivacy">sipPrivacy<input type="text" id="infoPhoneAdditional_sipPrivacy"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_sipPPreferredIdentity">sipPPreferredIdentity<input type="text" id="infoPhoneAdditional_sipPPreferredIdentity"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_sipPAssertedIdentity">sipPAssertedIdentity<input type="text" id="infoPhoneAdditional_sipPAssertedIdentity"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_dtmfReceiveMethod">dtmfReceiveMethod<input type="text" id="infoPhoneAdditional_dtmfReceiveMethod"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_dtmfSipSendMethod">dtmfSipSendMethod<input type="text" id="infoPhoneAdditional_dtmfSipSendMethod"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_sipCodecAssign">sipCodecAssign<input type="text" id="infoPhoneAdditional_sipCodecAssign"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_sipCodecs">sipCodecs[0]<input type="text" id="infoPhoneAdditional_sipCodecs"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_audioCodecTranscodingEnable">audioCodecTranscodingEnable<input type="text" id="infoPhoneAdditional_audioCodecTranscodingEnable"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_rtpIncludeDtmfInband">rtpIncludeDtmfInband<input type="text" id="infoPhoneAdditional_rtpIncludeDtmfInband"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_rtpNeedDtmfInband">rtpNeedDtmfInband<input type="text" id="infoPhoneAdditional_rtpNeedDtmfInband"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_ivrEquipmentType">ivrEquipmentType<input type="text" id="infoPhoneAdditional_ivrEquipmentType"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_ivrServiceName">ivrServiceName<input type="text" id="infoPhoneAdditional_ivrServiceName"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_ivrCallbackBillingMode">ivrCallbackBillingMode<input type="text" id="infoPhoneAdditional_ivrCallbackBillingMode"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_ivrCallbackMergeBillingMode">ivrCallbackMergeBillingMode<input type="text" id="infoPhoneAdditional_ivrCallbackMergeBillingMode"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_ivrDirectMergeBillingMode">ivrDirectMergeBillingMode<input type="text" id="infoPhoneAdditional_ivrDirectMergeBillingMode"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_ivrSecondBillingMode">ivrSecondBillingMode<input type="text" id="infoPhoneAdditional_ivrSecondBillingMode"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_ivrCallbackBillingSecordNotConnectedOnAccessE164">ivrCallbackBillingSecordNotConnectedOnAccessE164<input type="text" id="infoPhoneAdditional_ivrCallbackBillingSecordNotConnectedOnAccessE164"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_ivrCallbackBillingSecordConnectedOnSecondAccount">ivrCallbackBillingSecordConnectedOnSecondAccount<input type="text" id="infoPhoneAdditional_ivrCallbackBillingSecordConnectedOnSecondAccount"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_ivrAccessVerifyActivePhoneCard">ivrAccessVerifyActivePhoneCard<input type="text" id="infoPhoneAdditional_ivrAccessVerifyActivePhoneCard"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_ivrAccessVerifyBindedE164">ivrAccessVerifyBindedE164<input type="text" id="infoPhoneAdditional_ivrAccessVerifyBindedE164"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_ivrAccessVerifyCallerE164Phone">ivrAccessVerifyCallerE164Phone<input type="text" id="infoPhoneAdditional_ivrAccessVerifyCallerE164Phone"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_ivrAccessVerifyAccessE164Phone">ivrAccessVerifyAccessE164Phone<input type="text" id="infoPhoneAdditional_ivrAccessVerifyAccessE164Phone"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_ivrEnablePhoneSetting">ivrEnablePhoneSetting<input type="text" id="infoPhoneAdditional_ivrEnablePhoneSetting"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_lrnEnable">lrnEnable<input type="text" id="infoPhoneAdditional_lrnEnable"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_lrnEatPrefixLength">lrnEatPrefixLength<input type="text" id="infoPhoneAdditional_lrnEatPrefixLength"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_lrnFailureAction">lrnFailureAction<input type="text" id="infoPhoneAdditional_lrnFailureAction"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_lrnInterstateBillingPrefix">lrnInterstateBillingPrefix<input type="text" id="infoPhoneAdditional_lrnInterstateBillingPrefix"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_lrnUndeterminedBillingPrefix">lrnUndeterminedBillingPrefix<input type="text" id="infoPhoneAdditional_lrnUndeterminedBillingPrefix"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_rewriteCalleeMobileAreaEnable">rewriteCalleeMobileAreaEnable<input type="text" id="infoPhoneAdditional_rewriteCalleeMobileAreaEnable"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_rewriteCalleeMobileArea">rewriteCalleeMobileArea<input type="text" id="infoPhoneAdditional_rewriteCalleeMobileArea"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_callStateReport">callStateReport<input type="text" id="infoPhoneAdditional_callStateReport"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_playAudioConnected">playAudioConnected<input type="text" id="infoPhoneAdditional_playAudioConnected"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_sipRequestAddress">sipRequestAddress<input type="text" id="infoPhoneAdditional_sipRequestAddress"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoPhoneAdditional_sipResponseAddress">sipResponseAddress<input type="text" id="infoPhoneAdditional_sipResponseAddress"></td>
+      <td></td>
+    </tr>
+  </table>
+  </td></tr>
+</table>
+</table><table width="100%">
+  <tr>
+    <td><input type="submit" value="Submit(POST)" onClick="call_post()">
+    </td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="postText"></td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="responseText"></td>
+  </tr>
+</table>
+</body>
+</html>

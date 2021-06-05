@@ -1,0 +1,347 @@
+<html>
+<head>
+<title>VOS3000</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<meta name="keywords" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="description" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="author" content="www.linknat.com, 昆石网络"/>
+<meta name="copyright" content="www.linknat.com, 昆石网络"/>
+<link rel="shortcut icon" href="images/vos3000.ico"/>
+<link rel="stylesheet" type="text/css" href="css/ext-all.css"/>
+<script type="text/javascript" src="js/ext-base.js"></script>
+<script type="text/javascript" src="js/ext-all.js"></script>
+<script type="text/javascript" src="js/lang.js"></script>
+<style type="text/css">
+    .x-layout-collapsed-west {
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .add {
+        background-image: url(images/add.gif) !important;
+    }
+
+    .delete {
+        background-image: url(images/delete.gif) !important;
+    }
+
+    .apply {
+        background-image: url(images/apply.png) !important;
+    }
+</style>
+<script type="text/javascript">
+Ext.onReady(function()
+{
+    Ext.MessageBox.wait(s[0], s[1]);
+    Ext.QuickTips.init();
+    Ext.form.Field.prototype.msgTarget = 'side';
+    var ds;
+    var contentPanel = {
+        id: 'info',
+        region: 'center',
+        layout: 'fit',
+        margins: '5 5 0 0',
+        border: false,
+        items: [
+            {
+                layout: 'border',
+                hideMode: Ext.isIE ? 'offsets' : 'display',
+                items:[
+                    {
+                        title:s[256],
+                        region: 'west',
+                        collapsible: true,
+                        width: 212,
+                        minSize: 100,
+                        maxSize: 350,
+                        margins: '5 0 0 5',
+                        cmargins: '5 5 0 5',
+                        split: true,
+                        items: [
+                            new Ext.form.FieldSet({
+                                title: s[65],
+                                height: '100%',
+                                labelAlign: 'top',
+                                labelWidth: 40,
+                                buttonAlign: 'center',
+                                items:[
+                                    new Ext.form.TextField({
+                                        fieldLabel: s[73],
+                                        id: 'e164',
+                                        width: 180
+                                    }),
+                                    new Ext.form.TextField({
+                                        fieldLabel: s[121],
+                                        id: 'memo',
+                                        width: 180
+                                    }),
+                                    {
+                                        border: false
+                                    } ,
+                                    new Ext.Button({
+                                        text: s[70],
+                                        minWidth: 177,
+                                        handler: filter
+                                    })
+                                ]
+                            })
+                        ]
+                    },
+                    {
+                        id: 'grid',
+                        region: 'center',
+                        margins: '5 5 0 0' ,
+                        title: s[257],
+                        xtype: 'editorgrid',
+                        layout: 'fit',
+                        store :ds = new Ext.data.Store({
+                            autoLoad: true,
+                            proxy: new Ext.data.HttpProxy({
+                                url: 'query-cus-bindede164.jsp'
+                            }),
+                            reader: new Ext.data.JsonReader({
+                                root: 'infos',
+                                successProperty: 'retCode'
+                            }, [
+                                'id', 'e164', 'bindTime', 'memo'
+                            ]),
+                            remoteSort: false
+                        }),
+                        sm: new Ext.grid.RowSelectionModel({
+                            singleSelect: true,
+                            listeners:{
+                                selectionchange: function(sm)
+                                {
+                                    if (sm.getCount())
+                                    {
+                                        Ext.getCmp('delete').enable();
+                                    }
+                                    else
+                                    {
+                                        Ext.getCmp('delete').disable();
+                                    }
+                                }
+                            }
+                        }),
+                        tbar: [
+                            {
+                                iconCls: 'add',
+                                text: s[206],
+                                handler: function()
+                                {
+                                    var Record = ds.recordType;
+                                    var rec = new Record({
+                                        id: -1,
+                                        e164: '',
+                                        bindTime: '',
+                                        memo: ''
+                                    });
+                                    Ext.getCmp('grid').stopEditing();
+                                    ds.insert(0, rec);
+                                    Ext.getCmp('grid').getSelectionModel().selectFirstRow();
+                                    Ext.getCmp('grid').startEditing(0, 0);
+                                }
+                            },
+                            {
+                                iconCls: 'delete',
+                                text: s[205],
+                                id: 'delete',
+                                handler: onDelete,
+                                disabled: true
+                            },
+                            {
+                                 iconCls: 'apply',
+                                 text: s[155],
+                                 id: 'apply',
+                                 handler: onApply
+                            }
+                        ],
+                        columns: [
+                            {
+                                header: s[73],
+                                width: 150,
+                                sortable: true,
+                                dataIndex: 'e164',
+                                editor: new Ext.form.TextField()
+                            },
+                            {
+                                header: s[255],
+                                width: 150,
+                                sortable: true,
+                                dataIndex: 'bindTime'
+                            },
+                            {
+                                header: s[121],
+                                width: 150,
+                                sortable: true,
+                                dataIndex: 'memo',
+                                editor: new Ext.form.TextField()
+                            }
+                        ],
+                        stripeRows: true,
+                        bbar:  new Ext.PagingToolbar({
+                            store: ds,
+                            displayInfo: true
+                        })
+                    }
+                ]
+            }
+        ]
+    };
+
+    function filter()
+    {
+        ds.on('beforeload', function()
+        {
+            ds.baseParams = {
+                e164 : document.getElementById('e164').value,
+                memo : document.getElementById('memo').value
+            }
+        });
+        ds.load({
+            params: {start:0, limit: 100},
+            callback: function()
+            {
+                if(ds.reader.jsonData.retCode < 0)
+                {
+                    ds.removeAll();
+                    if(ds.reader.jsonData.retCode == -10031)
+                    {
+                        return;
+                    }
+                    Ext.MessageBox.show({
+                        title: s[54],
+                        msg: ds.reader.jsonData.exception,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
+                    if(ds.reader.jsonData.retCode == -10049)
+                    {
+                        window.parent.location.href = 'index.html';
+                    }
+                }
+            }
+        });
+    }
+
+    function onApply()
+    {
+        var rec = Ext.getCmp('grid').getSelectionModel().getSelected();
+        if (rec && rec.data.e164.length > 0)
+        {
+        		var requestVos = new Object();
+        		if(rec.data.id > 0)
+        		{
+        			requestVos.modifyInfo = new Object();
+        			requestVos.modifyInfo.id = rec.data.id;
+        			requestVos.modifyInfo.e164 = rec.data.e164;
+        			requestVos.modifyInfo.memo = rec.data.memo;
+        		}
+        		else
+        		{
+        			requestVos.createInfo = new Object();
+        			requestVos.createInfo.id = -1;
+        			requestVos.createInfo.e164 = rec.data.e164;
+        			requestVos.createInfo.memo = rec.data.memo;
+        		}        	
+            Ext.Ajax.request({
+                url: 'set-cus-bindede164.jsp',
+                jsonData: requestVos,
+                success: function(result)
+                {
+                    var responseJson = Ext.decode(result.responseText);
+                    if (responseJson.retCode == 0)
+                    {
+                        ds.load();
+                    }
+                    else
+                    {
+                        Ext.MessageBox.show({
+                            title: s[142],
+                            msg: responseJson.exception,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        });
+                        if (responseJson.retCode == -10049)
+                        {
+                            window.parent.location.href = 'index.html';
+                        }
+                    }
+                },
+                failure: function ()
+                {
+                    Ext.MessageBox.show({
+                        title: s[4],
+                        msg: s[5],
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
+                }
+            });
+        }
+    }
+
+    function onDelete()
+    {
+        var rec = Ext.getCmp('grid').getSelectionModel().getSelected();
+        if (rec)
+        {
+            if (rec.data.id < 0)
+            {
+                ds.remove(rec);
+                return;
+            }
+            var requestVos = new Object();
+            requestVos.deleteId = rec.data.id;
+            Ext.Ajax.request({
+                url: 'set-cus-bindede164.jsp',
+                jsonData: requestVos,
+                success: function(result)
+                {
+                    var responseJson = Ext.decode(result.responseText);
+                    if (responseJson.retCode == 0)
+                    {
+                        ds.remove(rec);
+                    }
+                    else
+                    {
+                        Ext.MessageBox.show({
+                            title: s[142],
+                            msg: responseJson.exception,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        });
+                        if (responseJson.retCode == -10049)
+                        {
+                            window.parent.location.href = 'index.html';
+                        }
+                    }
+                },
+                failure: function ()
+                {
+                    Ext.MessageBox.show({
+                        title: s[4],
+                        msg: s[5],
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
+                }
+            });
+        }
+    }
+
+    new Ext.Viewport({
+        layout: 'border',
+        items: [
+            contentPanel
+        ],
+        renderTo: Ext.getBody()
+    });
+    Ext.MessageBox.hide();
+});
+</script>
+</head>
+<body>
+</body>
+</html>

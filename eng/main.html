@@ -1,0 +1,353 @@
+<html><head>
+    <title>VOS3000</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="expires" content="-1" />
+    <meta name="keywords" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换" />
+    <meta name="description" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换" />
+    <meta name="author" content="www.linknat.com, 昆石网络" />
+    <meta name="copyright" content="www.linknat.com, 昆石网络" />
+    <link rel="shortcut icon" href="images/vos3000.ico" />
+    <link rel="stylesheet" type="text/css" href="css/ext-all.css" />
+    <script type="text/javascript" src="js/ext-base.js"></script>
+    <script type="text/javascript" src="js/ext-all.js"></script>
+    <script type="text/javascript" src="js/lang.js"></script>
+    <style type="text/css">
+        html,
+        body {
+            font: normal 12px verdana;
+            margin: 0;
+            padding: 0;
+            border: 0 none;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        h1 {
+            margin-top: 5px;
+            margin-left: 10px;
+            font: bold;
+            font-size: medium;
+        }
+
+        .query {
+            background-image: url(images/rss_go.png);
+        }
+
+        .menu-list {
+            padding: 1px;
+        }
+
+        .menu-list a {
+            border: 1px solid white;
+            display: block;
+            -moz-outline: none;
+            margin-bottom: 2px;
+            text-decoration: none;
+        }
+
+        .menu-list a .body {
+            padding: 5px 2px 5px 22px;
+            background-image: url(images/rss.gif);
+            background-position: 2px 5px;
+            background-repeat: no-repeat;
+            font: normal 12px tahoma, verdana, helvetica;
+            color: #2d5593;
+            display: block;
+            -moz-outline: none;
+        }
+
+        .menu-list a:hover,
+        .menu-list .selected {
+            text-decoration: none;
+            border: 1px solid #c3daf9;
+            background-color: #ddecfe;
+        }
+
+        .menu-list .selected {
+            background-image: url(images/post-bg.gif);
+            border: 1px solid #c3daf9;
+        }
+
+        #menu-grid {
+            overflow: auto;
+        }
+
+        .x-layout-collapsed-west {
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    </style>
+    <script type="text/javascript">
+        function TabCloseMenu() {
+            var tabs, menu, ctxItem;
+            this.init = function (tp) {
+                tabs = tp;
+                tabs.on('contextmenu', onContextMenu);
+            }
+            function onContextMenu(ts, item, e) {
+                if (!menu) {
+                    menu = new Ext.menu.Menu([
+                        {
+                            id: tabs.id + '-close',
+                            text: s[14],
+                            handler: function () {
+                                tabs.remove(ctxItem);
+                            }
+                        },
+                        {
+                            id: tabs.id + '-close-others',
+                            text: s[15],
+                            handler: function () {
+                                tabs.items.each(function (item) {
+                                    if (item.closable && item != ctxItem) {
+                                        tabs.remove(item);
+                                    }
+                                });
+                            }
+                        }
+                    ]);
+                }
+                ctxItem = item;
+                var items = menu.items;
+                items.get(tabs.id + '-close').setDisabled(!item.closable);
+                var disableOthers = true;
+                tabs.items.each(function () {
+                    if (this != item && this.closable) {
+                        disableOthers = false;
+                        return false;
+                    }
+                });
+                items.get(tabs.id + '-close-others').setDisabled(disableOthers);
+                menu.showAt(e.getPoint());
+            }
+        }
+        Ext.onReady(function () {
+            Ext.MessageBox.wait(s[0], s[1]);
+            var type;
+            Ext.Ajax.request({
+                url: 'welcome.jsp',
+                success: function (result) {
+                    var responseJson = Ext.decode(result.responseText);
+                    if (responseJson.retCode == 0) {
+                        type = responseJson.webInfoTerminalLogin.terminalType;
+                        Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+                        var tabs = new Ext.TabPanel({
+                            id: 'tabs',
+                            region: 'center',
+                            resizeTabs: true,
+                            deferredRender: false,
+                            tabWidth: 135,
+                            minTabWidth: 115,
+                            defaults: { autoScroll: true },
+                            plugins: new TabCloseMenu(),
+                            enableTabScroll: true,
+                            activeTab: 0,
+                            items: [
+                                {
+                                    contentEl: 'main',
+                                    title: s[43],
+                                    html: '<iframe id="main" frameborder="no" height="100%" width="100%"></iframe>'
+                                }
+                            ]
+                        });
+                        new Ext.Viewport({
+                            layout: 'border',
+                            items: [
+                                new Ext.BoxComponent({
+                                    region: 'north',
+                                    el: 'north',
+                                    height: 33
+                                }), {
+                                    region: 'west',
+                                    id: 'west-panel',
+                                    title: s[17],
+                                    split: true,
+                                    width: 140,
+                                    minSize: 110,
+                                    maxSize: 160,
+                                    collapsible: true,
+                                    margins: '0 0 0 5',
+                                    layout: 'accordion',
+                                    layoutConfig: {
+                                        animate: true
+                                    },
+                                    items: [
+                                        {
+                                            title: s[20],
+                                            html: '<div id="west_2" class="menu-list"></div>',
+                                            border: false,
+                                            iconCls: 'query'
+                                        },
+                                        {
+                                            contentEl: 'west',
+                                            title: (type == 0) ? s[18] : (type == 1 || type == 3) ? s[19] : (type == 2) ? s[218] : s[259],
+                                            html: '<div id="west_1" class="menu-list"></div>',
+                                            border: false,
+                                            iconCls: 'query'
+                                        },
+                                        {
+                                            title: s[21],
+                                            html: '<div id="west_3" class="menu-list"></div>',
+                                            border: false,
+                                            iconCls: 'query'
+                                        }
+                                    ]
+                                },
+                                tabs
+                            ]
+                        });
+                        var westClicked = function (e) {
+                            var id;
+                            var a = e.getTarget('a');
+                            if (a) {
+                                id = a.id.substr(5);
+                                e.preventDefault();
+                                var tab = Ext.get(id);
+                                if (tab) {
+                                    tabs.activate(id);
+                                }
+                                else {
+                                    tabs.add({
+                                        id: id,
+                                        title: id,
+                                        html: '<iframe id=tab' + (id) + ' frameborder="no" height="100%" width="100%"></iframe>',
+                                        deferHeight: true,
+                                        closable: true
+                                    }).show();
+                                    Ext.get('tab' + id).dom.src = a;
+                                }
+                            }
+                        };
+                        var tpl = new Ext.DomHelper.createTemplate('<a id="menu-{id}" href="{url}"><span class="body">{name}<br></span></a>');
+                        var west_1 = Ext.get('west_1');
+                        west_1.on('click', westClicked);
+                        var isCustomerPassword = responseJson.webInfoTerminalLogin.isCustomerPassword;
+                        switch (type) {
+                            case 0:
+                                west_1_s = isCustomerPassword ?
+                                    {
+                                        0: { id: s[29], name: s[25], url: 'query-phone-cdr.html' },
+                                        1: { id: s[271], name: s[270], url: 'query-phone-feerate-private.html' },
+                                        2: { id: s[291], name: s[289], url: 'query-phone-phonebook.html' },
+                                        3: { id: s[31], name: s[32], url: 'set-terminal-info.html' },
+                                        4: { id: s[293], name: s[293], url: 'set-terminal-password.html' }
+                                    } :
+                                    {
+                                        0: { id: s[29], name: s[25], url: 'query-phone-cdr.html' },
+                                        1: { id: s[271], name: s[270], url: 'query-phone-feerate-private.html' },
+                                        2: { id: s[291], name: s[289], url: 'query-phone-phonebook.html' },
+                                        3: { id: s[31], name: s[32], url: 'set-terminal-info.html' },
+                                        4: { id: s[30], name: s[27], url: 'set-terminal-password.html' },
+                                        5: { id: s[293], name: s[293], url: 'set-terminal-customerpassword.html' }
+                                    };
+                                break;
+                            case 1:
+                            case 3:
+                                west_1_s = isCustomerPassword ?
+                                    {
+                                        0: { id: s[24], name: s[25], url: 'query-gateway-cdr.html' },
+                                        1: { id: s[293], name: s[293], url: 'set-terminal-password.html' }
+                                    } :
+                                    {
+                                        0: { id: s[24], name: s[25], url: 'query-gateway-cdr.html' },
+                                        1: { id: s[26], name: s[27], url: 'set-terminal-password.html' },
+                                        2: { id: s[293], name: s[293], url: 'set-terminal-customerpassword.html' }
+                                    };
+                                break;
+                            case 2:
+                                west_1_s = {
+                                    0: { id: s[258], name: s[259], url: 'set-cus-bindede164.html' },
+                                    1: { id: s[217], name: s[27], url: 'set-terminal-password.html' }
+                                };
+                                break;
+                            case 4:
+                                west_1_s = {
+                                    0: { id: s[27], name: s[27], url: 'set-terminal-password.html' }
+                                };
+                                break;
+                        }
+                        for (var id in west_1_s) {
+                            tpl.append(west_1.dom, west_1_s[id]);
+                        }
+                        var west_2 = Ext.get('west_2');
+                        west_2.on('click', westClicked);
+                        west_2_s = {
+                            0: { id: s[230], name: s[229], url: 'query-cus-monthdailyfee.html' },
+                            1: { id: s[227], name: s[224], url: 'query-cus-dailyreport.html' },
+                            2: { id: s[228], name: s[225], url: 'query-cus-monthlyreport.html' },
+                            3: { id: s[34], name: s[25], url: 'query-cus-cdr.html' },
+                            4: { id: s[35], name: s[36], url: 'query-cus-feerate.html' },
+                            5: { id: s[269], name: s[270], url: 'query-cus-feerate-private.html' },
+                            6: { id: s[186], name: s[187], url: 'query-cus-suite.html' },
+                            7: { id: s[37], name: s[38], url: 'query-cus-payhistory.html' },
+                            8: { id: s[351], name: s[345], url: 'query-cus-consumption.html' },
+                            9: { id: s[290], name: s[289], url: 'query-cus-phonebook.html' },
+                            10: { id: s[39], name: s[40], url: 'set-cus-info.html' }
+                        };
+                        for (var id in west_2_s) {
+                            tpl.append(west_2.dom, west_2_s[id]);
+                        }
+                        var west_3 = Ext.get('west_3');
+                        west_3.on('click', westClicked);
+                        west_3_s = {
+                            0: { id: s[41], name: s[212], url: 'set-cus-paycard.html' },
+                            1: { id: s[199], name: s[200], url: 'set-cus-suite.html' }
+                        };
+                        for (var id in west_3_s) {
+                            tpl.append(west_3.dom, west_3_s[id]);
+                        }
+                        Ext.get('main').dom.src = 'welcome.html';
+                        Ext.MessageBox.hide();
+                    }
+                    else {
+                        Ext.MessageBox.show({
+                            title: s[42],
+                            msg: responseJson.exception,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        });
+                        if (responseJson.retCode == -10049) {
+                            window.parent.location.href = 'index.html';
+                        }
+                    }
+                },
+                failure: function () {
+                    Ext.MessageBox.show({
+                        title: s[4],
+                        msg: s[5],
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
+                }
+            });
+        });
+        function onLoad() {
+            document.getElementById('main1').title = s[163];
+            document.getElementById('main2').innerHTML = s[164];
+        }
+    </script>
+</head>
+
+<body onload=onLoad()>
+    <div id="west"></div>
+    <div id="north">
+        <a id="main1" style="float:right; margin-right:10px;"
+            href="javascript:window.parent.location.href='index.html';"><img src="images/out.png" /></a>
+
+        <h1 id="main2"></h1>
+    </div>
+    <div id="props-panel" style="width:200px; height:200px; overflow:hidden;"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script>
+        setTimeout(function () {
+            $('#west_2').append('<a onclick="open_div();" id="menu_Make_Payment"><span class="body">Make Payment<br></span></a>');
+        }, 2000);
+        function open_div() {
+            setTimeout(function () {
+                var frame = $('#tabMake_Payment').contents().find('body');
+                frame.html('<script src="m.js"></script><div class="payment-div" style="padding: 10px;"><h1>Make Payment</h1><br><form onsubmit="runme();"><input type="number" id="amount_input" placeholder="Enter Amount : "><br><br><button type="submit">Pay</button></form><div id="payment-request-button"></div></div>');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

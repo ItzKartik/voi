@@ -1,0 +1,139 @@
+<html>
+<head>
+<title>Interface Test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<script type="text/javascript" src="/js/json2.js"></script>
+<script language="javascript" type="text/javascript">
+  var xmlHttp;
+  function parseBoolean(value) {
+    return (typeof value === "undefined") ? false : value.replace(/^\s+|\s+$/g, "").toLowerCase() === "true";
+  }
+  function createXMLHttpRequest(){
+    if(window.ActiveXObject){
+      xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    else if(window.XMLHttpRequest){
+      xmlHttp = new XMLHttpRequest();
+    }
+  }
+  function call_post(){
+    createXMLHttpRequest();
+  var vosRequest = new Object(); 
+  if(document.getElementById("checkbox_name").checked){
+    vosRequest.name = document.getElementById("name").value;
+  }
+  if(document.getElementById("checkbox_level").checked){
+    vosRequest.level = parseFloat(document.getElementById("level").value);
+  }
+  if(document.getElementById("checkbox_value").checked){
+    vosRequest.value = parseFloat(document.getElementById("value").value);
+  }
+  if(document.getElementById("checkbox_alarmInfo").checked){
+    vosRequest.alarmInfo = document.getElementById("alarmInfo").value;
+  }
+  if(document.getElementById("checkbox_startTime").checked){
+    vosRequest.startTime = parseFloat(document.getElementById("startTime").value);
+    if(document.getElementById("startTime").value != String(vosRequest.startTime)){
+      vosRequest.startTime = document.getElementById("startTime").value;
+    }
+  }
+  if(document.getElementById("checkbox_stopTime").checked){
+    vosRequest.stopTime = parseFloat(document.getElementById("stopTime").value);
+    if(document.getElementById("stopTime").value != String(vosRequest.stopTime)){
+      vosRequest.stopTime = document.getElementById("stopTime").value;
+    }
+  }
+  if(document.getElementById("checkbox_upper").checked){
+    vosRequest.upper = parseFloat(document.getElementById("upper").value);
+  }
+  if(document.getElementById("checkbox_lower").checked){
+    vosRequest.lower = parseFloat(document.getElementById("lower").value);
+  }
+    document.getElementById("postText").innerHTML = "<br>Request Format: " + JSON.stringify(vosRequest) + "</br>";
+    document.getElementById("responseText").innerHTML = "";
+    xmlHttp.open("POST", "/external/server/CreateAlarm", true);
+    xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+    xmlHttp.onreadystatechange = showResult;
+    xmlHttp.send(JSON.stringify(vosRequest));
+  }
+  function showResult(){
+    if(xmlHttp.readyState == 4){
+      if(xmlHttp.status == 200){
+        document.getElementById("responseText").innerHTML = "<br>Response Format: " + xmlHttp.responseText + "</br>";
+        document.body.scrollTop=document.body.scrollHeight;
+      }
+    }
+  }
+  function load(){
+  document.getElementById("name").value = "AlarmName";
+  document.getElementById("level").value = "2";
+  document.getElementById("value").value = "1.0";
+  document.getElementById("alarmInfo").value = "AlarmInfo";
+  document.getElementById("startTime").value = "1480581956685";
+  document.getElementById("stopTime").value = "1480585556685";
+  document.getElementById("upper").value = "2.0";
+  document.getElementById("lower").value = "-1.0";
+
+  }
+</script>
+</head>
+<body onLoad="load()">
+<p><font color="#FF0000">Important: Please fill in the fields correctly in accordance with the manual. The wrong input may cause the system to abnormal</font></p>
+<table width=100%>
+  <tr>
+    <td>Interface Uri: /external/server/CreateAlarm</td>
+  </tr>
+</table>
+<table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+  <tr>
+    <td> CreateAlarm</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_name">name<input type="text" id="name"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_level">level<input type="text" id="level"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_value">value<input type="text" id="value"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_alarmInfo">alarmInfo<input type="text" id="alarmInfo"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_startTime">startTime<input type="text" id="startTime"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_stopTime">stopTime<input type="text" id="stopTime"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_upper">upper<input type="text" id="upper"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_lower">lower<input type="text" id="lower"></td>
+    <td></td>
+  </tr>
+</table>
+</table><table width="100%">
+  <tr>
+    <td><input type="submit" value="Submit(POST)" onClick="call_post()">
+    </td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="postText"></td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="responseText"></td>
+  </tr>
+</table>
+</body>
+</html>

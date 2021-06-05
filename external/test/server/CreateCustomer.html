@@ -1,0 +1,281 @@
+<html>
+<head>
+<title>Interface Test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<script type="text/javascript" src="/js/json2.js"></script>
+<script language="javascript" type="text/javascript">
+  var xmlHttp;
+  function parseBoolean(value) {
+    return (typeof value === "undefined") ? false : value.replace(/^\s+|\s+$/g, "").toLowerCase() === "true";
+  }
+  function createXMLHttpRequest(){
+    if(window.ActiveXObject){
+      xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    else if(window.XMLHttpRequest){
+      xmlHttp = new XMLHttpRequest();
+    }
+  }
+  function call_post(){
+    createXMLHttpRequest();
+  var vosRequest = new Object(); 
+  if(document.getElementById("checkbox_account").checked){
+    vosRequest.account = document.getElementById("account").value;
+  }
+  if(document.getElementById("checkbox_name").checked){
+    vosRequest.name = document.getElementById("name").value;
+  }
+  if(document.getElementById("checkbox_money").checked){
+    vosRequest.money = parseFloat(document.getElementById("money").value);
+  }
+  if(document.getElementById("checkbox_limitMoney").checked){
+    vosRequest.limitMoney = parseFloat(document.getElementById("limitMoney").value);
+  }
+  if(document.getElementById("checkbox_feeRateGroup").checked){
+    vosRequest.feeRateGroup = document.getElementById("feeRateGroup").value;
+  }
+  if(document.getElementById("checkbox_type").checked){
+    vosRequest.type = parseFloat(document.getElementById("type").value);
+  }
+  if(document.getElementById("checkbox_lockType").checked){
+    vosRequest.lockType = parseFloat(document.getElementById("lockType").value);
+  }
+  if(document.getElementById("checkbox_agentAccount").checked){
+    vosRequest.agentAccount = document.getElementById("agentAccount").value;
+  }
+  if(document.getElementById("checkbox_phoneBookLimit").checked){
+    vosRequest.phoneBookLimit = parseFloat(document.getElementById("phoneBookLimit").value);
+  }
+  if(document.getElementById("checkbox_validTime").checked){
+    vosRequest.validTime = parseFloat(document.getElementById("validTime").value);
+  }
+  if(document.getElementById("checkbox_ctdBillingType").checked){
+    vosRequest.ctdBillingType = parseFloat(document.getElementById("ctdBillingType").value);
+  }
+  if(document.getElementById("checkbox_memo").checked){
+    vosRequest.memo = document.getElementById("memo").value;
+  }
+  if(document.getElementById("checkbox_infoCustomerAdditional").checked){
+    vosRequest.infoCustomerAdditional = new Object(); 
+    if(document.getElementById("checkbox_infoCustomerAdditional_cardType").checked){
+      vosRequest.infoCustomerAdditional.cardType = parseFloat(document.getElementById("infoCustomerAdditional_cardType").value);
+    }
+    if(document.getElementById("checkbox_infoCustomerAdditional_cardNumber").checked){
+      vosRequest.infoCustomerAdditional.cardNumber = document.getElementById("infoCustomerAdditional_cardNumber").value;
+    }
+    if(document.getElementById("checkbox_infoCustomerAdditional_address").checked){
+      vosRequest.infoCustomerAdditional.address = document.getElementById("infoCustomerAdditional_address").value;
+    }
+    if(document.getElementById("checkbox_infoCustomerAdditional_postCode").checked){
+      vosRequest.infoCustomerAdditional.postCode = document.getElementById("infoCustomerAdditional_postCode").value;
+    }
+    if(document.getElementById("checkbox_infoCustomerAdditional_linkMan").checked){
+      vosRequest.infoCustomerAdditional.linkMan = document.getElementById("infoCustomerAdditional_linkMan").value;
+    }
+    if(document.getElementById("checkbox_infoCustomerAdditional_telephone").checked){
+      vosRequest.infoCustomerAdditional.telephone = document.getElementById("infoCustomerAdditional_telephone").value;
+    }
+    if(document.getElementById("checkbox_infoCustomerAdditional_fax").checked){
+      vosRequest.infoCustomerAdditional.fax = document.getElementById("infoCustomerAdditional_fax").value;
+    }
+    if(document.getElementById("checkbox_infoCustomerAdditional_email").checked){
+      vosRequest.infoCustomerAdditional.email = document.getElementById("infoCustomerAdditional_email").value;
+    }
+    if(document.getElementById("checkbox_infoCustomerAdditional_emailCc").checked){
+      vosRequest.infoCustomerAdditional.emailCc = document.getElementById("infoCustomerAdditional_emailCc").value;
+    }
+    if(document.getElementById("checkbox_infoCustomerAdditional_emailBcc").checked){
+      vosRequest.infoCustomerAdditional.emailBcc = document.getElementById("infoCustomerAdditional_emailBcc").value;
+    }
+    if(document.getElementById("checkbox_infoCustomerAdditional_reportType").checked){
+      vosRequest.infoCustomerAdditional.reportType = parseFloat(document.getElementById("infoCustomerAdditional_reportType").value);
+    }
+    if(document.getElementById("checkbox_infoCustomerAdditional_companyName").checked){
+      vosRequest.infoCustomerAdditional.companyName = document.getElementById("infoCustomerAdditional_companyName").value;
+    }
+    if(document.getElementById("checkbox_infoCustomerAdditional_bank").checked){
+      vosRequest.infoCustomerAdditional.bank = document.getElementById("infoCustomerAdditional_bank").value;
+    }
+  }
+    xmlHttp.open("POST", "/external/server/CreateCustomer", true);
+    xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+    xmlHttp.onreadystatechange = showResult;
+    xmlHttp.send(JSON.stringify(vosRequest));
+    document.getElementById("postText").innerHTML = "<br>Request Format: " + JSON.stringify(vosRequest) + "</br>";
+    document.getElementById("responseText").innerHTML = "";
+  }
+  function showResult(){
+    if(xmlHttp.readyState == 4){
+      if(xmlHttp.status == 200){
+        document.getElementById("responseText").innerHTML = "<br>Response Format: " + xmlHttp.responseText + "</br>";
+        document.body.scrollTop=document.body.scrollHeight;
+      }
+    }
+  }
+  function load(){
+  document.getElementById("account").value = "800801";
+  document.getElementById("name").value = "800801";
+  document.getElementById("money").value = "1.0";
+  document.getElementById("limitMoney").value = "0.0";
+  document.getElementById("feeRateGroup").value = "0.01";
+  document.getElementById("type").value = "0";
+  document.getElementById("lockType").value = "0";
+  document.getElementById("agentAccount").value = "";
+  document.getElementById("phoneBookLimit").value = "2147483647";
+  document.getElementById("validTime").value = "1383127039302";
+  document.getElementById("ctdBillingType").value = "0";
+  document.getElementById("memo").value = "memo";
+  document.getElementById("infoCustomerAdditional_cardType").value = "0";
+  document.getElementById("infoCustomerAdditional_cardNumber").value = "1234567";
+  document.getElementById("infoCustomerAdditional_address").value = "Address";
+  document.getElementById("infoCustomerAdditional_postCode").value = "210000";
+  document.getElementById("infoCustomerAdditional_linkMan").value = "linkman 1";
+  document.getElementById("infoCustomerAdditional_telephone").value = "10000";
+  document.getElementById("infoCustomerAdditional_fax").value = "10001";
+  document.getElementById("infoCustomerAdditional_email").value = "email@email.com";
+  document.getElementById("infoCustomerAdditional_emailCc").value = "emailcc@email.com";
+  document.getElementById("infoCustomerAdditional_emailBcc").value = "emailbcc@email.com";
+  document.getElementById("infoCustomerAdditional_reportType").value = "0";
+  document.getElementById("infoCustomerAdditional_companyName").value = "company";
+  document.getElementById("infoCustomerAdditional_bank").value = "bank";
+
+
+  }
+</script>
+</head>
+<body onLoad="load()">
+<p><font color="#FF0000">Important: Please fill in the fields correctly in accordance with the manual. The wrong input may cause the system to abnormal</font></p>
+<table width=100%>
+  <tr>
+    <td>Interface Uri: /external/server/CreateCustomer</td>
+  </tr>
+</table>
+<table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+  <tr>
+    <td>CreateCustomer</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_account">account<input type="text" id="account"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_name">name<input type="text" id="name"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_money">money<input type="text" id="money"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_limitMoney">limitMoney<input type="text" id="limitMoney"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_feeRateGroup">feeRateGroup<input type="text" id="feeRateGroup"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_type">type<input type="text" id="type"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_lockType">lockType<input type="text" id="lockType"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_agentAccount">agentAccount<input type="text" id="agentAccount"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_phoneBookLimit">phoneBookLimit<input type="text" id="phoneBookLimit"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_validTime">validTime<input type="text" id="validTime"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_ctdBillingType">ctdBillingType<input type="text" id="ctdBillingType"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_memo">memo<input type="text" id="memo"></td>
+    <td></td>
+  </tr>
+  <tr><td colspan="2">
+  <table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+    <tr>
+        <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoCustomerAdditional">infoCustomerAdditional InfoCustomerAdditional</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoCustomerAdditional_cardType">cardType<input type="text" id="infoCustomerAdditional_cardType"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoCustomerAdditional_cardNumber">cardNumber<input type="text" id="infoCustomerAdditional_cardNumber"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoCustomerAdditional_address">address<input type="text" id="infoCustomerAdditional_address"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoCustomerAdditional_postCode">postCode<input type="text" id="infoCustomerAdditional_postCode"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoCustomerAdditional_linkMan">linkMan<input type="text" id="infoCustomerAdditional_linkMan"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoCustomerAdditional_telephone">telephone<input type="text" id="infoCustomerAdditional_telephone"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoCustomerAdditional_fax">fax<input type="text" id="infoCustomerAdditional_fax"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoCustomerAdditional_email">email<input type="text" id="infoCustomerAdditional_email"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoCustomerAdditional_emailCc">emailCc<input type="text" id="infoCustomerAdditional_emailCc"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoCustomerAdditional_emailBcc">emailBcc<input type="text" id="infoCustomerAdditional_emailBcc"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoCustomerAdditional_reportType">reportType<input type="text" id="infoCustomerAdditional_reportType"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoCustomerAdditional_companyName">companyName<input type="text" id="infoCustomerAdditional_companyName"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoCustomerAdditional_bank">bank<input type="text" id="infoCustomerAdditional_bank"></td>
+      <td></td>
+    </tr>
+  </table>
+  </td></tr>
+</table>
+</table><table width="100%">
+  <tr>
+    <td><input type="submit" value="Submit(POST)" onClick="call_post()">
+    </td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="postText"></td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="responseText"></td>
+  </tr>
+</table>
+</body>
+</html>

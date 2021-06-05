@@ -1,0 +1,157 @@
+<html>
+<head>
+<title>Interface Test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<script type="text/javascript" src="/js/json2.js"></script>
+<script language="javascript" type="text/javascript">
+  var xmlHttp;
+  function parseBoolean(value) {
+    return (typeof value === "undefined") ? false : value.replace(/^\s+|\s+$/g, "").toLowerCase() === "true";
+  }
+  function createXMLHttpRequest(){
+    if(window.ActiveXObject){
+      xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    else if(window.XMLHttpRequest){
+      xmlHttp = new XMLHttpRequest();
+    }
+  }
+  function call_post(){
+    createXMLHttpRequest();
+  var vosRequest = new Object(); 
+  if(document.getElementById("checkbox_callerE164").checked){
+    vosRequest.callerE164 = document.getElementById("callerE164").value;
+  }
+  if(document.getElementById("checkbox_calleeE164s").checked){
+    vosRequest.calleeE164s = document.getElementById("calleeE164s").value;
+  }
+  if(document.getElementById("checkbox_callerDisplayNumber").checked){
+    vosRequest.callerDisplayNumber = document.getElementById("callerDisplayNumber").value;
+  }
+  if(document.getElementById("checkbox_accessE164").checked){
+    vosRequest.accessE164 = document.getElementById("accessE164").value;
+  }
+  if(document.getElementById("checkbox_accessE164Password").checked){
+    vosRequest.accessE164Password = document.getElementById("accessE164Password").value;
+  }
+  if(document.getElementById("checkbox_callbackBillingE164").checked){
+    vosRequest.callbackBillingE164 = document.getElementById("callbackBillingE164").value;
+  }
+  if(document.getElementById("checkbox_callbackBillingPassword").checked){
+    vosRequest.callbackBillingPassword = document.getElementById("callbackBillingPassword").value;
+  }
+  if(document.getElementById("checkbox_calloutBillingE164").checked){
+    vosRequest.calloutBillingE164 = document.getElementById("calloutBillingE164").value;
+  }
+  if(document.getElementById("checkbox_calloutBillingPassword").checked){
+    vosRequest.calloutBillingPassword = document.getElementById("calloutBillingPassword").value;
+  }
+  if(document.getElementById("checkbox_calloutDisplayInFrom").checked){
+    vosRequest.calloutDisplayInFrom = document.getElementById("calloutDisplayInFrom").value;
+  }
+  if(document.getElementById("checkbox_transactionId").checked){
+    vosRequest.transactionId = document.getElementById("transactionId").value;
+  }
+    document.getElementById("postText").innerHTML = "<br>Request Format: " + JSON.stringify(vosRequest) + "</br>";
+    document.getElementById("responseText").innerHTML = "";
+    xmlHttp.open("POST", "/external/server/CallBack", true);
+    xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+    xmlHttp.onreadystatechange = showResult;
+    xmlHttp.send(JSON.stringify(vosRequest));
+  }
+  function showResult(){
+    if(xmlHttp.readyState == 4){
+      if(xmlHttp.status == 200){
+        document.getElementById("responseText").innerHTML = "<br>Response Format: " + xmlHttp.responseText + "</br>";
+        document.body.scrollTop=document.body.scrollHeight;
+      }
+    }
+  }
+  function load(){
+  document.getElementById("callerE164").value = "800801";
+  document.getElementById("calleeE164s").value = "800802";
+  document.getElementById("callerDisplayNumber").value = "800802";
+  document.getElementById("accessE164").value = "800801";
+  document.getElementById("accessE164Password").value = "12345";
+  document.getElementById("callbackBillingE164").value = "800801";
+  document.getElementById("callbackBillingPassword").value = "12345";
+  document.getElementById("calloutBillingE164").value = "800801";
+  document.getElementById("calloutBillingPassword").value = "12345";
+  document.getElementById("calloutDisplayInFrom").value = "800801";
+  document.getElementById("transactionId").value = "123456-124";
+
+  }
+</script>
+</head>
+<body onLoad="load()">
+<p><font color="#FF0000">Important: Please fill in the fields correctly in accordance with the manual. The wrong input may cause the system to abnormal</font></p>
+<table width=100%>
+  <tr>
+    <td>Interface Uri: /external/server/CallBack</td>
+  </tr>
+</table>
+<table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+  <tr>
+    <td> CallBack</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callerE164">callerE164<input type="text" id="callerE164"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calleeE164s">calleeE164s<input type="text" id="calleeE164s"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callerDisplayNumber">callerDisplayNumber<input type="text" id="callerDisplayNumber"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_accessE164">accessE164<input type="text" id="accessE164"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_accessE164Password">accessE164Password<input type="text" id="accessE164Password"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callbackBillingE164">callbackBillingE164<input type="text" id="callbackBillingE164"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callbackBillingPassword">callbackBillingPassword<input type="text" id="callbackBillingPassword"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calloutBillingE164">calloutBillingE164<input type="text" id="calloutBillingE164"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calloutBillingPassword">calloutBillingPassword<input type="text" id="calloutBillingPassword"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calloutDisplayInFrom">calloutDisplayInFrom<input type="text" id="calloutDisplayInFrom"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_transactionId">transactionId<input type="text" id="transactionId"></td>
+    <td></td>
+  </tr>
+</table>
+</table><table width="100%">
+  <tr>
+    <td><input type="submit" value="Submit(POST)" onClick="call_post()">
+    </td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="postText"></td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="responseText"></td>
+  </tr>
+</table>
+</body>
+</html>

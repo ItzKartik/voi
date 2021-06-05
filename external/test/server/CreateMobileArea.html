@@ -1,0 +1,114 @@
+<html>
+<head>
+<title>Interface Test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<script type="text/javascript" src="/js/json2.js"></script>
+<script language="javascript" type="text/javascript">
+  var xmlHttp;
+  function parseBoolean(value) {
+    return (typeof value === "undefined") ? false : value.replace(/^\s+|\s+$/g, "").toLowerCase() === "true";
+  }
+  function createXMLHttpRequest(){
+    if(window.ActiveXObject){
+      xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    else if(window.XMLHttpRequest){
+      xmlHttp = new XMLHttpRequest();
+    }
+  }
+  function call_post(){
+    createXMLHttpRequest();
+  var vosRequest = new Object(); 
+  if(document.getElementById("checkbox_infoMobileAreas").checked){
+    vosRequest.infoMobileAreas = new Array(1);
+    vosRequest.infoMobileAreas[0] = new Object(); 
+    if(document.getElementById("checkbox_infoMobileAreas_mobilePrefix").checked){
+      vosRequest.infoMobileAreas[0].mobilePrefix = document.getElementById("infoMobileAreas_mobilePrefix").value;
+    }
+    if(document.getElementById("checkbox_infoMobileAreas_areaCode").checked){
+      vosRequest.infoMobileAreas[0].areaCode = document.getElementById("infoMobileAreas_areaCode").value;
+    }
+    if(document.getElementById("checkbox_infoMobileAreas_areaName").checked){
+      vosRequest.infoMobileAreas[0].areaName = document.getElementById("infoMobileAreas_areaName").value;
+    }
+    if(document.getElementById("checkbox_infoMobileAreas_memo").checked){
+      vosRequest.infoMobileAreas[0].memo = document.getElementById("infoMobileAreas_memo").value;
+    }
+  }
+    document.getElementById("postText").innerHTML = "<br>Request Format: " + JSON.stringify(vosRequest) + "</br>";
+    document.getElementById("responseText").innerHTML = "";
+    xmlHttp.open("POST", "/external/server/CreateMobileArea", true);
+    xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+    xmlHttp.onreadystatechange = showResult;
+    xmlHttp.send(JSON.stringify(vosRequest));
+  }
+  function showResult(){
+    if(xmlHttp.readyState == 4){
+      if(xmlHttp.status == 200){
+        document.getElementById("responseText").innerHTML = "<br>Response Format: " + xmlHttp.responseText + "</br>";
+        document.body.scrollTop=document.body.scrollHeight;
+      }
+    }
+  }
+  function load(){
+  document.getElementById("infoMobileAreas_mobilePrefix").value = "1300000";
+  document.getElementById("infoMobileAreas_areaCode").value = "531";
+  document.getElementById("infoMobileAreas_areaName").value = "山东-济南";
+  document.getElementById("infoMobileAreas_memo").value = "联通130卡";
+
+
+  }
+</script>
+</head>
+<body onLoad="load()">
+<p><font color="#FF0000">Important: Please fill in the fields correctly in accordance with the manual. The wrong input may cause the system to abnormal</font></p>
+<table width=100%>
+  <tr>
+    <td>Interface Uri: /external/server/CreateMobileArea</td>
+  </tr>
+</table>
+<table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+  <tr>
+    <td> CreateMobileArea</td>
+    <td></td>
+  </tr>
+  <tr><td colspan="2">
+  <table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+    <tr>
+        <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoMobileAreas">infoMobileAreas[0] InfoMobileArea</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoMobileAreas_mobilePrefix">mobilePrefix<input type="text" id="infoMobileAreas_mobilePrefix"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoMobileAreas_areaCode">areaCode<input type="text" id="infoMobileAreas_areaCode"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoMobileAreas_areaName">areaName<input type="text" id="infoMobileAreas_areaName"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoMobileAreas_memo">memo<input type="text" id="infoMobileAreas_memo"></td>
+      <td></td>
+    </tr>
+  </table>
+  </td></tr>
+</table>
+</table><table width="100%">
+  <tr>
+    <td><input type="submit" value="Submit(POST)" onClick="call_post()">
+    </td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="postText"></td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="responseText"></td>
+  </tr>
+</table>
+</body>
+</html>

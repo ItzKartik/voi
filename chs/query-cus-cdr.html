@@ -1,0 +1,299 @@
+<html>
+<head>
+<title>VOS3000</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<meta name="keywords" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="description" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="author" content="www.linknat.com, 昆石网络"/>
+<meta name="copyright" content="www.linknat.com, 昆石网络"/>
+<link rel="shortcut icon" href="images/vos3000.ico"/>
+<link rel="stylesheet" type="text/css" href="css/ext-all.css"/>
+<script type="text/javascript" src="js/ext-base.js"></script>
+<script type="text/javascript" src="js/ext-all.js"></script>
+<script type="text/javascript" src="js/lang.js"></script>
+<script type="text/javascript" src="js/util.js"></script>
+<style type="text/css">
+    .x-layout-collapsed-west {
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .xfield {
+        text-align: center;
+    }
+</style>
+<script type="text/javascript">
+Ext.onReady(function()
+{
+    Ext.MessageBox.wait(s[0], s[1]);
+    Ext.QuickTips.init();
+    Ext.form.Field.prototype.msgTarget = 'side';
+    var date;
+    var date2;
+    var ds;
+    var contentPanel = {
+        id: 'info',
+        region: 'center',
+        layout: 'fit',
+        margins: '5 5 0 0',
+        border: false,
+        items: [
+            {
+                layout: 'border',
+                hideMode: Ext.isIE ? 'offsets' : 'display',
+                items:[
+                    {
+                        title:s[25],
+                        region: 'west',
+                        collapsible: true,
+                        width: 212,
+                        minSize: 100,
+                        maxSize: 350,
+                        margins: '5 0 0 5',
+                        cmargins: '5 5 0 5',
+                        split: true,
+                        items: [
+                            new Ext.form.FieldSet({
+                                title: s[65],
+                                height: '100%',
+                                labelAlign: 'top',
+                                labelWidth: 40,
+                                buttonAlign: 'center',
+                                items:[
+                                    date = new Ext.form.DateField({
+                                        fieldLabel: s[66],
+                                        id: 'startTime',
+                                        format: 'Y/m/d H:i:s',
+                                        value: getDayTimeBegin(new Date(), -1).format('Y/m/d H:i:s'),
+                                        cls:"xfield",
+                                        allowBlank: false,
+                                        width: 180
+                                    }),
+                                    date2 = new Ext.form.DateField({
+                                        fieldLabel: s[67],
+                                        id: 'stopTime',
+                                        format: 'Y/m/d H:i:s',
+                                        value: getDayTimeBegin(new Date()).format('Y/m/d H:i:s'),
+                                        cls:"xfield",
+                                        allowBlank: false,
+                                        width: 180
+                                    }),
+                                    new Ext.form.TextField({
+                                        fieldLabel: s[68],
+                                        id: 'callerE164',
+                                        width: 180
+                                    }),
+                                    new Ext.form.TextField({
+                                        fieldLabel: s[69],
+                                        id: 'calleeE164',
+                                        width: 180
+                                    }),
+                                    {
+                                        border: false
+                                    } ,
+                                    new Ext.Button({
+                                        text: s[70],
+                                        minWidth: 177,
+                                        handler: function Handle()
+                                        {
+                                            if(date.isValid && date2.isValid)
+                                            {
+                                                document.getElementById('downloadFrame').src = "";
+                                                ds.on('beforeload', function()
+                                                {
+                                                    ds.baseParams = {
+                                                        startTime : (document.getElementById('startTime').value).replace(/\//g,""),
+                                                        stopTime : (document.getElementById('stopTime').value).replace(/\//g,""),
+                                                        callerE164 : document.getElementById('callerE164').value,
+                                                        calleeE164 : document.getElementById('calleeE164').value
+                                                    }
+                                                });
+                                                ds.load({
+                                                    callback: function()
+                                                    {
+                                                    		if(ds.reader.jsonData.retCode == -10126)
+                                                    		{
+                                                    			 Ext.MessageBox.show({
+                                                                title: s[54],
+                                                                msg: ds.reader.jsonData.exception,
+                                                                buttons: Ext.MessageBox.OK,
+                                                                icon: Ext.MessageBox.ERROR
+                                                            });
+                                                    		}
+                                                        else if(ds.reader.jsonData.retCode < 0)
+                                                        {
+                                                            ds.removeAll();
+                                                            if(ds.reader.jsonData.retCode == -10031)
+                                                            {
+                                                                return;
+                                                            }
+                                                            Ext.MessageBox.show({
+                                                                title: s[54],
+                                                                msg: ds.reader.jsonData.exception,
+                                                                buttons: Ext.MessageBox.OK,
+                                                                icon: Ext.MessageBox.ERROR
+                                                            });
+                                                            if(ds.reader.jsonData.retCode == -10049)
+                                                            {
+                                                                window.parent.location.href = 'index.html';
+                                                            }
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                            else
+                                            {
+                                                Ext.MessageBox.show({
+                                                    title: s[6],
+                                                    msg: s[82],
+                                                    buttons: Ext.MessageBox.OK,
+                                                    icon: Ext.MessageBox.ERROR
+                                                });
+                                            }
+                                        }
+                                    }),
+									{
+										height: 15,
+										border:false
+									},					
+									new Ext.Button({
+                                        text: s[344],
+                                        minWidth: 177,
+                                        handler: function Handle()
+                                        {
+                                            if(date.isValid && date2.isValid)
+                                            {
+                                                document.getElementById('downloadFrame').src = "download-cus-cdr.jsp?"
+                                                + "startTime=" + (document.getElementById('startTime').value).replace(/\//g,"")
+                                                + "&stopTime=" + (document.getElementById('stopTime').value).replace(/\//g,"")
+                                                + "&callerE164=" + (document.getElementById('callerE164').value)
+                                                + "&calleeE164=" + (document.getElementById('calleeE164').value)
+                                                + "&queryDate=" + new Date().getTime();		
+                                            }
+                                            else
+                                            {
+                                                Ext.MessageBox.show({
+                                                    title: s[6],
+                                                    msg: s[82],
+                                                    buttons: Ext.MessageBox.OK,
+                                                    icon: Ext.MessageBox.ERROR
+                                                });
+                                            }
+                                        }
+                                    })
+                                ]
+                            }),
+							{ 
+								heigth :30,
+								border:false,
+								html : '<iframe id="downloadFrame" src="" width="100%" height="100%" frameborder="0" scrolling="auto"></iframe>' 
+							}
+                        ]
+                    },
+                    {
+                        region: 'center',
+                        margins: '5 5 0 0' ,
+                        title: s[83],
+                        xtype: 'grid',
+                        layout: 'fit',
+                        loadMask: true,
+                        store :ds = new Ext.data.Store({
+                            proxy: new Ext.data.HttpProxy({
+                                url: 'query-cus-cdr.jsp'
+                            }),
+                            reader: new Ext.data.JsonReader({
+                                root: 'infos',
+                                successProperty: 'retCode'
+                            }, [
+                                'callerE164', 'calleeE164', 'start', 'holdTime', 'realFee', 'suiteFeeTime', 'suiteFee', {
+                                    name: 'callLevel',
+                                    type: 'int'
+                                }, 'calleeBilling'
+                            ]),
+                            remoteSort: false
+                        }),
+                        columns: [
+                            {
+                                header: s[68],
+                                dataIndex: 'callerE164',
+                                sortable: true
+                            },
+                            {
+                                header: s[69],
+                                dataIndex: 'calleeE164',
+                                sortable: true
+                            },
+                            {
+                                header: s[66],
+                                dataIndex: 'start',
+                                width: 150,
+                                sortable: true,
+                                renderer: renderTime
+                            },
+                            {
+                                header: s[76],
+                                dataIndex: 'holdTime',
+                                sortable: true,
+                                renderer: renderHourTime
+                            },
+                            {
+                                header: s[77],
+                                dataIndex: 'realFee',
+                                sortable: true
+                            },
+                            {
+                                header: s[78],
+                                dataIndex: 'suiteFeeTime',
+                                sortable: true,
+                                renderer: renderHourTime
+                            },
+                            {
+                                header: s[79],
+                                dataIndex: 'suiteFee',
+                                sortable: true
+                            },
+                            {
+                                header: s[80],
+                                dataIndex: 'callLevel',
+                                sortable: true,
+                                renderer: renderType
+                            },
+                            {
+                                header: s[219],
+                                dataIndex: 'calleeBilling',
+                                sortable: true,
+                                renderer: renderCalleeBilling
+                            }
+                        ],
+                        stripeRows: true
+                    }
+                ]
+            }
+        ]
+    }
+
+    new Ext.Viewport({
+        layout: 'border',
+        items: [
+            contentPanel
+        ],
+        renderTo: Ext.getBody()
+    });
+
+    new Ext.KeyMap(document, {
+        key: Ext.EventObject.ENTER,
+        fn: function()
+        {
+            Handle();
+        },
+        scope: this
+    });
+    Ext.MessageBox.hide();
+});
+</script>
+</head>
+
+<body>
+</body>
+</html>

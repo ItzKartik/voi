@@ -1,0 +1,296 @@
+<html>
+<head>
+<title>VOS3000</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<meta name="keywords" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="description" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="author" content="www.linknat.com, 昆石网络"/>
+<meta name="copyright" content="www.linknat.com, 昆石网络"/>
+<link rel="shortcut icon" href="images/vos3000.ico"/>
+<link rel="stylesheet" type="text/css" href="css/ext-all.css"/>
+<script type="text/javascript" src="js/ext-base.js"></script>
+<script type="text/javascript" src="js/ext-all.js"></script>
+<script type="text/javascript" src="js/lang.js"></script>
+<script type="text/javascript" src="js/util.js"></script>
+<style type="text/css">
+    .x-layout-collapsed-west {
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+</style>
+<script type="text/javascript">
+var monthId;
+var win;
+var ds;
+
+function getMonthObject(n)
+{
+    var date = new Date();
+    var year = date.getFullYear() + (n < 0 ? Math.ceil(n / 12) : Math.floor(n / 12));
+    var month = date.getMonth() + n % 12;
+    if(month < 0)
+    {
+        month += 12;
+        year--;
+    }
+    return new Date(year, month);
+}
+function getMonth(n)
+{   
+	  var date = getMonthObject(n);
+    return date.format('Y/m');
+}
+function getMonthBegin(n)
+{
+    var date = getMonthObject(n);
+    return date.format('Ymd');
+}
+function getMonthEnd(n)
+{
+	 n += 1;
+   var date = getMonthObject(n);
+   return new Date(date - 43200000).format('Ymd');
+}
+
+
+function chart()
+{
+    if(!win)
+    {
+        win = new Ext.Window({
+            layout:'fit',
+            title: s[230],
+            region: 'center',
+            closeAction:'hide',
+            width: 630,
+            height: 300,
+            items:{
+                xtype: 'columnchart',
+                xField: 'day',
+                yField: 'fee',
+                xAxis: new Ext.chart.CategoryAxis({
+                    title: s[223]
+                }),
+                yAxis: new Ext.chart.NumericAxis({
+                    title: s[85] + '    ',
+                    majorUnit: 0.1
+                }),
+                extraStyle: {
+                    xAxis: {
+                        labelRotation: -90
+                    }
+                },
+                store: ds
+            }
+        });
+    }
+    win.show();
+}
+function print()
+{
+    var newWindow = window.open("report.html", "_blank");
+    newWindow.document.write(document.getElementById('info').childNodes[1].innerHTML);
+    newWindow.document.close();
+    newWindow.print();
+}
+Ext.onReady(function()
+{
+    Ext.MessageBox.wait(s[0], s[1]);
+    Ext.QuickTips.init();
+    Ext.form.Field.prototype.msgTarget = 'side';
+    var filterForm = new Ext.FormPanel({
+        labelWidth: 40,
+        buttonAlign: 'center',
+        bodyStyle: 'padding:5px 5px 0',
+        width: '100%',
+        items: [
+            new Ext.form.FieldSet({
+                title: s[65],
+                height: '100%',
+                defaultType: 'radio',
+                items: [
+                    new Ext.form.Label({text: s[226], cls:'x-form-item'}),
+                    {
+                        checked: true,
+                        boxLabel:getMonth(0),
+                        name: 'month',
+                        inputValue: 0
+                    }, {
+                        boxLabel: getMonth(-1),
+                        name: 'month',
+                        inputValue: -1
+                    }, {
+                        boxLabel: getMonth(-2),
+                        name: 'month',
+                        inputValue: -2
+                    },
+                    new Ext.Button({
+                        text: s[70],
+                        minWidth: 177,
+                        handler: function Handle()
+                        {
+                            ds.on('beforeload', function()
+                            {
+                                monthId = parseInt(filterForm.form.findField("month").getGroupValue());
+                                ds.baseParams = {
+                                    startTime : getMonthBegin(monthId),
+                                    stopTime : getMonthEnd(monthId)
+                                }
+                            });
+                            ds.load({
+                                callback: function()
+                                {
+                                    if(ds.reader.jsonData.retCode < 0)
+                                    {
+                                        ds.removeAll();
+                                        if(ds.reader.jsonData.retCode == -10031)
+                                        {
+                                            return;
+                                        }
+                                        Ext.MessageBox.show({
+                                            title: s[54],
+                                            msg: ds.reader.jsonData.exception,
+                                            buttons: Ext.MessageBox.OK,
+                                            icon: Ext.MessageBox.ERROR
+                                        });
+                                        if(ds.reader.jsonData.retCode == -10049)
+                                        {
+                                            window.parent.location.href = 'index.html';
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    })]
+            })]
+    });
+    new Ext.Viewport({
+        layout: 'border',
+        items: [
+            {
+                region: 'west',
+                title: s[99],
+                split: true,
+                collapsible: true,
+                margins: '5 0 0 5',
+                cmargins: '5 5 0 5',
+                width: 212,
+                items: [filterForm]
+            },
+            {
+                region: 'center',
+                layout: 'fit',
+                hideMode: Ext.isIE ? 'offsets' : 'display',
+                autoScroll: true,
+                margins: '5 5 0 0',
+                border: false,
+                items: [
+                    {
+                        id: 'info',
+                        xtype: 'grid',
+                        loadMask: true,
+                        title: s[83] + "　<a href='javascript:print();'><img align='top' src='images/printer.png'/>" + s[92] + "</a>",
+                               // + "  <a href='javascript:chart();'><img align='top' src='images/chart.gif'/>" + s[231] + "</a>",
+                        store :ds = new Ext.data.Store({
+                            proxy: new Ext.data.HttpProxy({
+                                url: 'query-cus-monthdailyfee.jsp'
+                            }),
+                            reader: new Ext.data.JsonReader({
+                                root: 'infos',
+                                successProperty: 'retCode'
+                            }, [ 'day','fee','time','localFee','localTime','domesticFee',
+                                'domesticTime','internationalFee','internationalTime',
+                                'netFee','netTime','suiteFee','suiteFeeTime']),
+                            remoteSort: false
+                        }),
+						align: 'right',
+                        columns:[
+                            {
+                                header:s[223],
+                                dataIndex:'day'
+                            },
+                            {
+                                header:s[85],
+								align: 'right',
+                                dataIndex:'fee'
+                            },
+                            {
+                                header: s[86],
+								align: 'right',
+                                dataIndex: 'time'
+                            },
+                            {
+                                header: s[89],
+								align: 'right',
+                                dataIndex: 'localFee'
+                            },
+                            {
+                                header: s[90],
+								align: 'right',
+                                dataIndex: 'localTime'
+                            },
+                            {
+                                header: s[93],
+								align: 'right',
+                                dataIndex: 'domesticFee'
+                            },
+                            {
+                                header: s[94],
+								align: 'right',
+                                dataIndex: 'domesticTime'
+                            },
+                            {
+                                header: s[95],
+								align: 'right',
+                                dataIndex: 'internationalFee'
+                            },
+                            {
+                                header: s[96],
+								align: 'right',
+                                dataIndex: 'internationalTime'
+                            },
+                            {
+                                header: s[97],
+								align: 'right',
+                                dataIndex: 'netFee'
+                            },
+                            {
+                                header: s[98],
+								align: 'right',
+                                dataIndex: 'netTime'
+                            },
+                            {
+                                header: s[87],
+								align: 'right',
+                                dataIndex: 'suiteFee'
+                            },
+                            {
+                                header: s[88],
+								align: 'right',
+                                dataIndex: 'suiteFeeTime'
+                            }
+                        ],
+                        stripeRows: true
+                    }
+                ]
+            }
+        ]
+    });
+
+    new Ext.KeyMap(document, {
+        key: Ext.EventObject.ENTER,
+        fn: function()
+        {
+            Handle();
+        },
+        scope: this
+    });
+    Ext.MessageBox.hide();
+});
+</script>
+</head>
+<body>
+<div id="container" class="x-hidden"></div>
+</body>
+</html>

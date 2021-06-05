@@ -1,0 +1,171 @@
+<html>
+<head>
+<title>Interface Test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<script type="text/javascript" src="/js/json2.js"></script>
+<script language="javascript" type="text/javascript">
+  var xmlHttp;
+  function parseBoolean(value) {
+    return (typeof value === "undefined") ? false : value.replace(/^\s+|\s+$/g, "").toLowerCase() === "true";
+  }
+  function createXMLHttpRequest(){
+    if(window.ActiveXObject){
+      xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    else if(window.XMLHttpRequest){
+      xmlHttp = new XMLHttpRequest();
+    }
+  }
+  function call_post(){
+    createXMLHttpRequest();
+  var vosRequest = new Object(); 
+  if(document.getElementById("checkbox_account").checked){
+    vosRequest.account = document.getElementById("account").value;
+  }
+  if(document.getElementById("checkbox_e164").checked){
+    vosRequest.e164 = document.getElementById("e164").value;
+  }
+  if(document.getElementById("checkbox_infoCustomerPhoneBookOverWrite").checked){
+    vosRequest.infoCustomerPhoneBookOverWrite = new Object(); 
+    if(document.getElementById("checkbox_infoCustomerPhoneBookOverWrite_e164").checked){
+      vosRequest.infoCustomerPhoneBookOverWrite.e164 = document.getElementById("infoCustomerPhoneBookOverWrite_e164").value;
+    }
+    if(document.getElementById("checkbox_infoCustomerPhoneBookOverWrite_shortE164").checked){
+      vosRequest.infoCustomerPhoneBookOverWrite.shortE164 = document.getElementById("infoCustomerPhoneBookOverWrite_shortE164").value;
+    }
+  }
+  if(document.getElementById("checkbox_shortE164s").checked){
+    vosRequest.shortE164s = new Array(1);
+    vosRequest.shortE164s[0] = new Object();
+    vosRequest.shortE164s[0] = document.getElementById("shortE164s").value;
+  }
+  if(document.getElementById("checkbox_name").checked){
+    vosRequest.name = document.getElementById("name").value;
+  }
+  if(document.getElementById("checkbox_department").checked){
+    vosRequest.department = document.getElementById("department").value;
+  }
+  if(document.getElementById("checkbox_deviceType").checked){
+    vosRequest.deviceType = parseFloat(document.getElementById("deviceType").value);
+  }
+  if(document.getElementById("checkbox_addressType").checked){
+    vosRequest.addressType = parseFloat(document.getElementById("addressType").value);
+  }
+  if(document.getElementById("checkbox_type").checked){
+    vosRequest.type = parseFloat(document.getElementById("type").value);
+  }
+  if(document.getElementById("checkbox_memo").checked){
+    vosRequest.memo = document.getElementById("memo").value;
+  }
+    xmlHttp.open("POST", "/external/server/CreateCustomerPhoneBook", true);
+    xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+    xmlHttp.onreadystatechange = showResult;
+    xmlHttp.send(JSON.stringify(vosRequest));
+    document.getElementById("postText").innerHTML = "<br>Request Format: " + JSON.stringify(vosRequest) + "</br>";
+    document.getElementById("responseText").innerHTML = "";
+  }
+  function showResult(){
+    if(xmlHttp.readyState == 4){
+      if(xmlHttp.status == 200){
+        document.getElementById("responseText").innerHTML = "<br>Response Format: " + xmlHttp.responseText + "</br>";
+        document.body.scrollTop=document.body.scrollHeight;
+      }
+    }
+  }
+  function load(){
+  document.getElementById("account").value = "800801";
+  document.getElementById("e164").value = "800801";
+  document.getElementById("infoCustomerPhoneBookOverWrite_e164").value = "800801";
+  document.getElementById("infoCustomerPhoneBookOverWrite_shortE164").value = "101";
+
+  document.getElementById("shortE164s").value = "101";
+  document.getElementById("name").value = "phonebook 1";
+  document.getElementById("department").value = "department";
+  document.getElementById("deviceType").value = "0";
+  document.getElementById("addressType").value = "0";
+  document.getElementById("type").value = "0";
+  document.getElementById("memo").value = "memo 1";
+
+  }
+</script>
+</head>
+<body onLoad="load()">
+<p><font color="#FF0000">Important: Please fill in the fields correctly in accordance with the manual. The wrong input may cause the system to abnormal</font></p>
+<table width=100%>
+  <tr>
+    <td>Interface Uri: /external/server/CreateCustomerPhoneBook</td>
+  </tr>
+</table>
+<table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+  <tr>
+    <td>CreateCustomerPhoneBook</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_account">account<input type="text" id="account"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_e164">e164<input type="text" id="e164"></td>
+    <td></td>
+  </tr>
+  <tr><td colspan="2">
+  <table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+    <tr>
+        <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoCustomerPhoneBookOverWrite">infoCustomerPhoneBookOverWrite InfoCustomerPhoneBookOverWrite</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoCustomerPhoneBookOverWrite_e164">e164<input type="text" id="infoCustomerPhoneBookOverWrite_e164"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="checkbox_infoCustomerPhoneBookOverWrite_shortE164">shortE164<input type="text" id="infoCustomerPhoneBookOverWrite_shortE164"></td>
+      <td></td>
+    </tr>
+  </table>
+  </td></tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_shortE164s">shortE164s<input type="text" id="shortE164s"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_name">name<input type="text" id="name"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_department">department<input type="text" id="department"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_deviceType">deviceType<input type="text" id="deviceType"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_addressType">addressType<input type="text" id="addressType"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_type">type<input type="text" id="type"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_memo">memo<input type="text" id="memo"></td>
+    <td></td>
+  </tr>
+</table>
+</table><table width="100%">
+  <tr>
+    <td><input type="submit" value="Submit(POST)" onClick="call_post()">
+    </td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="postText"></td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="responseText"></td>
+  </tr>
+</table>
+</body>
+</html>

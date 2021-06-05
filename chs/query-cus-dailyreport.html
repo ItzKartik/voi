@@ -1,0 +1,183 @@
+<html>
+<head>
+    <title>VOS3000</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="expires" content="-1"/>
+    <meta name="keywords" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+    <meta name="description" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+    <meta name="author" content="www.linknat.com, 昆石网络"/>
+    <meta name="copyright" content="www.linknat.com, 昆石网络"/>
+    <link rel="shortcut icon" href="images/vos3000.ico"/>
+    <link rel="stylesheet" type="text/css" href="css/ext-all.css"/>
+    <script type="text/javascript" src="js/ext-base.js"></script>
+    <script type="text/javascript" src="js/ext-all.js"></script>
+    <script type="text/javascript" src="js/lang.js"></script>
+    <script type="text/javascript" src="js/util.js"></script>
+    <style type="text/css">
+        .x-layout-collapsed-west {
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .xfield {
+            text-align: center;
+        }
+    </style>
+    <script type="text/javascript">
+        var html;
+        function print()
+        {
+            var name = document.getElementById('startTime').value.replace(/\//g, '-');
+            var newWindow = window.open(name + ".html", "_blank");
+            newWindow.document.write(html);
+            newWindow.document.close();
+            newWindow.print();
+        }
+        Ext.onReady(function()
+        {
+            Ext.MessageBox.wait(s[0], s[1]);
+            Ext.QuickTips.init();
+            Ext.form.Field.prototype.msgTarget = 'side';
+            var filterForm = new Ext.FormPanel({
+                labelAlign: 'top',
+                labelWidth: 40,
+                buttonAlign: 'center',
+                bodyStyle: 'padding:5px 5px 0',
+                width: '100%',
+                items: [
+                    new Ext.form.FieldSet({
+                        title: s[65],
+                        height: '100%',
+                        items: [
+                            new Ext.form.DateField({
+                                fieldLabel: s[66],
+                                id: 'startTime',
+                                format: 'Y/m/d',
+                                value: new Date(new Date() - 86400000).format('Y/m/d'),
+                                cls:"xfield",
+                                allowBlank: false,
+                                width: 180
+                            }),
+                            new Ext.form.DateField({
+                                fieldLabel: s[67],
+                                id: 'stopTime',
+                                format: 'Y/m/d',
+                                value: new Date(new Date() - 86400000).format('Y/m/d'),
+                                cls:"xfield",
+                                allowBlank: false,
+                                width: 180
+                            }),
+                            new Ext.Button({
+                                text: s[70],
+                                minWidth: 177,
+                                handler: function Handle()
+                                {
+                                    if(filterForm.form.isValid())
+                                    {
+                                        Ext.MessageBox.wait(s[2], s[1]);
+                                        Ext.Ajax.request({
+                                            url: 'query-cus-report.jsp',
+                                            params: {
+                                                startTime : (document.getElementById('startTime').value).replace(/\//g,""),
+                                                stopTime : (document.getElementById('stopTime').value).replace(/\//g,"")
+                                            },
+                                            success: function (result)
+                                            {
+                                                document.getElementById('info').contentWindow.document.body.innerHTML = "";
+                                                var r = result.responseText.split("|");
+                                                if(r[0] == 0)
+                                                {
+                                                    html = result.responseText.substring(2);
+                                                    if(document.all)
+                                                    {
+                                                        document.frames['info'].document.write(html);
+                                                    }
+                                                    else
+                                                    {
+                                                        document.getElementById('info').contentDocument.write(html);
+                                                    }
+                                                    document.getElementById('info').height = document.getElementById('info').contentWindow.document.documentElement.scrollHeight;
+                                                    Ext.MessageBox.hide();
+                                                }
+                                                else
+                                                {
+                                                    Ext.MessageBox.show({
+                                                        title: s[6],
+                                                        msg: r[1],
+                                                        buttons: Ext.MessageBox.OK,
+                                                        icon: Ext.MessageBox.ERROR
+                                                    });
+                                                    if(r[0] == -10049)
+                                                    {
+                                                        window.parent.location.href = 'index.html';
+                                                    }
+                                                }
+                                            },
+                                            failure: function ()
+                                            {
+                                                Ext.MessageBox.show({
+                                                    title: s[4],
+                                                    msg: s[5],
+                                                    buttons: Ext.MessageBox.OK,
+                                                    icon: Ext.MessageBox.ERROR
+                                                });
+                                            }
+                                        });
+                                    }
+                                    else
+                                    {
+                                        Ext.MessageBox.show({
+                                            title: s[6],
+                                            msg: s[82],
+                                            buttons: Ext.MessageBox.OK,
+                                            icon: Ext.MessageBox.ERROR
+                                        });
+                                    }
+                                }
+                            }),
+                            {
+                                border: false
+                            }
+                        ]
+                    })
+                ]
+            });
+            new Ext.Viewport({
+                layout: 'border',
+                autoHeight: true,
+                items: [
+                    {
+                        title: s[25],
+                        region: 'west',
+                        split: true,
+                        collapsible: true,
+                        margins: '5 0 0 5',
+                        cmargins: '5 5 0 5',
+                        width: 212,
+                        items: [filterForm]
+                    },
+                    {
+                        layout: 'fit',
+                        title: s[83] + "　<a href='javascript:print();'><img align='top' src='images/printer.png'/>" + s[92] + "</a>",
+                        region: 'center',
+                        html: "<iframe id='info' style='BACKGROUND-COLOR: transparent' frameBorder=0 width=100% scrolling=no height=290 allowTransparency></iframe>",
+                        autoScroll: true,
+                        margins: '5 5 0 0'
+                    }
+                ]
+            });
+            new Ext.KeyMap(document, {
+                key: Ext.EventObject.ENTER,
+                fn: function()
+                {
+                    Handle();
+                },
+                scope: this
+            });
+            Ext.MessageBox.hide();
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>

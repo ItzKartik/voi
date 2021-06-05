@@ -1,0 +1,206 @@
+<html>
+<head>
+<title>VOS3000</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<meta name="keywords" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="description" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="author" content="www.linknat.com, 昆石网络"/>
+<meta name="copyright" content="www.linknat.com, 昆石网络"/>
+<link rel="shortcut icon" href="images/vos3000.ico"/>
+<link rel="stylesheet" type="text/css" href="css/ext-all.css"/>
+<script type="text/javascript" src="js/ext-base.js"></script>
+<script type="text/javascript" src="js/ext-all.js"></script>
+<script type="text/javascript" src="js/lang.js"></script>
+<style type="text/css">
+        body {
+            font-family: Arial, verdana, tahoma, helvetica;
+            font-size: 13px;
+            background-color: #fff !important;
+        }
+
+        #main-panel {
+            padding: 15px;
+        }
+    </style>
+<script type="text/javascript">
+    function changeImg()
+		{
+		    document.getElementById('vfcode').src = 'verifyimage.jsp?' + Math.random();
+		}
+        Ext.onReady(function()
+        {
+            Ext.MessageBox.wait(s[0], s[1]);
+            Ext.QuickTips.init();
+            Ext.form.Field.prototype.msgTarget = 'side';
+            Ext.Ajax.request({
+                url: 'welcome.jsp?noReload=true',
+                success: function (result)
+                {
+                    var responseJson = Ext.decode(result.responseText);
+                    if(responseJson.retCode == 0)
+                    {
+                        var form = new Ext.FormPanel({
+                            labelAlign: 'right',
+                            id: 'main-panel',
+                            labelWidth: 80,
+                            title: s[41],
+                            bodyStyle: 'padding:15px 15px 15px 15px',
+                            width: 350,
+                            items: [
+                                new Ext.form.TextField({
+                                    fieldLabel: s[176],
+                                    width: 200,
+                                    value: responseJson.webInfoTerminalLogin.customerAccount,
+                                    readOnly: true
+                                }),
+                                {
+                                    border: false
+                                },
+                                new Ext.form.TextField({
+                                    fieldLabel: s[62],
+                                    id: 'value1',
+                                    name: 'value1',
+                                    width: 200,
+                                    allowBlank: false
+                                }),
+                                {
+                                    border: false
+                                },
+                                new Ext.form.TextField({
+                                    fieldLabel: s[63],
+                                    id: 'value2',
+                                    name: 'value2',
+                                    width: 200,
+                                    inputType: 'password'
+                                }),
+                                {
+                                    border: false
+                                },
+                                new Ext.form.TextField({
+						                        fieldLabel: s[335],
+						                        id: 'randCode',
+						                        width: 60,
+						                        allowBlank: false
+						                    }),
+						                    {
+						                        border: false
+						                    }
+                            ],
+                            buttons: [
+                                {
+                                    text: s[64],
+                                    handler: function Handle()
+                                    {
+                                        if(form.form.isValid())
+                                        {
+                                            Ext.MessageBox.wait(s[53], s[1]);
+                                            var requestVos = new Object();
+                                            requestVos.pin = document.getElementById('value1').value;
+                                            requestVos.password = document.getElementById('value2').value;
+                                            Ext.Ajax.request({
+                                                url: 'set-cus-paycard.jsp',
+                                                params: {randCode: document.getElementById('randCode').value},
+                                                jsonData: requestVos,
+                                                success: function (result)
+                                                {
+                                                    var responseJson = Ext.decode(result.responseText);
+                                                    if(responseJson.retCode == 0)
+                                                    {
+                                                        var infoPayByPhoneCard = responseJson.infoPayByPhoneCard;
+                                                        Ext.MessageBox.show({
+                                                            title: s[54],
+                                                            msg: s[55] + '<br/>' + s[251] + ':' + infoPayByPhoneCard.payMoney + '<br/>' + s[49] + ':' + infoPayByPhoneCard.accountMoney + '<br/>',
+                                                            buttons: Ext.MessageBox.OK,
+                                                            icon: Ext.MessageBox.INFO
+                                                        });
+                                                        document.getElementById('value1').value = "";
+                                                        document.getElementById('value2').value = "";
+                                                    }
+                                                    else
+                                                    {
+                                                        Ext.MessageBox.show({
+                                                            title: s[57],
+                                                            msg: responseJson.exception,
+                                                            buttons: Ext.MessageBox.OK,
+                                                            icon: Ext.MessageBox.ERROR
+                                                        });
+                                                        if(responseJson.retCode == -10049)
+                                                        {
+                                                            window.parent.location.href = 'index.html';
+                                                        }
+                                                    }
+                                                    document.getElementById('randCode').value = "";
+                                                    changeImg();                                                    
+                                                },
+                                                failure: function ()
+                                                {
+                                                    Ext.MessageBox.show({
+                                                        title: s[4],
+                                                        msg: s[5],
+                                                        buttons: Ext.MessageBox.OK,
+                                                        icon: Ext.MessageBox.ERROR
+                                                    });
+                                                }
+                                            });
+                                        }
+                                        else
+                                        {
+                                            Ext.MessageBox.show({
+                                                title: s[58],
+                                                msg: s[144],
+                                                buttons: Ext.MessageBox.OK,
+                                                icon: Ext.MessageBox.ERROR});
+                                        }
+                                    }
+                                }
+                            ]
+                        });
+                        form.render(document.body);
+                        new Ext.KeyMap(document, {
+                            key: Ext.EventObject.ENTER,
+                            fn: function()
+                            {
+                                Handle();
+                            },
+                            scope: this
+                        });
+                        Ext.MessageBox.hide();
+                        var bd = Ext.getDom('randCode');
+								        var bd2 = Ext.get(bd.parentNode);
+								        bd2.createChild([
+								        {tag: 'span', html:'&nbsp&nbsp&nbsp&nbsp&nbsp'},
+								        {tag: 'img', id: 'vfcode', src: 'verifyimage.jsp', onclick: 'changeImg();', align:'absbottom'},
+								        {tag: 'span', html:'&nbsp<a href="javascript:changeImg()">' + s[336] + '</a>'}]);
+                    }
+                    else
+                    {
+                        Ext.MessageBox.show({
+                            title: s[42],
+                            msg: responseJson.exception,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        });
+                        if(responseJson.retCode == -10049)
+                        {
+                            window.parent.location.href = 'index.html';
+                        }
+                    }
+                },
+                failure: function ()
+                {
+                    Ext.MessageBox.show({
+                        title: s[4],
+                        msg: s[5],
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
+                }
+            });
+            Ext.MessageBox.hide();
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>

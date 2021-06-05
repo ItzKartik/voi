@@ -1,0 +1,198 @@
+<html>
+<head>
+    <title>VOS3000</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="expires" content="-1"/>
+    <meta name="keywords" content="VOS3000, VoIP, VoIPՋӪ֧³Əµͳ, ɭ½»»»"/>
+    <meta name="description" content="VOS3000, VoIP, VoIPՋӪ֧³Əµͳ, ɭ½»»»"/>
+    <meta name="author" content="www.linknat.com, %ʯθç"/>
+    <meta name="copyright" content="www.linknat.com, %ʯθç"/>
+    <link rel="shortcut icon" href="images/vos3000.ico"/>
+    <link rel="stylesheet" type="text/css" href="css/ext-all.css"/>
+    <script type="text/javascript" src="js/ext-base.js"></script>
+    <script type="text/javascript" src="js/ext-all.js"></script>
+    <script type="text/javascript" src="js/lang.js"></script>
+    <style type="text/css">
+        .x-layout-collapsed-west {
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    </style>
+    <script type="text/javascript">
+        var monthId;
+        var html;
+        function getMonthObject(n)
+				{
+				    var date = new Date();
+				    var year = date.getFullYear() + (n < 0 ? Math.ceil(n / 12) : Math.floor(n / 12));
+				    var month = date.getMonth() + n % 12;
+				    if(month < 0)
+				    {
+				        month += 12;
+				        year--;
+				    }
+				    return new Date(year, month);
+				}
+				function getMonth(n)
+				{   
+					  var date = getMonthObject(n);
+				    return date.format('Y/m');
+				}
+				function getMonthBegin(n)
+				{
+				    var date = getMonthObject(n);
+				    return date.format('Ymd');
+				}
+				function getMonthEnd(n)
+				{
+					 n += 1;
+				   var date = getMonthObject(n);
+				   return new Date(date - 43200000).format('Ymd');
+				}
+        function print()
+        {
+            var name = getMonth(monthId).replace('/', '-');
+            var newWindow = window.open(name + ".html");
+            newWindow.document.write(html);
+            newWindow.document.close();
+            newWindow.print();
+        }
+        Ext.onReady(function()
+        {
+            Ext.MessageBox.wait(s[0], s[1]);
+            Ext.QuickTips.init();
+            Ext.form.Field.prototype.msgTarget = 'side';
+            var filterForm = new Ext.FormPanel({
+                labelWidth: 40,
+                buttonAlign: 'center',
+                bodyStyle: 'padding:5px 5px 0',
+                width: '100%',
+                items: [
+                    new Ext.form.FieldSet({
+                        title: s[65],
+                        height: '100%',
+                        defaultType: 'radio',
+                        items: [
+                            new Ext.form.Label({text: s[226], cls:'x-form-item'}),
+                            {
+                                checked: true,
+                                boxLabel:getMonth(0),
+                                name: 'month',
+                                inputValue: 0
+                            }, {
+                                boxLabel: getMonth(-1),
+                                name: 'month',
+                                inputValue: -1
+                            }, {
+                                boxLabel: getMonth(-2),
+                                name: 'month',
+                                inputValue: -2
+                            },
+                            new Ext.Button({
+                                text: s[70],
+
+                                minWidth: 177,
+                                handler: function Handle()
+                                {
+                                    if(filterForm.form.isValid())
+                                    {
+                                        monthId = parseInt(filterForm.form.findField("month").getGroupValue());
+                                        Ext.MessageBox.wait(s[2], s[1]);
+                                        Ext.Ajax.request({
+                                            url: 'query-cus-report.jsp',
+                                            params: {
+                                                startTime : getMonthBegin(monthId),
+                                                stopTime :getMonthEnd(monthId)
+                                            },
+                                            success: function (result)
+                                            {
+                                                document.getElementById('info').contentWindow.document.body.innerHTML = "";
+                                                var r = result.responseText.split("|");
+                                                if(r[0] == 0)
+                                                {
+                                                    html = result.responseText.substring(2);
+                                                    if(document.all)
+                                                    {
+                                                        document.frames['info'].document.write(html);
+                                                    }
+                                                    else
+                                                    {
+                                                        document.getElementById('info').contentDocument.write(html);
+                                                    }
+                                                    document.getElementById('info').height = document.getElementById('info').contentWindow.document.documentElement.scrollHeight;
+                                                    Ext.MessageBox.hide();
+                                                }
+                                                else
+                                                {
+                                                    Ext.MessageBox.show({
+                                                        title: s[6],
+                                                        msg: r[1],
+                                                        buttons: Ext.MessageBox.OK,
+                                                        icon: Ext.MessageBox.ERROR
+                                                    });
+                                                }
+                                            },
+                                            failure: function ()
+                                            {
+                                                Ext.MessageBox.show({
+                                                    title: s[4],
+                                                    msg: s[5],
+                                                    buttons: Ext.MessageBox.OK,
+                                                    icon: Ext.MessageBox.ERROR
+                                                });
+                                            }
+                                        });
+                                    }
+                                    else
+                                    {
+                                        Ext.MessageBox.show({
+                                            title: s[6],
+                                            msg: s[82],
+                                            buttons: Ext.MessageBox.OK,
+                                            icon: Ext.MessageBox.ERROR});
+                                    }
+                                }
+                            })
+                        ]
+                    })
+                ]
+            });
+            new Ext.Viewport({
+                layout: 'border',
+                autoHeight: true,
+                items: [
+                    {
+                        title: s[99],
+                        region: 'west',
+                        split: true,
+                        collapsible: true,
+                        margins: '5 0 0 5',
+                        cmargins: '5 5 0 5',
+                        width: 212,
+                        items: [filterForm]
+                    },
+                    {
+                        layout: 'fit',
+                        title: s[83] + "　<a href='javascript:print();'><img align='top' src='images/printer.png'/>" + s[92] + "</a>",
+                        region: 'center',
+                        html: "<iframe id='info' style='BACKGROUND-COLOR: transparent' frameBorder=0 width=100% scrolling=no height=290 allowTransparency></iframe>",
+                        autoScroll: true,
+                        margins: '5 5 0 0'
+                    }
+                ]
+            });
+            new Ext.KeyMap(document, {
+                key: Ext.EventObject.ENTER,
+                fn: function()
+                {
+                    Handle();
+                },
+                scope: this
+            });
+            Ext.MessageBox.hide();
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<html>
+<head>
+<title>Interface Test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<script type="text/javascript" src="/js/json2.js"></script>
+<script language="javascript" type="text/javascript">
+  var xmlHttp;
+  function parseBoolean(value) {
+    return (typeof value === "undefined") ? false : value.replace(/^\s+|\s+$/g, "").toLowerCase() === "true";
+  }
+  function createXMLHttpRequest(){
+    if(window.ActiveXObject){
+      xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    else if(window.XMLHttpRequest){
+      xmlHttp = new XMLHttpRequest();
+    }
+  }
+  function call_post(){
+    createXMLHttpRequest();
+  var vosRequest = new Object(); 
+  if(document.getElementById("checkbox_billingMode").checked){
+    vosRequest.billingMode = parseFloat(document.getElementById("billingMode").value);
+  }
+  if(document.getElementById("checkbox_account").checked){
+    vosRequest.account = document.getElementById("account").value;
+  }
+  if(document.getElementById("checkbox_callerE164").checked){
+    vosRequest.callerE164 = document.getElementById("callerE164").value;
+  }
+  if(document.getElementById("checkbox_calleeE164").checked){
+    vosRequest.calleeE164 = document.getElementById("calleeE164").value;
+  }
+  if(document.getElementById("checkbox_callerIp").checked){
+    vosRequest.callerIp = document.getElementById("callerIp").value;
+  }
+  if(document.getElementById("checkbox_callerGatewayId").checked){
+    vosRequest.callerGatewayId = document.getElementById("callerGatewayId").value;
+  }
+  if(document.getElementById("checkbox_callerProductId").checked){
+    vosRequest.callerProductId = document.getElementById("callerProductId").value;
+  }
+  if(document.getElementById("checkbox_callerToGatewayE164").checked){
+    vosRequest.callerToGatewayE164 = document.getElementById("callerToGatewayE164").value;
+  }
+  if(document.getElementById("checkbox_calleeIp").checked){
+    vosRequest.calleeIp = document.getElementById("calleeIp").value;
+  }
+  if(document.getElementById("checkbox_calleeGatewayId").checked){
+    vosRequest.calleeGatewayId = document.getElementById("calleeGatewayId").value;
+  }
+  if(document.getElementById("checkbox_calleeProductId").checked){
+    vosRequest.calleeProductId = document.getElementById("calleeProductId").value;
+  }
+  if(document.getElementById("checkbox_calleeToGatewayE164").checked){
+    vosRequest.calleeToGatewayE164 = document.getElementById("calleeToGatewayE164").value;
+  }
+  if(document.getElementById("checkbox_startTime").checked){
+    vosRequest.startTime = parseFloat(document.getElementById("startTime").value);
+  }
+  if(document.getElementById("checkbox_stopTime").checked){
+    vosRequest.stopTime = parseFloat(document.getElementById("stopTime").value);
+  }
+  if(document.getElementById("checkbox_billingTime").checked){
+    vosRequest.billingTime = parseFloat(document.getElementById("billingTime").value);
+  }
+  if(document.getElementById("checkbox_endDirection").checked){
+    vosRequest.endDirection = parseFloat(document.getElementById("endDirection").value);
+  }
+  if(document.getElementById("checkbox_endReason").checked){
+    vosRequest.endReason = parseFloat(document.getElementById("endReason").value);
+  }
+  if(document.getElementById("checkbox_flowNo").checked){
+    vosRequest.flowNo = parseFloat(document.getElementById("flowNo").value);
+  }
+    xmlHttp.open("POST", "/external/server/CreateCdr", true);
+    xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+    xmlHttp.onreadystatechange = showResult;
+    xmlHttp.send(JSON.stringify(vosRequest));
+    document.getElementById("postText").innerHTML = "<br>Request Format: " + JSON.stringify(vosRequest) + "</br>";
+    document.getElementById("responseText").innerHTML = "";
+  }
+  function showResult(){
+    if(xmlHttp.readyState == 4){
+      if(xmlHttp.status == 200){
+        document.getElementById("responseText").innerHTML = "<br>Response Format: " + xmlHttp.responseText + "</br>";
+        document.body.scrollTop=document.body.scrollHeight;
+      }
+    }
+  }
+  function load(){
+  document.getElementById("billingMode").value = "0";
+  document.getElementById("account").value = "800801";
+  document.getElementById("callerE164").value = "800801";
+  document.getElementById("calleeE164").value = "800801333";
+  document.getElementById("callerIp").value = "192.168.1.1";
+  document.getElementById("callerGatewayId").value = "callerGatewayId";
+  document.getElementById("callerProductId").value = "callerProductId";
+  document.getElementById("callerToGatewayE164").value = "callerToGatewayE164";
+  document.getElementById("calleeIp").value = "192.168.1.2";
+  document.getElementById("calleeGatewayId").value = "calleeGatewayId";
+  document.getElementById("calleeProductId").value = "calleeProductId";
+  document.getElementById("calleeToGatewayE164").value = "calleeToGatewayE164";
+  document.getElementById("startTime").value = "1363235784744";
+  document.getElementById("stopTime").value = "1363235784744";
+  document.getElementById("billingTime").value = "23";
+  document.getElementById("endDirection").value = "0";
+  document.getElementById("endReason").value = "-7";
+  document.getElementById("flowNo").value = "-1";
+
+  }
+</script>
+</head>
+<body onLoad="load()">
+<p><font color="#FF0000">Important: Please fill in the fields correctly in accordance with the manual. The wrong input may cause the system to abnormal</font></p>
+<table width=100%>
+  <tr>
+    <td>Interface Uri: /external/server/CreateCdr</td>
+  </tr>
+</table>
+<table width=100% cellpadding="0" cellspacing="0" bgcolor="#d6f7ff">
+  <tr>
+    <td>CreateCdr</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_billingMode">billingMode<input type="text" id="billingMode"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_account">account<input type="text" id="account"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callerE164">callerE164<input type="text" id="callerE164"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calleeE164">calleeE164<input type="text" id="calleeE164"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callerIp">callerIp<input type="text" id="callerIp"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callerGatewayId">callerGatewayId<input type="text" id="callerGatewayId"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callerProductId">callerProductId<input type="text" id="callerProductId"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_callerToGatewayE164">callerToGatewayE164<input type="text" id="callerToGatewayE164"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calleeIp">calleeIp<input type="text" id="calleeIp"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calleeGatewayId">calleeGatewayId<input type="text" id="calleeGatewayId"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calleeProductId">calleeProductId<input type="text" id="calleeProductId"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_calleeToGatewayE164">calleeToGatewayE164<input type="text" id="calleeToGatewayE164"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_startTime">startTime<input type="text" id="startTime"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_stopTime">stopTime<input type="text" id="stopTime"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_billingTime">billingTime<input type="text" id="billingTime"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_endDirection">endDirection<input type="text" id="endDirection"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_endReason">endReason<input type="text" id="endReason"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;<input type="checkbox" id="checkbox_flowNo">flowNo<input type="text" id="flowNo"></td>
+    <td></td>
+  </tr>
+</table>
+</table><table width="100%">
+  <tr>
+    <td><input type="submit" value="Submit(POST)" onClick="call_post()">
+    </td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="postText"></td>
+  </tr>
+  <tr>
+    <td style="word-break:break-all" id="responseText"></td>
+  </tr>
+</table>
+</body>
+</html>

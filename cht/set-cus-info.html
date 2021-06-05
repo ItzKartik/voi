@@ -1,0 +1,259 @@
+<html>
+<head>
+<title>VOS3000</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<meta name="keywords" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="description" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="author" content="www.linknat.com, 昆石网络"/>
+<meta name="copyright" content="www.linknat.com, 昆石网络"/>
+<link rel="shortcut icon" href="images/vos3000.ico"/>
+<link rel="stylesheet" type="text/css" href="css/ext-all.css"/>
+<script type="text/javascript" src="js/ext-base.js"></script>
+<script type="text/javascript" src="js/ext-all.js"></script>
+<script type="text/javascript" src="js/lang.js"></script>
+<style type="text/css">
+    body {
+        font-family: Arial, verdana, tahoma, helvetica;
+        font-size: 13px;
+        background-color: #fff !important;
+    }
+
+    #main-panel {
+        padding: 15px;
+    }
+</style>
+<script type="text/javascript">
+Ext.onReady(function()
+{
+    Ext.MessageBox.wait(s[0], s[1]);
+    Ext.QuickTips.init();
+    Ext.form.Field.prototype.msgTarget = 'side';
+    Ext.Ajax.request({
+        url: 'query-cus-info.jsp',
+        success: function (result)
+        {
+            var r = result.responseText.split("|");
+            if(r[0] == 0)
+            {
+            		var comboxIdType;
+                var form = new Ext.FormPanel({
+                    labelAlign: 'top',
+                    id: 'main-panel',
+                    title: s[124],
+                    bodyStyle: 'padding:5px',
+                    width: 600,
+                    items: [
+                        {
+                            layout: 'column',
+                            border: false,
+                            items:[
+                                {
+                                    columnWidth:.5,
+                                    layout: 'form',
+                                    border: false,
+                                    items: [
+                                        {
+                                            xtype: 'textfield',
+                                            fieldLabel: s[125],
+                                            id: 'linkMan',
+                                            value: r[1],
+                                            anchor: '95%'
+                                        },
+                                        comboxIdType = new Ext.form.ComboBox({
+                                            fieldLabel: s[126],
+                                            id: 'cardName',
+                                            store: new Ext.data.SimpleStore({
+                                                fields: ['cardType', 'cardName'],
+                                                data : [
+                                                    ['0', s[127]],
+                                                    ['1', s[128]],
+                                                    ['2', s[129]],
+                                                    ['3', s[130]],
+                                                    ['4', s[131]],
+                                                    ['5', s[132]]
+                                                ]
+                                            }),
+                                            valueField: 'cardType',
+                                            displayField: 'cardName',
+                                            editable: false,
+                                            typeAhead: true,
+                                            mode: 'local',
+                                            triggerAction: 'all',
+                                            emptyText: s[133],
+                                            value: r[3],
+                                            selectOnFocus: true,
+                                            anchor: '95%'
+                                        }),
+                                        {
+                                            xtype: 'textfield',
+                                            fieldLabel: s[134],
+                                            id: 'fax',
+                                            value: r[5],
+                                            anchor: '95%'
+                                        },
+                                        {
+                                            xtype: 'textfield',
+                                            fieldLabel: s[135],
+                                            id: 'postCode',
+                                            value: r[7],
+                                            anchor: '95%'
+                                        }
+                                    ]
+                                },
+                                {
+                                    columnWidth:.5,
+                                    layout: 'form',
+                                    border: false,
+                                    items: [
+                                        {
+                                            xtype: 'textfield',
+                                            fieldLabel: s[136],
+                                            id: 'linkPhone',
+                                            value: r[2],
+                                            anchor: '95%'
+                                        },
+                                        {
+                                            xtype: 'textfield',
+                                            fieldLabel: s[137],
+                                            id: 'number',
+                                            value: r[4],
+                                            anchor: '95%'
+                                        },
+                                        {
+                                            xtype: 'textfield',
+                                            fieldLabel: s[138],
+                                            id: 'email',
+                                            vtype: 'email',
+                                            value: r[6],
+                                            anchor: '95%'
+                                        },
+                                        {
+                                            xtype: 'textfield',
+                                            fieldLabel: s[139],
+                                            id: 'address',
+                                            value: r[8],
+                                            anchor: '95%'
+                                        }
+                                    ]
+                                },
+                                {
+                                    border: false
+                                }
+                            ]
+                        }
+                    ],
+                    buttons: [
+                        {
+                            text: s[140],
+                            handler: function Handle()
+                            {
+                                if(form.form.isDirty())
+                                {
+                                    if(form.form.isValid())
+                                    {
+                                        var requestVos = new Object();
+                                        requestVos.address = document.getElementById('address').value;
+                                        requestVos.email = document.getElementById('email').value;
+                                        requestVos.fax = document.getElementById('fax').value;
+                                        requestVos.linkMan = document.getElementById('linkMan').value;
+                                        requestVos.phone = document.getElementById('linkPhone').value;
+                                        requestVos.idNumber = document.getElementById('number').value;
+                                        requestVos.postCode = document.getElementById('postCode').value;
+                                        requestVos.idType = parseFloat(comboxIdType.getValue());
+                                        Ext.MessageBox.wait(s[53], s[1]);
+                                        Ext.Ajax.request({
+                                            url: 'set-cus-info.jsp',
+                                            jsonData: requestVos,
+                                            success: function (result)
+                                            {
+                                                var responseJson = Ext.decode(result.responseText);
+                                                if(responseJson.retCode == 0)
+                                                {
+                                                    Ext.MessageBox.show({
+                                                        title: s[54],
+                                                        msg: s[141],
+                                                        buttons: Ext.MessageBox.OK,
+                                                        icon: Ext.MessageBox.INFO
+                                                    });
+                                                }
+                                                else
+                                                {
+                                                    Ext.MessageBox.show({
+                                                        title: s[142],
+                                                        msg: responseJson.exception,
+                                                        buttons: Ext.MessageBox.OK,
+                                                        icon: Ext.MessageBox.ERROR
+                                                    });
+                                                    if(responseJson.retCode == -10049)
+                                                    {
+                                                        window.parent.location.href = 'index.html';
+                                                    }
+                                                }
+                                            },
+                                            failure: function ()
+                                            {
+                                                Ext.MessageBox.show({
+                                                    title: s[4],
+                                                    msg: s[5],
+                                                    buttons: Ext.MessageBox.OK,
+                                                    icon: Ext.MessageBox.ERROR
+                                                });
+                                            }
+                                        });
+                                    }
+                                    else
+                                    {
+                                        Ext.MessageBox.show({
+                                            title: s[58],
+                                            msg: s[143],
+                                            buttons: Ext.MessageBox.OK,
+                                            icon: Ext.MessageBox.ERROR});
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                });
+                form.render(document.body);
+                new Ext.KeyMap(document, {
+                    key: Ext.EventObject.ENTER,
+                    fn: function()
+                    {
+                        Handle();
+                    },
+                    scope: this
+                });
+                Ext.MessageBox.hide();
+            }
+            else
+            {
+                Ext.MessageBox.show({
+                    title: s[42],
+                    msg: r[1],
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
+                if(r[0] == -10049)
+                {
+                    window.parent.location.href = 'index.html';
+                }
+            }
+        },
+        failure: function ()
+        {
+            Ext.MessageBox.show({
+                title: s[4],
+                msg: s[5],
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+    Ext.MessageBox.hide();
+});
+</script>
+</head>
+<body>
+</body>
+</html>

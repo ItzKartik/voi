@@ -1,0 +1,313 @@
+<html>
+<head>
+<title>VOS3000</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="expires" content="-1"/>
+<meta name="keywords" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="description" content="VOS3000, VoIP, VoIP运营支撑系统, 软交换"/>
+<meta name="author" content="www.linknat.com, 昆石网络"/>
+<meta name="copyright" content="www.linknat.com, 昆石网络"/>
+<link rel="shortcut icon" href="images/vos3000.ico"/>
+<link rel="stylesheet" type="text/css" href="css/ext-all.css"/>
+<script type="text/javascript" src="js/ext-base.js"></script>
+<script type="text/javascript" src="js/ext-all.js"></script>
+<script type="text/javascript" src="js/lang.js"></script>
+<style type="text/css">
+    body {
+        font-family: Arial, verdana, tahoma, helvetica, sans-serif;
+        font-size: 12px;
+        background-color: #fff !important;
+    }
+
+    h1 {
+        font-size: x-large;
+    }
+
+    h2 {
+        font-size: large;
+    }
+
+    .link, .link a {
+        color: gray;
+    }
+
+    .STYLE1 {
+        color: #789030;
+        font-size: 12px;
+    }
+
+    #login {
+        width: 520px;
+        position: absolute;
+        left: 50%;
+        margin-left: -260px;
+    }
+
+    #bt {
+        width: 100px;
+        position: absolute;
+        left: 50%;
+        margin-left: -50px;
+    }
+</style>
+<script type="text/javascript">
+var d = new Date();
+var offset = d.getTimezoneOffset();
+var times = 3;
+Ext.onReady(function()
+{
+    cleanSession();
+    Ext.MessageBox.wait(s[0], s[1]);
+    Ext.QuickTips.init();
+    Ext.form.Field.prototype.msgTarget = 'side';
+    function Handle()
+    {
+        if(loginForm.form.isValid())
+        {
+            var requestVos = new Object();
+            requestVos.terminalName = document.getElementById('terminalName').value;
+            requestVos.terminalPassword = document.getElementById('terminalPassword').value;
+            requestVos.terminalType = parseFloat(comboBox.getValue());
+            Ext.MessageBox.wait(s[2], s[1]);
+            Ext.Ajax.request({
+                url: 'login.jsp',
+                params: {randCode: document.getElementById('randCode').value},
+                jsonData: requestVos,
+                success: function (result)
+                {
+                    var responseJson = Ext.decode(result.responseText);
+                    if(responseJson.retCode == 0)
+                    {
+                    		document.getElementById('terminalPassword').value = "";
+                        window.location.href = "main.html";
+                        return;
+                    }
+                    if(responseJson.retCode == -10052 && times > 0)
+                    {
+                        times--;
+                        Handle();
+                        return;
+                    }
+                    Ext.MessageBox.show({
+                        title: s[3],
+                        msg: responseJson.exception,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });                    
+                    document.getElementById('randCode').value = "";
+                    changeImg();
+                },
+                failure: function ()
+                {
+                    Ext.MessageBox.show({
+                        title: s[4],
+                        msg: s[5],
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
+                }
+            });
+        }
+    }
+
+    var comboBox;
+    var textFieldName;
+    var loginForm = new Ext.FormPanel({
+        labelAlign: 'right',
+        labelWidth: 75,
+        renderTo: 'login',
+        title: "<br><br><h1 align='center'>" + s[8] + "</h1><br><br><h2 align='center'>" + s[9] + "</h2><br>" + "<h6 align='right'>" + s[169] + "</h6>",
+        bodyStyle: 'padding:15px 100px 20px',
+        items: [
+            new Ext.form.FieldSet({
+                title: s[10],
+                items: [
+                    {
+                        border: false
+                    },
+                    comboBox = new Ext.form.ComboBox({
+                        fieldLabel: s[213],
+                        hiddenName: 'loginType',
+                        store: new Ext.data.SimpleStore({
+                            fields: ['loginType', 'loginName'],
+                            data: [
+                                ['0', s[51]],
+                                ['1', s[52]],
+                                ['2', s[214]],
+                                ['3', s[266]],
+                                ['4', s[258]]
+                            ]
+                        }),
+                        valueField: 'loginType',
+                        displayField: 'loginName',
+                        editable: false,
+                        mode: 'local',
+                        triggerAction: 'all',
+                        value: 0,
+                        selectOnFocus: true,
+                        width: 200,
+                        allowBlank: false
+                    }),
+                    {
+                        border: false
+                    },
+                    textFieldName = new Ext.form.TextField({
+                        fieldLabel: s[73],
+                        id: 'terminalName',
+                        width: 200,
+                        allowBlank: false
+                    }),
+                    {
+                        border: false
+                    },
+                    new Ext.form.TextField({
+                        fieldLabel: s[12],
+                        id: 'terminalPassword',
+                        width: 200,
+                        inputType: 'password',
+                        allowBlank: true
+                    }),
+                    {
+                        border: false
+                    },
+                    new Ext.form.TextField({
+                        fieldLabel: s[335],
+                        id: 'randCode',
+                        width: 60,
+                        allowBlank: false
+                    }),
+                    {
+                        border: false
+                    },
+                    new Ext.Button({
+                        id: 'bt',
+                        text: s[13],
+                        minWidth: 100,
+                        handler: Handle
+                    }),
+                    {
+                        border: false
+                    },
+                    {
+                        border: false
+                    }
+                ]
+            })
+        ]
+    });
+
+    var bd = Ext.getDom('randCode');
+    var bd2 = Ext.get(bd.parentNode);
+    bd2.createChild([
+        {tag: 'span', html:'&nbsp&nbsp&nbsp&nbsp&nbsp'},
+        {tag: 'img', id: 'vfcode', src: 'verifyimage.jsp', onclick: 'changeImg();', align:'absbottom'},
+        {tag: 'span', html:'&nbsp<a href="javascript:changeImg()">' + s[336] + '</a>'}
+    ]);
+    new Ext.form.Label({
+        html:"<br><br><div align='center'><h3><a href='paycard.html' class='STYLE1'>" + s[60] + "</a>&nbsp&nbsp&nbsp&nbsp<a href='phonebook/index.html' class='STYLE1'>" + s[240] + "</a></h3></div>",
+        renderTo:'login'
+    });
+    new Ext.form.Label({
+        html:"<br><br><div align='center'><a href='http://www.linknat.com' class='link'>Powered By " + s[263] + "</a></div><br><br>",
+        renderTo:'login'
+    });
+    Ext.override(Ext.form.Field, {
+        setLabel: function(text)
+        {
+            var r = this.getEl().up('div.x-form-item');
+            r.dom.firstChild.firstChild.nodeValue = String.format('{0}', text);
+        }
+    });
+    comboBox.on('select', function(comboBox, records, index)
+    {
+        switch(index)
+        {
+        case 0:
+        case 4:
+            textFieldName.setLabel(s[73]);
+            break;
+        case 1:
+        case 3:
+            textFieldName.setLabel(s[11]);
+            break;
+        case 2:
+            textFieldName.setLabel(s[91]);
+            break;
+        }
+    });
+    new Ext.KeyMap(document, {
+        key: Ext.EventObject.ENTER,
+        fn: function()
+        {
+            Handle();
+        },
+        scope: this
+    });
+    Ext.MessageBox.hide();
+});
+
+function changeImg()
+{
+    document.getElementById('vfcode').src = 'verifyimage.jsp?' + Math.random();
+}
+
+var xmlHttp;
+
+function createXMLHttpRequest()
+{
+    if(window.ActiveXObject)
+    {
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    else if(window.XMLHttpRequest)
+    {
+        xmlHttp = new XMLHttpRequest();
+    }
+}
+
+function cleanSession()
+{
+    createXMLHttpRequest();
+    var url = "reset.jsp";
+    xmlHttp.open("POST", url, true);
+    xmlHttp.send(null);
+}
+
+function reLocation(lang)
+{
+    if(lang == "zh-cn")
+    {
+        window.location = "../chs/index.html";
+    }
+    else if(lang == "zh-tw")
+    {
+        window.location = "../cht/index.html";
+    }
+    else
+    {
+        window.location = "../eng/index.html";
+    }
+}
+</script>
+</head>
+<body>
+<div id="head" align="right" style="padding-top:5px;padding-bottom:30px">
+    <table align="right" cellspacing="3">
+        <tbody>
+        <tr>
+            <td><a href="javascript:reLocation('zh-cn')">
+                <span class="STYLE1"><img class="arrow" src="images/arrow.png" align="top" alt="简体中文">简体中文</span></a>
+            </td>
+            <td><a href="javascript:reLocation('zh-tw')">
+                <span class="STYLE1"><img class="arrow" src="images/arrow.png" align="top" alt="繁體中文">繁體中文</span></a>
+            </td>
+            <td><a href="javascript:reLocation('en_us')">
+                <span class="STYLE1"><img class="arrow" src="images/arrow.png" align="top" alt="English">English</span></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div id="login"></div>
+</body>
+</html>
