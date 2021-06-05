@@ -1,5 +1,5 @@
 function initPayPalButton() {
-    paypal.Buttons({
+    parent.paypal.Buttons({
     style: {
         shape: 'rect',
         color: 'gold',
