@@ -1,6 +1,6 @@
 function initPayPalButton(ele) {
     var p = ele.parentElement;
-    console.log(p.children[6]);
+    ele = p.children[8];
     parent.paypal.Buttons({
     style: {
         shape: 'rect',
@@ -24,7 +24,7 @@ function initPayPalButton(ele) {
     onError: function(err) {
         console.log(err);
     }
-    }).render('#paypal-button-container');
+    }).render(ele);
 }
 
 function stripe_payment() {
