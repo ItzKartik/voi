@@ -1,7 +1,7 @@
 function initPayPalButton(ele) {
     var p = ele.parentElement;
-    ele = p.children[6];
-    console.log(ele.children[1]);
+    ele = p.childNodes[6].children[1];
+    console.log(p.childNodes[6].children[1]);
     parent.paypal.Buttons({
     style: {
         shape: 'rect',
@@ -12,7 +12,7 @@ function initPayPalButton(ele) {
 
     createOrder: function(data, actions) {
         return actions.order.create({
-        purchase_units: [{"amount":{"currency_code":"USD","value":1}}]
+        purchase_units: [{"amount":{"currency_code":"USD","value":5}}]
         });
     },
 
