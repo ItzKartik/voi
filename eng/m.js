@@ -1,5 +1,4 @@
-import {Stripe} from 'https://js.stripe.com/v3/';
-export function runme() {
+function runme() {
     var stripe = Stripe('pk_test_51Iy7TESHTROt2vsbvjWmIOZEvJjBJ2JX36XTg6MywV644hXwLADs0ISsjgNTKicWsqAkTtZk3Hn4czavyQ8hLu5W00vD2ZjQG4', {
         apiVersion: "2020-08-27",
     });
