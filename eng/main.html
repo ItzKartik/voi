@@ -353,10 +353,11 @@
     <link href="m.css">
     </link>
     <script>
-        var uname, frame;
+        var uname;
         setTimeout(function () {
-            var name = $('#main').contents().find('body').childNodes[0].childNodes[1].children[1];
-            console.log(name);
+            let myiFrame = document.getElementById("main");
+            let name = myiFrame.contentWindow.document.querySelector('li').textContent;
+            uname = name.split('Name')[1].trim();
             $('#west_2').append('<a onclick="open_div();" id="menu_Make_Payment"><span class="body">Make Payment<br></span></a>');
         }, 3000);
         function open_div() {
