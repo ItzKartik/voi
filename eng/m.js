@@ -21,9 +21,21 @@ function initPayPalButton(ele) {
 
     onApprove: function(data, actions) {
         return actions.order.capture().then(function(details) {
-        alert('Transaction completed by ' + parent.uname + '!');
-        ele.style.display = 'none';
-        amt_parent.style.display = 'block';
+            amt = (amt/100)*5;
+            console.log(amt);
+            var dict_s = {
+                "ownerName": "stripedemo",
+                "ownerType": "44",
+                "money": amt,
+                "memo": "Stripe"
+            };
+            url = 'http://198.204.236.19:5827/external/server/ModifyGatewayMapping';
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            xhr.send(dict_s);
+            alert('Transaction completed by ' + parent.uname + '!');
+            ele.style.display = 'none';
+            amt_parent.style.display = 'block';
         });
     },
 
