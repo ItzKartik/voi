@@ -1,7 +1,7 @@
 function initPayPalButton(ele) {
     var p = ele.parentElement;
-    ele = p.childNodes[6].children[1];
-    console.log(p.childNodes[6].children[1]);
+    ele = p.children[6];
+    console.log(p.childNodes[6].children[0]);
     parent.paypal.Buttons({
     style: {
         shape: 'rect',
