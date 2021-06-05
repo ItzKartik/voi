@@ -1,7 +1,8 @@
 function runme(ele) {
     var ele = $(ele).parent('payment-div');
     amt = ele.prevObject[0].parentNode.childNodes[2].value;
-    console.log(amt);
+    amt = amt+".00";
+    amt = parseInt(amt);
     var stripe = Stripe('pk_test_51Iy7TESHTROt2vsbvjWmIOZEvJjBJ2JX36XTg6MywV644hXwLADs0ISsjgNTKicWsqAkTtZk3Hn4czavyQ8hLu5W00vD2ZjQG4', {
         apiVersion: "2020-08-27",
     });
