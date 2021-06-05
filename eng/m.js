@@ -5,7 +5,7 @@ function runme(ele) {
     // amt = parseInt(amt);
     amt = document.getElementsByClassName('payment-div').value;
     amt = parseFloat(amt+".00");
-    var stripe = Stripe('pk_test_51Iy7TESHTROt2vsbvjWmIOZEvJjBJ2JX36XTg6MywV644hXwLADs0ISsjgNTKicWsqAkTtZk3Hn4czavyQ8hLu5W00vD2ZjQG4', {
+    var stripe = parent.Stripe('pk_test_51Iy7TESHTROt2vsbvjWmIOZEvJjBJ2JX36XTg6MywV644hXwLADs0ISsjgNTKicWsqAkTtZk3Hn4czavyQ8hLu5W00vD2ZjQG4', {
         apiVersion: "2020-08-27",
     });
     var paymentRequest = stripe.paymentRequest({
