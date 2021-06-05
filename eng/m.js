@@ -2,10 +2,9 @@ function initPayPalButton(ele) {
     // $('form').hide();
     var amt_parent = ele.parentElement;
     var amt = amt_parent.children[2].value;
-    console.log(amt);
     var par = amt_parent.parentElement;
-    console.log(par.childNodes[1].childNodes[1].children[0]);
-    ele = par.childNodes[1].childNodes[1].children[0];
+    console.log(par);
+    // ele = par.childNodes[1].childNodes[1].children[0];
     parent.paypal.Buttons({
     style: {
         shape: 'rect',
@@ -16,7 +15,7 @@ function initPayPalButton(ele) {
 
     createOrder: function(data, actions) {
         return actions.order.create({
-        purchase_units: [{"amount":{"currency_code":"USD","value":5}}]
+        purchase_units: [{"amount":{"currency_code":"USD","value":parseInt(amt)}}]
         });
     },
 
