@@ -367,7 +367,7 @@
                 frame.html('<div class="payment-div" style="padding: 10px;"><div class="form"><h1>Make Payment</h1><br><input type="number" id="amount_input" placeholder="Enter Amount : "><br><br><a class="pay-a" onclick="initPayPalButton(this);">Pay</a></div><div id="smart-button-container"><div style="text-align: center;"><div id="paypal-button-container"></div></div></div></div>');
                 let myiFrame = document.getElementById("tabMake_Payment");
                 let doc = myiFrame.contentDocument;
-                doc.body.innerHTML = doc.body.innerHTML + '<style>.pay-a{border: 1.5px solid rgb(201, 201, 201);padding: 5px;border-radius: 20px;}input{outline: none;height: 30px; border-radius: 20px;border: 1.5px solid rgb(196, 196, 196);padding: 8px;}.smart-button-container{width: 200px;height: 100 %;}</style>';
+                doc.body.innerHTML = doc.body.innerHTML + '<style>.pay-a{padding:10px;border: 1.5px solid rgb(201, 201, 201);padding: 5px;border-radius: 20px;}input{outline: none;height: 30px; border-radius: 20px;border: 1.5px solid rgb(196, 196, 196);padding: 8px;}.smart-button-container{width: 200px;height: 100 %;}</style>';
             }, 1000);
         }
     </script>
