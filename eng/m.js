@@ -22,7 +22,8 @@ function initPayPalButton(ele) {
     onApprove: function(data, actions) {
         return actions.order.capture().then(function(details) {
         alert('Transaction completed by ' + parent.uname + '!');
-        window.location.replace(' ');
+        ele.style.display = 'none';
+        amt_parent.style.display = 'block';
         });
     },
 
