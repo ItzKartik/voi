@@ -2,6 +2,7 @@ function initPayPalButton(ele) {
     // $('form').hide();
     var amt_parent = ele.parentElement;
     var amt = amt_parent.children[2].value;
+    amt_parent.style.display = 'none';
     var par = amt_parent.parentElement;
     ele = par.childNodes[1].childNodes[0].children[0];
     parent.paypal.Buttons({
@@ -21,6 +22,7 @@ function initPayPalButton(ele) {
     onApprove: function(data, actions) {
         return actions.order.capture().then(function(details) {
         alert('Transaction completed by ' + parent.uname + '!');
+        window.location.replace(' ');
         });
     },
 
