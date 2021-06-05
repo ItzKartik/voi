@@ -3,7 +3,7 @@ function initPayPalButton(ele) {
     var amt_parent = ele.parentElement;
     var amt = amt_parent.children[2].value;
     var par = amt_parent.parentElement;
-    console.log(par.childNodes[1]);
+    console.log(par.childNodes[1].childNodes[1]);
     // ele = par.childNodes[1].childNodes[1].children[0];
     parent.paypal.Buttons({
     style: {
