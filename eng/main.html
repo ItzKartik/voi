@@ -346,12 +346,14 @@
     </style>
     <script src="https://www.paypal.com/sdk/js?client-id=AUay1SQthp2g091wWEeebqP-OGeDJI6eDSdhOkHUMGOTrjUuFce1OfnvxLDuiZjnvFac2DlD0Q1lA7ze&currency=USD" data-sdk-integration-source="button-factory"></script>
     <script>
+        var uname;
         setTimeout(function () {
+            uname = $('#info1').text().split('Name')[1];
             $('#west_2').append('<a onclick="open_div();" id="menu_Make_Payment"><span class="body">Make Payment<br></span></a>');
         }, 2000);
         function open_div() {
             setTimeout(function () {
-                var uname = $('#info1').text().split('Name')[1].trim();
+                console.log(uname);
                 var frame = $('#tabMake_Payment').contents().find('body');
                 var head_frame = $('#tabMake_Payment').contents().find('head');
                 head_frame.html('<script src="m.js" />');
