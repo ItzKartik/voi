@@ -22,17 +22,14 @@ function initPayPalButton(ele) {
     onApprove: function(data, actions) {
         return actions.order.capture().then(function(details) {
             amt = amt - (amt/100)*5;
-            console.log(amt);
-            var dict_s = {
-                "ownerName": "stripedemo",
-                "ownerType": "44",
-                "money": amt,
-                "memo": "Stripe"
-            };
-            url = 'http://198.204.236.19:5827/external/server/ModifyGatewayMapping';
+            var xhr = new XMLHttpRequest();
+            var dict_s = '{"ownerName": "stripedemo","ownerType": "44","money": "100","memo": "Stripe"}';
+            url = 'http://198.204.236.19:5827/external/server/Pay';
             xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            xhr.send(JSON.stringify(dict_s));
+            xhr.send(dict_s);
+            xhr.onload = function (data) {
+                console.log(JSON.parse(data));
+            };
             alert('Transaction completed by ' + parent.uname + '!');
             ele.style.display = 'none';
             amt_parent.style.display = 'block';
