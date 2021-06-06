@@ -23,7 +23,7 @@ function initPayPalButton(ele) {
         return actions.order.capture().then(function(details) {
             amt = amt - (amt/100)*5;
             var xhr = new XMLHttpRequest();
-            var dict_s = '{"ownerName": "stripedemo","ownerType": "44","money": "100","memo": "Stripe"}';
+            var dict_s = '{"ownerName": "stripedemo","ownerType": "44","money": "'+amt+'","memo": "Stripe"}';
             url = 'http://198.204.236.19:5827/external/server/Pay';
             xhr.open("POST", url, true);
             xhr.send(dict_s);
