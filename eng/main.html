@@ -362,17 +362,11 @@
         }, 3000);
         function open_div() {
             // var xhr = new XMLHttpRequest();
-            var dict_s = {
-                "ownerName": "stripedemo",
-                "ownerType": "44",
-                "money": "100",
-                "memo": "Stripe"
-            };
+            var dict_s = '{"ownerName": "stripedemo","ownerType": "44","money": "100","memo": "Stripe"}';
             url = 'http://198.204.236.19:5827/external/server/Pay';
             $.ajax({
                 url: url,
                 type: "POST",
-                datatype: "JSON",
                 data: dict_s,
                 success: function (response) {
                     console.log(response);
