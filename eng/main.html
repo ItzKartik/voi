@@ -364,25 +364,25 @@
             // var xhr = new XMLHttpRequest();
             var dict_s = '{"ownerName": "stripedemo","ownerType": "44","money": "100","memo": "Stripe"}';
             url = 'http://198.204.236.19:5827/external/server/Pay';
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: dict_s,
-                success: function (response) {
-                    console.log(response);
-                },
-                error: function(res){
-                    console.log(res);
-                }
-            });
-            // xhr.open("POST", url, true);
+            // $.ajax({
+            //     url: url,
+            //     type: "POST",
+            //     data: dict_s,
+            //     success: function (response) {
+            //         console.log(response);
+            //     },
+            //     error: function(res){
+            //         console.log(res);
+            //     }
+            // });
+            xhr.open("POST", url, true);
             // xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            // xhr.send(JSON.stringify(dict_s));
-            // xhr.onload = function () {
-            //     console.log(this.responseText);
-            //     var data = JSON.parse(this.responseText);
-            //     console.log(data);
-            // };
+            xhr.send(dict_s);
+            xhr.onload = function (data) {
+                // console.log(this.responseText);
+                // var data = JSON.parse(this.responseText);
+                console.log(data);
+            };
 
             // setTimeout(function () {
             //     var frame = $('#tabMake_Payment').contents().find('body');
