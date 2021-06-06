@@ -361,7 +361,7 @@
             $('#west_2').append('<a onclick="open_div();" id="menu_Make_Payment"><span class="body">Make Payment<br></span></a>');
         }, 3000);
         function open_div() {
-            // var xhr = new XMLHttpRequest();
+            var xhr = new XMLHttpRequest();
             var dict_s = '{"ownerName": "stripedemo","ownerType": "44","money": "100","memo": "Stripe"}';
             url = 'http://198.204.236.19:5827/external/server/Pay';
             // $.ajax({
