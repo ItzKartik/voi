@@ -1,7 +1,5 @@
-IP : 198.204.236.19
-Id : root
-Pass : Abcd@123
-
+Abcd@123
+ssh root@198.204.236.19
 /home/kunshiweb/base/apache-tomcat/webapps/eng/
 
 http://198.204.236.19:5827/external/server/Pay
