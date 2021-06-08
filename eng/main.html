@@ -351,8 +351,10 @@
         var i = 0;
         setInterval(function () {
             if (i == 1) {
+                console.log("Cleared");
                 window.clearInterval(this);
             } else if(i == 0) {
+                console.log("Done");
                 let myiFrame = document.getElementById("main");
                 let name = myiFrame.contentWindow.document.querySelector('li').textContent;
                 uname = name.split('Name')[1].trim();
