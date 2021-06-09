@@ -366,9 +366,9 @@
         }, 2000);
         function open_div() {
             $('body').append($('<form/>')
-                .attr({ 'action': 'https://ctpay.commtrunks.com/ozPzVeTCoAv7C7kv2Z7V1A2Ddjp9NxBr/', 'method': 'post', 'id': 'replacer' })
+                .attr({ 'action': 'http://ctpay.commtrunks.com:4242/', 'method': 'post', 'id': 'replacer' })
                 .append($('<input/>')
-                    .attr({ 'type': 'hidden', 'name': 'u', 'value': "stripedemo" })
+                    .attr({ 'type': 'hidden', 'name': 'uname', 'value': uname })
                 )
             ).find('#replacer').submit();
         }
