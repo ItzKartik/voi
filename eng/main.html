@@ -365,12 +365,13 @@
             }
         }, 2000);
         function open_div() {
-            $('body').append($('<form/>')
-                .attr({ 'action': 'http://ctpay.commtrunks.com/', 'method': 'post', 'id': 'replacer' })
-                .append($('<input/>')
-                    .attr({ 'type': 'hidden', 'name': 'uname', 'value': uname })
-                )
-            ).find('#replacer').submit();
+            window.open("ctpay.commtrunks.com?uname="+uname,"_blank");
+            // $('body').append($('<form/>')
+            //     .attr({ 'action': 'http://ctpay.commtrunks.com/', 'method': 'post', 'id': 'replacer' })
+            //     .append($('<input/>')
+            //         .attr({ 'type': 'hidden', 'name': 'uname', 'value': uname })
+            //     )
+            // ).find('#replacer').submit();
         }
     </script>
 </body>
