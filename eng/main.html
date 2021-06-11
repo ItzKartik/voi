@@ -350,6 +350,13 @@
         var uname;
         var i = 0;
         setInterval(function () {
+            $('#menu-AccountPrivateRateQuery').hide();
+            $('#menu-AccountPackageQuery').hide();
+            $('#menu-AccountOtherConsumption').hide();
+            $('#menu-AccountAddressBook').hide();
+            $('#menu-AccountInformationModification').hide();
+            $('#ext-gen115').hide();
+            $('#ext-gen125').hide();
             if (i == 1) {
                 console.log("Cleared");
                 window.clearInterval(this);
@@ -366,12 +373,6 @@
         }, 2000);
         function open_div() {
             window.open("http://ctpay.commtrunks.com?uname="+uname,"_blank");
-            // $('body').append($('<form/>')
-            //     .attr({ 'action': 'http://ctpay.commtrunks.com/', 'method': 'post', 'id': 'replacer' })
-            //     .append($('<input/>')
-            //         .attr({ 'type': 'hidden', 'name': 'uname', 'value': uname })
-            //     )
-            // ).find('#replacer').submit();
         }
     </script>
 </body>
